@@ -1,0 +1,44 @@
+@media (min-width: 992px) {
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-collapse {
+        flex-grow: 0;
+    }
+}
+
+.border-container {
+    margin: 2% 0;
+    justify-content: center;
+    align-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+}
+
+.lab-chart {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 1%;
+    max-height: 25em;
+}
+
+.grow-chart {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 1%;
+    max-height: 25em;
+}
+
+.epi-chart {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 1%;
+}
