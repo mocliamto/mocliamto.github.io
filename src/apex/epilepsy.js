@@ -1,23 +1,3 @@
-// var options = {
-//     series: [{
-//         data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-//             min: 10,
-//             max: 60
-//         })
-//     }],
-//     chart: {
-//         id: 'fb',
-//         group: 'social',
-//         type: 'line',
-//         height: 160
-//     },
-//     colors: ['#008FFB'],
-//     stroke: {
-//         curve: 'smooth',
-//         width: 3
-//     }
-// };
-
 var chart = new ApexCharts(document.querySelector("#epi-chart-line"), options);
 chart.render();
 
