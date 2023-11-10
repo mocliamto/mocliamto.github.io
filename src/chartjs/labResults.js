@@ -1,113 +1,42 @@
-// import { loadData } from '../loadData';
-const ctx = document.getElementById('lab-results-chart');
-
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-
-// <block:actions:2>
-const actions = [
-    {
-        name: 'Randomize',
-        handler(chart) {
-            chart.data.datasets.forEach(dataset => {
-                dataset.data.forEach(function(dataObj, j) {
-                    const newVal = Utils.rand(0, 100);
-
-                    if (typeof dataObj === 'object') {
-                        dataObj.y = newVal;
-                    } else {
-                        dataset.data[j] = newVal;
-                    }
-                });
-            });
-            chart.update();
-        }
-    },
-];
-// </block:actions>
-
-// <block:setup:1>
-const DATA_COUNT = 7;
-const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
+const ctx = document.getElementById('labResultsChart');
 
 const data = {
-    labels: [ // Date Objects
-        Utils.newDate(0),
-        Utils.newDate(1),
-        Utils.newDate(2),
-        Utils.newDate(3),
-        Utils.newDate(4),
-        Utils.newDate(5),
-        Utils.newDate(6)
+    labels: [
+        'Label 1',
+        'Label 2',
+        'Label 3',
+        'Label 4',
+        'Label 5',
+        'Label 6',
+        'Label 7'
     ],
     datasets: [{
         label: 'My First dataset',
-        backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-        borderColor: Utils.CHART_COLORS.red,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgb(255, 99, 132)',
         fill: false,
-        data: Utils.numbers(NUMBER_CFG),
+        data: [12, 19, 3, 5, 2, 3, 10],
     }, {
         label: 'My Second dataset',
-        backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-        borderColor: Utils.CHART_COLORS.blue,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgb(54, 162, 235)',
         fill: false,
-        data: Utils.numbers(NUMBER_CFG),
-    }, {
-        label: 'Dataset with point data',
-        backgroundColor: Utils.transparentize(Utils.CHART_COLORS.green, 0.5),
-        borderColor: Utils.CHART_COLORS.green,
-        fill: false,
-        data: [{
-            x: Utils.newDateString(0),
-            y: Utils.rand(0, 100)
-        }, {
-            x: Utils.newDateString(5),
-            y: Utils.rand(0, 100)
-        }, {
-            x: Utils.newDateString(7),
-            y: Utils.rand(0, 100)
-        }, {
-            x: Utils.newDateString(15),
-            y: Utils.rand(0, 100)
-        }],
+        data: [8, 15, 6, 8, 5, 9, 15],
     }]
 };
-// </block:setup>
 
-// <block:config:0>
 const config = {
     type: 'line',
     data: data,
     options: {
         plugins: {
             title: {
-                text: 'Chart.js Time Scale',
-                display: true
+                display: true,
+                text: 'Labuitslagen',
             }
         },
         scales: {
             x: {
-                type: 'time',
-                time: {
-                    // Luxon format string
-                    tooltipFormat: 'DD T'
-                },
                 title: {
                     display: true,
                     text: 'Date'
@@ -116,15 +45,11 @@ const config = {
             y: {
                 title: {
                     display: true,
-                    text: 'value'
+                    text: 'Value'
                 }
             }
         },
     },
 };
-// </block:config>
 
-module.exports = {
-    actions: actions,
-    config: config,
-};
+new Chart(ctx, config);

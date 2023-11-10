@@ -52,5 +52,4 @@ const config = {
     },
 };
 
-// Maak de grafiek
 new Chart(ctx, config);

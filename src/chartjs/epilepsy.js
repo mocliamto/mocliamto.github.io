@@ -8,9 +8,19 @@ new Chart(ctx, {
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
             borderWidth: 1
-        }]
+        }],
+        title: {
+            text: 'Epilepsy',
+            align: 'left'
+        }
     },
     options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Epilepsie',
+            }
+        },
         scales: {
             y: {
                 beginAtZero: true

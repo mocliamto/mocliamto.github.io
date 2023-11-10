@@ -49,7 +49,11 @@ var options = {
     },
     colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
     dataLabels: {
-        enabled: false
+        enabled: false,
+    },
+    title: {
+        text: 'Groeigrafiek 0 - 15 maanden',
+        align: 'left'
     },
     stroke: {
         curve: 'smooth',

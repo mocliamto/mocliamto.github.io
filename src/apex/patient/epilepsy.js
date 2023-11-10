@@ -14,6 +14,10 @@ var optionsLine2 = {
         type: 'line',
         height: 300
     },
+    title: {
+        text: 'Aanvalsregistratie',
+        align: 'left'
+    },
     colors: ['#546E7A'],
     stroke: {
         curve: 'smooth',
@@ -36,6 +40,10 @@ var optionsArea = {
         group: 'social',
         type: 'area',
         height: 300
+    },
+    title: {
+        text: 'Medicatie',
+        align: 'left'
     },
     colors: ['#00E396'],
     stroke: {
@@ -60,6 +68,10 @@ var optionsSmall = {
         type: 'area',
         height: 300
     },
+    title: {
+        text: 'PDD/DDD',
+        align: 'left'
+    },
     colors: ['#008FFB'],
     stroke: {
         curve: 'smooth',
@@ -82,6 +94,10 @@ var optionsSmall2 = {
         group: 'social',
         type: 'area',
         height: 300
+    },
+    title: {
+        text: 'Labuitslagen',
+        align: 'left'
     },
     colors: ['#546E7A'],
     stroke: {

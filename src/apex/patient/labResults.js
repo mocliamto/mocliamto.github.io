@@ -28,6 +28,10 @@ var options = {
     dataLabels: {
         enabled: false
     },
+    title: {
+        text: 'Labuitslagen',
+        align: 'left'
+    },
     fill: {
         opacity: 1,
     },
