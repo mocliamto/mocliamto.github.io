@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!--    bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
-    <a class="navbar-brand mb-0 h1" href="https://github.com/mocliamto/mocliamto.github.io">Chart Libraries</a>
+    <a class="navbar-brand mb-0 h1" href="../../../index.html">Chart Libraries</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -31,44 +31,41 @@
     <div class="collapse navbar-collapse justify-content-left" id="navbarNav">
         <div class="navbar-nav">
             <a class="nav-link disabled" href="#">Zorgverlener| </a>
-            <a class=" nav-item nav-link" href="../zorgverlener/indexApex.html">ApexChart</a>
-            <a class="nav-item nav-link" href="../../chartjs/zorgverlener/indexChartjs.html">ChartJs</a>
+            <a class=" nav-item nav-link" href="../../apex/zorgverlener/indexApex.html">ApexChart</a>
+            <a class="nav-item active nav-link mb-0 h5" href="../zorgverlener/indexChartjs.html">ChartJs<span
+                    class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="../../d3/zorgverlener/indexD3.html">D3</a>
         </div>
     </div>
     <div class="collapse navbar-collapse justify-content-right" id="navbarNav1">
         <div class="navbar-nav">
             <a class="nav-link disabled" href="#">Patient| </a>
-            <a class=" nav-item active nav-link mb-0 h5" href="../patient/indexApex.html">ApexChart <span
-                    class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="../../chartjs/patient/indexChartjs.html">ChartJs</a>
+            <a class=" nav-item nav-link" href="../../apex/patient/indexApex.html">ApexChart</a>
+            <a class="nav-item nav-link" href="../patient/indexChartjs.html">ChartJs</a>
             <a class="nav-item nav-link" href="../../d3/patient/indexD3.html">D3</a>
         </div>
     </div>
 </nav>
+
 <div class="container">
     <div class="row">
         <div class="col-6">
             <div class="lab-chart">
-                <div id="lab-chart-line2"></div>
-                <div id="lab-chart-line"></div>
+                <canvas id="labResultsChart"></canvas>
             </div>
             <div class="grow-chart">
-                <div id="chart"></div>
+                <canvas id="growChartJs"></canvas>
             </div>
         </div>
         <div class="epi-chart col-6">
-            <div id="epi-chart-line2"></div>
-            <div id="epi-chart-area"></div>
-            <div id="epi-chart-small"></div>
-            <div id="epi-chart-small2"></div>
+            <canvas id="epilepsy-chart-js"></canvas>
         </div>
     </div>
 </div>
 
 <!-- Include external JavaScript file -->
-<script src="labResults.js"></script>
-<script src="grow.js"></script>
-<script src="epilepsy.js"></script>
+<script type="module" src="labResults.js"></script>
+<script type="module" src="grow.js"></script>
+<script type="module" src="epilepsy.js"></script>
 </body>
 </html>
