@@ -1,6 +1,5 @@
-// Seizure Record Data
 const seizureData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: [' ', ' ', ' ', ' '],
     datasets: [{
         label: 'Aanvalsregistratie',
         data: [3, 2, 5, 1],
@@ -10,7 +9,6 @@ const seizureData = {
     }]
 };
 
-// Medication Data
 const medicationData = {
     labels: [' ', ' ', ' ', ' '],
     datasets: [{
@@ -22,9 +20,8 @@ const medicationData = {
     }]
 };
 
-// PDD/DDD Data
 const pddData = {
-    labels: ['Drug A', 'Drug B', 'Drug C'],
+    labels: [' ', ' ', ' ', ' '],
     datasets: [{
         label: 'PDD (mg)',
         data: [300, 200, 400],
@@ -40,9 +37,8 @@ const pddData = {
     }]
 };
 
-// Lab Results Data
 const labResultsData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: [' ', ' ', ' ', ' '],
     datasets: [{
         label: 'Labuitslag',
         data: [1.2, 1.5, 1.3, 1.4],
@@ -52,29 +48,37 @@ const labResultsData = {
     }]
 };
 
-// Configuring the charts
 const seizureConfig = {
     type: 'bar',
     data: seizureData,
-    options: { scales: { y: { beginAtZero: true } } }
+    options: {
+        responsive: true, plugins: {title: {display: true, text: 'Aanvalsregistratie'}},
+        scales: {y: {beginAtZero: true}}
+    }
 };
 
 const medicationConfig = {
     type: 'line',
     data: medicationData,
-    options: { scales: { y: { beginAtZero: true } } }
+    options: {
+        responsive: true, plugins: {title: {display: true, text: 'Medicatie'}},
+        scales: {y: {beginAtZero: true}}}
 };
 
 const pddConfig = {
     type: 'line',
     data: pddData,
-    options: { scales: { y: { beginAtZero: true } } }
+    options: {
+        responsive: true, plugins: {title: {display: true, text: 'PDD/DDD'}},
+        scales: {y: {beginAtZero: true}}}
 };
 
 const labResultsConfig = {
     type: 'line',
     data: labResultsData,
-    options: { scales: { y: { beginAtZero: true } } }
+    options: {
+        responsive: true, plugins: {title: {display: true, text: 'Labuitslagen en ketonen'}},
+        scales: {y: {beginAtZero: true}}}
 };
 
 // Creating the charts
@@ -82,11 +86,3 @@ new Chart(document.getElementById('seizureChart'), seizureConfig);
 new Chart(document.getElementById('medicationChart'), medicationConfig);
 new Chart(document.getElementById('pddChart'), pddConfig);
 new Chart(document.getElementById('labResultssChart'), labResultsConfig);
-
-// // Save the HTML content to a file
-// html_file_path = '/mnt/data/epilepsy_monitoring_graph.html'
-// with open(html_file_path, 'w') as file:
-//     file.write(html_template)
-//
-// html_file_path
-

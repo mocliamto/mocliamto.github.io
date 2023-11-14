@@ -1,55 +1,72 @@
-const ctx = document.getElementById('labResultsChart');
+function parseGrensvalRange(grensval) {
+    return grensval.split('-').map(Number);
+}
 
-const data = {
-    labels: [
-        'Label 1',
-        'Label 2',
-        'Label 3',
-        'Label 4',
-        'Label 5',
-        'Label 6',
-        'Label 7'
-    ],
-    datasets: [{
-        label: 'My First dataset',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        borderColor: 'rgb(255, 99, 132)',
-        fill: false,
-        data: [12, 19, 3, 5, 2, 3, 10],
-    }, {
-        label: 'My Second dataset',
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgb(54, 162, 235)',
-        fill: false,
-        data: [8, 15, 6, 8, 5, 9, 15],
-    }]
-};
+fetch('../../assets/lab.json')
+    .then(response => response.json())
+    .then(data => {
+        // Process data
+        const labels = data.map(entry => entry.DateTime);
+        const uitslagData = data.map(entry => Number(entry.UITSLAG));
+        const grensvalData = data.map(entry => parseGrensvalRange(entry.GRENSVAL));
 
-const config = {
-    type: 'line',
-    data: data,
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Labuitslagen',
-            }
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Date'
-                }
+        // Split grensvalData into low and high for the area
+        const grensvalLowData = grensvalData.map(range => range[0]);
+        const grensvalHighData = grensvalData.map(range => range[1]);
+
+        // Create the chart
+        const ctx = document.getElementById('labChart').getContext('2d');
+        const labChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'UITSLAG',
+                    data: uitslagData,
+                    borderColor: 'red',
+                    fill: false
+                }, {
+                    label: 'GRENSVAL Low',
+                    data: grensvalLowData,
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 235, 160, 0.5)',
+                    fill: '+1'  // Fill to next dataset
+                }, {
+                    label: 'GRENSVAL High',
+                    data: grensvalHighData,
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 235, 160, 0.5)',
+                    fill: false
+                }]
             },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Value'
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            parser: 'YYYY-MM-DDTHH:mm:ss',
+                            tooltipFormat: 'll HH:mm'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Date and Time'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0.1 // Disables bezier curves
+                    }
                 }
             }
-        },
-    },
-};
-
-new Chart(ctx, config);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching the lab data:', error);
+    });

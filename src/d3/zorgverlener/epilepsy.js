@@ -65,21 +65,80 @@ function createBarChart(id, data, label) {
         .attr("fill", "#69b3a2");
 }
 
-// Function to create a grouped bar chart
 function createGroupedBarChart(id, data) {
-    // TODO: Implement the grouped bar chart function
+    const svg = d3.select('#' + id)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // X axis
+    const x0 = d3.scaleBand()
+        .range([0, width])
+        .domain(data.map(d => d.name))
+        .padding(0.2);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x0));
+
+    const x1 = d3.scaleBand()
+        .domain(['PDD', 'DDD'])
+        .range([0, x0.bandwidth()])
+        .padding(0.05);
+
+    // Y axis
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => Math.max(d.PDD, d.DDD))])
+        .range([height, 0]);
+    svg.append("g").call(d3.axisLeft(y));
+
+    // Bars
+    const group = svg.selectAll("g.layer")
+        .data(data)
+        .join("g")
+        .attr("transform", d => `translate(${x0(d.name)}, 0)`);
+
+    group.selectAll("rect")
+        .data(d => [{key: 'PDD', value: d.PDD}, {key: 'DDD', value: d.DDD}])
+        .join("rect")
+        .attr("x", d => x1(d.key))
+        .attr("y", d => y(d.value))
+        .attr("width", x1.bandwidth())
+        .attr("height", d => height - y(d.value))
+        .attr("fill", d => d.key === 'PDD' ? "#6b5b95" : "#feb236");
 }
 
-// Function to create a line chart
 function createLineChart(id, data, label) {
-    // TODO: Implement the line chart function
+    const svg = d3.select('#' + id)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // X axis
+    const x = d3.scaleLinear()
+        .domain([1, data.length])
+        .range([0, width]);
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(data.length));
+
+    // Y axis
+    const y = d3.scaleLinear()
+        .domain([d3.min(data), d3.max(data)])
+        .range([height, 0]);
+    svg.append("g").call(d3.axisLeft(y));
+
+    // Line
+    svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "#ff6f61")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+            .x((d, i) => x(i + 1))
+            .y(d => y(d))
+        );
 }
-
-//
-// // save the D3.js content to a file
-// d3_file_path = '/mnt/data/epilepsy_monitoring_graph_d3.html'
-// with open(d3_file_path, 'w') as file:
-//     file.write(d3_template)
-//
-// d3_file_path
-

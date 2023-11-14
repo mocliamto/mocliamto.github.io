@@ -64,22 +64,3 @@ function createBarChart(id, data, label) {
         .attr("height", d => height - y(d))
         .attr("fill", "#69b3a2");
 }
-
-// Function to create a grouped bar chart
-function createGroupedBarChart(id, data) {
-    // TODO: Implement the grouped bar chart function
-}
-
-// Function to create a line chart
-function createLineChart(id, data, label) {
-    // TODO: Implement the line chart function
-}
-
-//
-// // save the D3.js content to a file
-// d3_file_path = '/mnt/data/epilepsy_monitoring_graph_d3.html'
-// with open(d3_file_path, 'w') as file:
-//     file.write(d3_template)
-//
-// d3_file_path
-
