@@ -12,6 +12,8 @@ fetch('../../assets/grow.json')
         // Referentiewaarden van TNO
         const tnoValues = [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92];
 
+        const HighTnoValues = [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92];
+
         // Configuratie van de grafiek
         const ctx = document.getElementById('growChartJs').getContext('2d');
 
@@ -21,19 +23,26 @@ fetch('../../assets/grow.json')
                 labels: months,
                 datasets: [
                     {
-                        label: 'Referentiewaarden TNO',
-                        data: tnoValues,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        fill: true,
-                    },
-                    {
                         label: 'Gebruikerswaarden',
                         data: userValues, // Gebruik de getransformeerde data
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         fill: false,
                     },
+                    {
+                        label: 'Laag Referentiewaarden TNO',
+                        data: tnoValues,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                    },
+                    {
+                        label: 'Hoog Referentiewaarden TNO',
+                        data: HighTnoValues,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                    }
                 ],
             },
             options: {

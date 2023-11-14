@@ -30,13 +30,13 @@ fetch('../../assets/lab.json')
                     borderColor: 'red',
                     fill: false
                 }, {
-                    label: 'GRENSVAL Low',
+                    label: 'GRENSVAL Laag',
                     data: grensvalLowData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
                     fill: '+1'  // Fill to next dataset
                 }, {
-                    label: 'GRENSVAL High',
+                    label: 'GRENSVAL Hoog',
                     data: grensvalHighData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',

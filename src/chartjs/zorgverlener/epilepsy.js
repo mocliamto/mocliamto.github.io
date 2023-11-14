@@ -24,16 +24,17 @@ const pddData = {
     labels: [' ', ' ', ' ', ' '],
     datasets: [{
         label: 'PDD (mg)',
-        data: [300, 200, 400],
+        data: [0.2, 0.4, 0.6, 0.8],
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1
     }, {
         label: 'DDD (mg)',
-        data: [250, 250, 500],
+        data: [0.2, 0.5, 0.7, 0.6],
         backgroundColor: 'rgba(153, 102, 255, 0.2)',
         borderColor: 'rgba(153, 102, 255, 1)',
-        borderWidth: 1
+        borderWidth: 1,
+        fill:false
     }]
 };
 
