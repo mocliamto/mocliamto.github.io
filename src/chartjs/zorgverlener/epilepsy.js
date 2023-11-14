@@ -2,7 +2,7 @@ const seizureData = {
     labels: [' ', ' ', ' ', ' '],
     datasets: [{
         label: 'Aanvalsregistratie',
-        data: [3, 2, 5, 1],
+        data: [3, 2, 5, 0.7],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1

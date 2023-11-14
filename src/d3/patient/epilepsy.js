@@ -62,5 +62,5 @@ function createBarChart(id, data, label) {
         .attr("y", d => y(d))
         .attr("width", x.bandwidth())
         .attr("height", d => height - y(d))
-        .attr("fill", "#69b3a2");
+        .attr("fill", "#969bf8");
 }

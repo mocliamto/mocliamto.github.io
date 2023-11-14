@@ -5,6 +5,9 @@ function parseGrensvalRange(grensval) {
 fetch('../../assets/lab.json')
     .then(response => response.json())
     .then(data => {
+        // Sort data by DateTime from oldest to newest
+        data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
+
         // Process data
         const labels = data.map(entry => entry.DateTime);
         const uitslagData = data.map(entry => Number(entry.UITSLAG));
@@ -17,6 +20,7 @@ fetch('../../assets/lab.json')
         // Create the chart
         const ctx = document.getElementById('labChart').getContext('2d');
         const labChart = new Chart(ctx, {
+
             type: 'line',
             data: {
                 labels: labels,
@@ -57,11 +61,6 @@ fetch('../../assets/lab.json')
                             display: true,
                             text: 'Value'
                         }
-                    }
-                },
-                elements: {
-                    line: {
-                        tension: 0.1 // Disables bezier curves
                     }
                 }
             }
