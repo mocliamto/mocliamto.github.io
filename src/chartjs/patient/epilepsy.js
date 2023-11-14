@@ -24,13 +24,13 @@
 
     // Configuring the charts
     const seizureConfig = {
-    type: 'line',
+    type: 'bar',
     data: seizureData,
     options: { scales: { y: { beginAtZero: true } } }
 };
 
     const medicationConfig = {
-    type: 'bar',
+    type: 'line',
     data: medicationData,
     options: { scales: { y: { beginAtZero: true } } }
 };
