@@ -2,7 +2,7 @@
 const seizureData = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [{
-        label: 'Number of Seizures',
+        label: 'Aanvalsregistratie',
         data: [3, 2, 5, 1],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -12,10 +12,10 @@ const seizureData = {
 
 // Medication Data
 const medicationData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: [' ', ' ', ' ', ' '],
     datasets: [{
-        label: 'Dosage (mg)',
-        data: [300, 350, 320, 310],
+        label: 'Medicatie (mg)',
+        data: [200, 400, 600, 800],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1
@@ -44,7 +44,7 @@ const pddData = {
 const labResultsData = {
     labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [{
-        label: 'Lab Value',
+        label: 'Labuitslag',
         data: [1.2, 1.5, 1.3, 1.4],
         backgroundColor: 'rgba(255, 206, 86, 0.2)',
         borderColor: 'rgba(255, 206, 86, 1)',
