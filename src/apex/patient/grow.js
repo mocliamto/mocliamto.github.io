@@ -1,79 +1,163 @@
-function generateDayWiseTimeSeries(baseval, count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-        var x = baseval;
-        var y =
-            Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+/*Lengte + leeftijd in maanden */
 
-        series.push([x, y]);
-        baseval += 86400000; // adding one day in milliseconds
-        i++;
-    }
-    return series;
+function processGrowData(data) {
+    const sortedData = data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden);
+    return sortedData.map(item => [item.LeeftijdInMaanden, item.Lengte]);
 }
 
-var options = {
-    series: [
-        {
-            name: '+1',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                min: 10,
-                max: 60
-            })
-        },
-        {
-            name: 'Normaal',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                min: 10,
-                max: 20
-            })
-        },
-        {
-            name: '-1',
-            data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-                min: 10,
-                max: 15
-            })
-        }
-    ],
-    chart: {
-        type: 'area',
-        height: 350,
-        stacked: true,
-        events: {
-            selection: function (chart, e) {
-                console.log(new Date(e.xaxis.min));
-            }
-        },
-    },
-    colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
-    dataLabels: {
-        enabled: false,
-    },
-    title: {
-        text: 'Groeigrafiek 0 - 15 maanden',
-        align: 'left'
-    },
-    stroke: {
-        curve: 'smooth',
-        width: 3
-    },
-    fill: {
-        type: 'gradient',
-        gradient: {
-            opacityFrom: 0.6,
-            opacityTo: 0.8,
-        }
-    },
-    legend: {
-        position: 'top',
-        horizontalAlign: 'left'
-    },
-    xaxis: {
-        type: 'datetime'
-    },
-};
+fetch('../../assets/grow.json')
+    .then(response => response.json())
+    .then(growData => {
+        const referenceDate = '2018-01-01';
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-chart.render();
+        var options = {
+            series: [
+                {
+                    name: 'Lengte',
+                    data: processGrowData(growData, referenceDate)
+                },
+            ],
+            chart: {
+                type: 'area',
+                height: 350,
+                stacked: true,
+                events: {
+                    selection: function (chart, e) {
+                        console.log(new Date(e.xaxis.min));
+                    }
+                },
+            },
+
+            colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
+            dataLabels: {
+                enabled: false,
+            },
+            title: {
+                text: 'Groeigrafiek 0 - 15 maanden',
+                align: 'left'
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    opacityFrom: 0.6,
+                    opacityTo: 0.8,
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left'
+            },
+            xaxis: {
+                type: 'numeric',
+                title: {
+                    text: 'Leeftijd in Maanden'
+                }
+            },
+            yaxis: {
+                type: 'numeric',
+                title: {
+                    text: 'Lengte in cm'
+                }
+            },
+        };
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    })
+    .catch(error => {
+        console.error('Fout bij het ophalen van de gegevens: ', error);
+    });
+
+/* overige later misschien nodig
+* */
+// function calculateAgeInMonths(dateTime, referenceDate) {
+//     const birthDate = new Date(referenceDate);
+//     const date = new Date(dateTime);
+//     let months;
+//     months = (date.getFullYear() - birthDate.getFullYear()) * 12;
+//     months -= birthDate.getMonth();
+//     months += date.getMonth();
+//     return months <= 0 ? 0 : months;
+// }
+
+// function processGrowData(data, referenceDate) {
+//     const sortedData = data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
+//     return sortedData.map(item => {
+//         return [
+//             calculateAgeInMonths(item.DateTime, referenceDate),
+//             item.Lengte
+//         ];
+//     });
+// }
+
+/** lengte + Datetime
+ */
+// function processGrowData(data) {
+//     const sortedData = data.sort((a, b) => {
+//         return new Date(a.DateTime) - new Date(b.DateTime);
+//     });
+//     return sortedData.map(item => {
+//         return [
+//             new Date(item.DateTime).getTime(), // Zet de datum om in milliseconden
+//             item.Lengte
+//         ];
+//     });
+// }
+// fetch('../../assets/grow.json')
+//     .then(response => response.json())
+//     .then(growData => {
+//
+//         var options = {
+//             series: [
+//                 {
+//                     name: 'Lengte',
+//                     data: processGrowData(growData)
+//                 },
+//             ],
+//             chart: {
+//                 type: 'area',
+//                 height: 350,
+//                 stacked: true,
+//                 events: {
+//                     selection: function (chart, e) {
+//                         console.log(new Date(e.xaxis.min));
+//                     }
+//                 },
+//             },
+//             colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
+//             dataLabels: {
+//                 enabled: false,
+//             },
+//             title: {
+//                 text: 'Groeigrafiek 0 - 15 maanden',
+//                 align: 'left'
+//             },
+//             stroke: {
+//                 curve: 'smooth',
+//                 width: 3
+//             },
+//             fill: {
+//                 type: 'gradient',
+//                 gradient: {
+//                     opacityFrom: 0.6,
+//                     opacityTo: 0.8,
+//                 }
+//             },
+//             legend: {
+//                 position: 'top',
+//                 horizontalAlign: 'left'
+//             },
+//             xaxis: {
+//                 type: 'datetime'
+//             },
+//         };
+//
+//         var chart = new ApexCharts(document.querySelector("#chart"), options);
+//         chart.render();
+//     })
+//     .catch(error => {
+//         console.error('Fout bij het ophalen van de gegevens: ', error);
+//     });
