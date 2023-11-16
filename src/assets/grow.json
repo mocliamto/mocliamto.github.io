@@ -1,17 +1,5 @@
 [
   {
-    "DateTime": "2018-06-26T10:25:12",
-    "Lengte": 50.0,
-    "Gewicht": 3.50,
-    "LeeftijdInMaanden": 0.5
-  },
-  {
-    "DateTime": "2018-10-25T12:07:04",
-    "Lengte": 53.5,
-    "Gewicht": 4.5,
-    "LeeftijdInMaanden": 0.7
-  },
-  {
     "DateTime": "2016-08-02T13:58:23",
     "Lengte": 49.0,
     "Gewicht": 2.795,
@@ -42,9 +30,9 @@
     "LeeftijdInMaanden": 3
   },
   {
-    "DateTime": "2019-04-23T14:47:23",
-    "Lengte": 63.2,
-    "Gewicht": 6.5,
+    "DateTime": "2016-11-26T10:25:12",
+    "Lengte": 57.5,
+    "Gewicht": 4.9,
     "LeeftijdInMaanden": 4
   },
   {
@@ -54,22 +42,34 @@
     "LeeftijdInMaanden": 5
   },
   {
+    "DateTime": "2017-01-25T12:07:04",
+    "Lengte": 63.5,
+    "Gewicht": 6.03,
+    "LeeftijdInMaanden": 6
+  },
+  {
+    "DateTime": "2017-02-23T14:47:23",
+    "Lengte": 65.5,
+    "Gewicht": 6.4,
+    "LeeftijdInMaanden": 7
+  },
+  {
     "DateTime": "2017-03-09T10:18:26",
     "Lengte": 66.5,
     "Gewicht": 6.735,
     "LeeftijdInMaanden": 8
   },
   {
-    "DateTime": "2020-09-01T15:21:26",
-    "Lengte": 78.0,
-    "Gewicht": 10.0,
-    "LeeftijdInMaanden": 11
+    "DateTime": "2017-04-10T15:21:26",
+    "Lengte": 68.5,
+    "Gewicht": 7.45,
+    "LeeftijdInMaanden": 9
   },
   {
-    "DateTime": "2021-10-26T13:57:29",
-    "Lengte": 82.0,
-    "Gewicht": 11.0,
-    "LeeftijdInMaanden": 13
+    "DateTime": "2017-05-26T13:57:29",
+    "Lengte": 70.5,
+    "Gewicht": 7.98,
+    "LeeftijdInMaanden": 10
   },
   {
     "DateTime": "2017-10-05T09:13:18",
