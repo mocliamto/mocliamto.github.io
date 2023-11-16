@@ -5,71 +5,136 @@ function processGrowData(data) {
     return sortedData.map(item => [item.LeeftijdInMaanden, item.Lengte]);
 }
 
+function processTnoData(data, valueKey) {
+    const sortedData = data.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
+    return sortedData.map(item => [parseFloat(item.StapNummer), parseFloat(item[valueKey])]);
+}
+
+// Fetch the first dataset
 fetch('../../assets/grow.json')
     .then(response => response.json())
     .then(growData => {
-        const referenceDate = '2018-01-01';
+        // Process the first dataset
+        const processedGrowData = processGrowData(growData);
 
-        var options = {
-            series: [
-                {
-                    name: 'Lengte',
-                    data: processGrowData(growData, referenceDate)
-                },
-            ],
-            chart: {
-                type: 'area',
-                height: 350,
-                stacked: true,
-                events: {
-                    selection: function (chart, e) {
-                        console.log(new Date(e.xaxis.min));
-                    }
-                },
-            },
+        // Fetch the second dataset
+        fetch('../../assets/tno.json')
+            .then(response => response.json())
+            .then(tnoData => {
+                // Create a series for each value in the TNO dataset
+                var tnoSeries = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'].map(valueKey => {
+                    return {
+                        name: 'Lengte TNO ' + valueKey,
+                        data: processTnoData(tnoData, valueKey),
+                        type: 'area'
+                    };
+                });
 
-            colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
-            dataLabels: {
-                enabled: false,
-            },
-            title: {
-                text: 'Groeigrafiek 0 - 15 maanden',
-                align: 'left'
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    opacityFrom: 0.6,
-                    opacityTo: 0.8,
-                }
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'left'
-            },
-            xaxis: {
-                type: 'numeric',
-                title: {
-                    text: 'Leeftijd in Maanden'
-                }
-            },
-            yaxis: {
-                type: 'numeric',
-                title: {
-                    text: 'Lengte in cm'
-                }
-            },
-        };
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
+                var options = {
+                    series: [
+                        {
+                            name: 'Lengte Grow',
+                            data: processedGrowData
+                        },
+                        {
+                            name: '-3',
+                            data: processTnoData(tnoData, 'ValueMin30'),
+                            type: 'line',
+                        },
+                        {
+                            name: '-2,5',
+                            data: processTnoData(tnoData, 'ValueMin25'),
+                            type: 'line',
+                        },
+                        {
+                            name: '-2',
+                            data: processTnoData(tnoData, 'ValueMin20'),
+                            type: 'line',
+                        },
+                        {
+                            name: '-1',
+                            data: processTnoData(tnoData, 'ValueMin10'),
+                            type: 'line',
+                        },
+                        {
+                            name: '0',
+                            data: processTnoData(tnoData, 'Value0'),
+                            type: 'line',
+                        },
+                        {
+                            name: '+1',
+                            data: processTnoData(tnoData, 'ValuePlus10'),
+                            type: 'line',
+                        },
+                        {
+                            name: '+2',
+                            data: processTnoData(tnoData, 'ValuePlus20'),
+                            type: 'line',
+                        },
+                        {
+                            name: '+2,5',
+                            data: processTnoData(tnoData, 'ValuePlus25'),
+                            type: 'line',
+                        },
+                    ],
+                    chart: {
+                        type: 'line',
+                        height: 350,
+                        stacked: true,
+                        events: {
+                            selection: function (chart, e) {
+                                console.log(new Date(e.xaxis.min));
+                            }
+                        },
+                    },
+                    colors: ['#ef0606', 'green', 'blue', 'yellow', 'purple', 'cyan', 'orange', 'pink'], // Different colors for each TNO series
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    title: {
+                        text: 'Groeigrafiek 0 - 15 maanden',
+                        align: 'left'
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: 3
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            opacityFrom: 0.6,
+                            opacityTo: 0.8,
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                        horizontalAlign: 'left'
+                    },
+                    xaxis: {
+                        type: 'numeric',
+                        title: {
+                            text: 'Leeftijd in Maanden'
+                        }
+                    },
+                    yaxis: {
+                        type: 'numeric',
+                        title: {
+                            text: 'Lengte in cm'
+                        }
+                    },
+                };
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            })
+            .catch(error => {
+                console.error('Fout bij het ophalen van de TNO-gegevens: ', error);
+            });
     })
     .catch(error => {
-        console.error('Fout bij het ophalen van de gegevens: ', error);
+        console.error('Fout bij het ophalen van de grow-gegevens: ', error);
     });
+
+
 
 /* overige later misschien nodig
 * */
