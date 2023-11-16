@@ -20,7 +20,6 @@ fetch('../../assets/lab.json')
         // Create the chart
         const ctx = document.getElementById('labChart').getContext('2d');
         const labChart = new Chart(ctx, {
-
             type: 'line',
             data: {
                 labels: labels,
@@ -28,19 +27,22 @@ fetch('../../assets/lab.json')
                     label: 'UITSLAG',
                     data: uitslagData,
                     borderColor: 'red',
-                    fill: false
+                    fill: false,
+                    tension: 0.1 // For smooth curves
                 }, {
                     label: 'Normaal waarde laag',
                     data: grensvalLowData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
-                    fill: '+1'  // Fill to next dataset
+                    fill: '+1', // Fill to next dataset
+                    tension: 0.1 // For smooth curves
                 }, {
-                    label: 'Normaal waarde laag',
+                    label: 'Normaal waarde hoog',
                     data: grensvalHighData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
-                    fill: false
+                    fill: false,
+                    tension: 0.1 // For smooth curves
                 }]
             },
             options: {
@@ -49,6 +51,7 @@ fetch('../../assets/lab.json')
                         type: 'time',
                         time: {
                             parser: 'YYYY-MM-DDTHH:mm:ss',
+                            unit: 'day',
                             tooltipFormat: 'll HH:mm'
                         },
                         title: {
@@ -57,12 +60,24 @@ fetch('../../assets/lab.json')
                         }
                     },
                     y: {
+                        beginAtZero: true,
                         title: {
                             display: true,
                             text: 'Value'
                         }
                     }
-                }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    legend: {
+                        display: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
     })

@@ -1,89 +1,122 @@
-var data = [
-    [1486684800000, 34],
-    [1486771200000, 43],
-    [1486857600000, 31],
-    [1486944000000, 43],
-    [1487030400000, 33],
-    [1487116800000, 52]
-];
+function parseGrensvalRange(grensval) {
+    return grensval.split('-').map(Number);
+}
 
-var options = {
-    series: [{
-        data: data
-    }],
-    chart: {
-        id: 'chart2',
-        type: 'line',
-        height: 230,
-        toolbar: {
-            autoSelected: 'pan',
-            show: false
-        }
-    },
-    colors: ['#546E7A'],
-    stroke: {
-        curve: 'smooth',
-        width: 3
-    },
-    dataLabels: {
-        enabled: false
-    },
-    title: {
-        text: 'Labuitslagen',
-        align: 'left'
-    },
-    fill: {
-        opacity: 1,
-    },
-    markers: {
-        size: 0
-    },
-    xaxis: {
-        type: 'datetime'
-    }
-};
+fetch('../../assets/lab.json')
+    .then(response => response.json())
+    .then(data => {
+        const dates = data.map(entry => new Date(entry.DateTime));
+        const uitslagData = data.map(entry => Number(entry.UITSLAG));
+        const grensvalRanges = data.map(entry => parseGrensvalRange(entry.GRENSVAL));
 
-var chart = new ApexCharts(document.querySelector("#lab-chart-line2"), options);
-chart.render();
+        const grensvalLowData = grensvalRanges.map(range => range[0]);
+        const grensvalHighData = grensvalRanges.map(range => range[1]);
 
-var optionsLine = {
-    series: [{
-        data: data
-    }],
-    chart: {
-        id: 'chart1',
-        height: 130,
-        type: 'area',
-        brush: {
-            target: 'chart2',
-            enabled: true
-        },
-        selection: {
-            enabled: true,
+        const series = [{
+            name: 'Uitslag',
+            type: 'line',
+            data: uitslagData.map((value, index) => ({
+                x: dates[index],
+                y: value
+            }))
+        }, {
+            name: 'Hoog waarde',
+            type: 'line',
+            borderColor: 'orange',
+            data: grensvalHighData.map((value, index) => ({
+                x: dates[index],
+                y: value
+            })),
+            fill: false
+        }, {
+            name: 'Laag waarde',
+            type: 'line',
+            borderColor: 'orange',
+            data: grensvalLowData.map((value, index) => ({
+                x: dates[index],
+                y: value
+            })),
+            fill: '+1'
+        }];
+
+        const optionsMainChart = {
+            chart: {
+                type: 'line',
+                height: '100%',
+                id: 'chart2'
+            },
+            series: series,
             xaxis: {
-                min: new Date('19 Jun 2017').getTime(),
-                max: new Date('14 Aug 2017').getTime()
+                type: 'datetime'
+            },
+            yaxis: {
+                title: {
+                    text: 'mmol/L'
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy HH:mm'
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    opacityFrom: 0,
+                    opacityTo: 0.5
+                }
+            },
+            stroke: {
+                width: [3, 2, 2]
+            },
+            title: {
+                text: 'Labuitslag Glucose (POCT)'
             }
-        },
-    },
-    colors: ['#008FFB'],
-    fill: {
-        type: 'gradient',
-        gradient: {
-            opacityFrom: 0.91,
-            opacityTo: 0.1,
-        }
-    },
-    xaxis: {
-        type: 'datetime',
-        tooltip: {
-            enabled: false
-        }
-    },
-    yaxis: {
-        tickAmount: 2
-    }
-};
+        };
 
-var chartLine = new ApexCharts(document.querySelector("#lab-chart-line"), optionsLine);
-chartLine.render();
+        const chart = new ApexCharts(document.querySelector("#labChart"), optionsMainChart);
+        chart.render();
+
+        const seriesLineChart = [{
+            data: series[0].data
+        }];
+
+        const optionsLineChart = {
+            series: seriesLineChart,
+            chart: {
+                id: 'chart1',
+                height: 130,
+                type: 'area',
+                brush: {
+                    target: 'chart2',
+                    enabled: true
+                },
+                selection: {
+                    enabled: true,
+                    xaxis: {
+                        min: new Date(dates[0]).getTime(),
+                        max: new Date(dates[dates.length - 1]).getTime()
+                    }
+                },
+            },
+            colors: ['#008FFB'],
+            xaxis: {
+                type: 'datetime',
+                tooltip: {
+                    enabled: false
+                }
+            },
+            yaxis: {
+                tickAmount: 2
+            }
+        };
+
+        const chartLine = new ApexCharts(document.querySelector("#lab-chart-line"), optionsLineChart);
+        chartLine.render();
+    })
+    .catch(error => {
+        console.error('Error fetching the lab data:', error);
+    });
