@@ -1,0 +1,56 @@
+[
+  {
+    "DateTime": "2016-08-02T13:58:23",
+    "Lengte": 49.00,
+    "Gewicht": 2.79,
+    "LeeftijdInMaanden": 1
+  },
+  {
+    "DateTime": "2016-08-10T14:29:30",
+    "Lengte": 49.00,
+    "Gewicht": 2.97,
+    "LeeftijdInMaanden": 1
+  },
+  {
+    "DateTime": "2016-09-08T12:01:23",
+    "Lengte": 52.00,
+    "Gewicht": 3.32,
+    "LeeftijdInMaanden": 2
+  },
+  {
+    "DateTime": "2016-09-27T11:58:00",
+    "Lengte": 53.00,
+    "Gewicht": 3.79,
+    "LeeftijdInMaanden": 2
+  },
+  {
+    "DateTime": "2016-10-06T11:50:11",
+    "Lengte": 55.10,
+    "Gewicht": 3.97,
+    "LeeftijdInMaanden": 3
+  },
+  {
+    "DateTime": "2016-12-06T09:57:22",
+    "Lengte": 62.00,
+    "Gewicht": 5350.00,
+    "LeeftijdInMaanden": 5
+  },
+  {
+    "DateTime": "2016-12-22T12:03:22",
+    "Lengte": 62.00,
+    "Gewicht": 5.70,
+    "LeeftijdInMaanden": 5
+  },
+  {
+    "DateTime": "2017-03-09T10:18:26",
+    "Lengte": 66.50,
+    "Gewicht": 6.74,
+    "LeeftijdInMaanden": 8
+  },
+  {
+    "DateTime": "2017-10-05T09:13:18",
+    "Lengte": 77.00,
+    "Gewicht": 9.86,
+    "LeeftijdInMaanden": 15
+  }
+]

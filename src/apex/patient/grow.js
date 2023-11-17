@@ -17,8 +17,7 @@ function fetchData(url) {
         .catch(error => console.error(`Error fetching data from ${url}: `, error));
 }
 
-// Fetch both datasets in parallel
-Promise.all([fetchData('../../assets/grow.json'), fetchData('../../assets/tno.json')])
+Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tno.json')])
     .then(([growData, tnoData]) => {
         if (!growData || !tnoData) {
             throw new Error('One or more datasets could not be loaded');
@@ -34,27 +33,18 @@ Promise.all([fetchData('../../assets/grow.json'), fetchData('../../assets/tno.js
         const options = {
             series: [
                 {
-                    name: 'Lengte Grow',
+                    name: 'Gemeten waarde',
                     data: processedGrowData,
-                    type: 'area'
+                    type: 'line'
                 },
                 ...tnoSeriesNames.map(valueKey => ({
-                    name: `Lengte TNO ${valueKey}`,
+                    name: `Lengte ${valueKey}`,
                     data: processTnoData(tnoData, valueKey),
                     type: 'line'
                 }))
             ],
-            chart: {
-                type: 'line',
-                height: 350,
-                stacked: true,
-                events: {
-                    selection: function (chart, e) {
-                        console.log(new Date(e.xaxis.min));
-                    }
-                },
-            },
-            colors: ['#ef0606', 'green', 'blue', 'yellow', 'purple', 'cyan', 'orange', 'pink'], // Different colors for each TNO series
+            chart: {},
+            colors: ['#ef0606', 'green', '#5ac95a', '#b7ea87', 'rgba(161,243,149,0.59)', 'cyan', 'rgba(157,252,136,0.73)', 'gray', 'rgba(157,252,136,0.73)'], // Different colors for each TNO series
             dataLabels: {
                 enabled: false,
             },
