@@ -22,8 +22,22 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 
         const processedGrowData = processGrowData(growData);
 
-        // Define TNO series names
-        const tnoSeriesNames = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
+        const lineConfigurations = [
+            {name: '-3', valueKey: 'ValueMin30'},
+            {name: '-2,5', valueKey: 'ValueMin25'},
+            {name: '-2', valueKey: 'ValueMin20'},
+            {name: '-1', valueKey: 'ValueMin10'},
+            {name: '0', valueKey: 'Value0'},
+            {name: '+1', valueKey: 'ValuePlus10'},
+            {name: '+2', valueKey: 'ValuePlus20'},
+            {name: '+2,5', valueKey: 'ValuePlus25'},
+        ];
+
+        const lines = lineConfigurations.map(config => ({
+            name: config.name,
+            data: processTnoData(tnoData, config.valueKey),
+            type: 'line',
+        }));
 
         const options = {
             series: [
@@ -32,9 +46,9 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     data: processedGrowData,
                     type: 'line'
                 },
-                ...tnoSeriesNames.map(valueKey => ({
-                    name: `${valueKey}`,
-                    data: processTnoData(tnoData, valueKey),
+                ...lines.map(line => ({
+                    name: line.name,
+                    data: line.data,
                     type: 'line'
                 }))
             ],
@@ -83,8 +97,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
         console.error('Error in processing data: ', error);
     });
 
-// /*Lengte + leeftijd in maanden */
-//
+/** lengte + leeftijd in maanden */
 // function processGrowData(data) {
 //     const sortedData = data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden);
 //     return sortedData.map(item => [item.LeeftijdInMaanden, item.Lengte]);
@@ -218,8 +231,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     });
 
 
-/* overige later misschien nodig
-* */
+/** overige later misschien nodig */
 // function calculateAgeInMonths(dateTime, referenceDate) {
 //     const birthDate = new Date(referenceDate);
 //     const date = new Date(dateTime);
@@ -240,8 +252,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     });
 // }
 
-/** lengte + Datetime
- */
+/** lengte + Datetime */
 // function processGrowData(data) {
 //     const sortedData = data.sort((a, b) => {
 //         return new Date(a.DateTime) - new Date(b.DateTime);
