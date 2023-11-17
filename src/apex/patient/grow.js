@@ -14,85 +14,213 @@ function fetchData(url) {
         .catch(error => console.error(`Error fetching data from ${url}: `, error));
 }
 
+// This function assumes it will receive a sorted seriesData array
+function getLastDataPoint(seriesData) {
+    return seriesData[seriesData.length - 1];
+}
+
 Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tno.json')])
     .then(([growData, tnoData]) => {
-        if (!growData || !tnoData) {
-            throw new Error('One or more datasets could not be loaded');
-        }
+            if (!growData || !tnoData) {
+                throw new Error('One or more datasets could not be loaded');
+            }
 
-        const processedGrowData = processGrowData(growData);
+            const processedGrowData = processGrowData(growData);
 
-        const lineConfigurations = [
-            {name: '-3', valueKey: 'ValueMin30'},
-            {name: '-2,5', valueKey: 'ValueMin25'},
-            {name: '-2', valueKey: 'ValueMin20'},
-            {name: '-1', valueKey: 'ValueMin10'},
-            {name: '0', valueKey: 'Value0'},
-            {name: '+1', valueKey: 'ValuePlus10'},
-            {name: '+2', valueKey: 'ValuePlus20'},
-            {name: '+2,5', valueKey: 'ValuePlus25'},
-        ];
+            const lineConfigurations = [
+                {name: '-3', valueKey: 'ValueMin30'},
+                {name: '-2,5', valueKey: 'ValueMin25'},
+                {name: '-2', valueKey: 'ValueMin20'},
+                {name: '-1', valueKey: 'ValueMin10'},
+                {name: '0', valueKey: 'Value0'},
+                {name: '+1', valueKey: 'ValuePlus10'},
+                {name: '+2', valueKey: 'ValuePlus20'},
+                {name: '+2,5', valueKey: 'ValuePlus25'},
+            ];
 
-        const lines = lineConfigurations.map(config => ({
-            name: config.name,
-            data: processTnoData(tnoData, config.valueKey),
-            type: 'line',
-        }));
+            const lines = lineConfigurations.map(config => ({
+                name: config.name,
+                data: processTnoData(tnoData, config.valueKey),
+                type: 'line',
+            }));
+            const lineColors = ['#83fa62', 'green', '#5ac95a', '#6eee5a', 'rgba(161,243,149,0.59)', 'green', 'rgba(157,252,136,0.73)', '#5ac95a', '#ef0606']
 
-        const options = {
-            series: [
-                {
-                    name: 'Gemeten waarde',
-                    data: processedGrowData,
-                    type: 'line'
+            const options = {
+                series: [
+                    {
+                        name: 'Gemeten waarde',
+                        data: processedGrowData,
+                        type: 'line',
+                    },
+                    ...lines.map((line, index) => ({
+                        name: line.name,
+                        data: line.data,
+                        type: 'line',
+                        color: lineColors[index],
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.3,
+                                opacityTo: 0.3,
+                            }
+                        },
+                    }))
+                ],
+                chart: {
+                    type: 'area',
+                    stacked: false,
+                    events: {
+                        legendClick: function (chartContext, seriesIndex, config) {
+                            // This function is called when a legend item is clicked
+
+                            // Determine if the series is being turned on or off
+                            const series = chartContext.w.globals.series[seriesIndex];
+                            const seriesName = chartContext.w.config.series[seriesIndex].name;
+
+                            // Find the corresponding annotation by the series name
+                            let annotations = chartContext.w.config.annotations.yaxis.filter(annotation => annotation.label.text === seriesName);
+
+                            if (series.length === 0) { // Series turned off
+                                // Remove the annotation
+                                annotations.forEach(annotation => {
+                                    chartContext.removeAnnotation(annotation.id);
+                                });
+                            } else { // Series turned on
+                                // Add the annotation
+                                annotations.forEach(annotation => {
+                                    chartContext.addYaxisAnnotation(annotation);
+                                });
+                            }
+                        }
+                    }
                 },
-                ...lines
-            ],
-            chart: {},
-            colors: ['#ef0606', 'green', '#5ac95a', '#b7ea87', 'rgba(161,243,149,0.59)', 'cyan', 'rgba(157,252,136,0.73)', 'gray', 'rgba(157,252,136,0.73)'], // Different colors for each series
-            dataLabels: {
-                enabled: false,
-            },
-            title: {
-                text: 'Groeigrafiek 0 - 15 maanden',
-                align: 'left'
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    opacityFrom: 0.6,
-                    opacityTo: 0.8,
-                }
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'left',
-                show: true
-            },
-            xaxis: {
-                type: 'numeric',
-                title: {
-                    text: 'Leeftijd in Maanden'
-                }
-            },
-            yaxis: {
-                type: 'numeric',
-                title: {
-                    text: 'Lengte in cm'
-                }
-            },
-        };
 
-        const chart = new ApexCharts(document.querySelector("#growChart"), options);
-        chart.render();
-    })
+                    chart: {
+                        // ... existing chart configuration
+                        events: {
+                            legendClick: function(chartContext, seriesIndex, config) {
+                                // This function is called when a legend item is clicked
+                                const seriesName = chartContext.w.config.series[seriesIndex].name;
+                                const series = chartContext.w.globals.series[seriesIndex];
+                                const annotations = chartContext.w.config.annotations.yaxis;
+
+                                // Toggle the visibility of the annotation
+                                const annotationIndex = annotations.findIndex(annotation => annotation.label.text === seriesName);
+                                if (annotationIndex !== -1) {
+                                    annotations[annotationIndex].opacity = series.length === 0 ? 0 : 1;
+                                }
+
+                                // Redraw the chart to reflect changes in annotations
+                                chartContext.updateOptions({
+                                    annotations: {
+                                        yaxis: annotations
+                                    }
+                                });
+                            }
+                        }
+                    },
+                markers: {
+                    size: 0
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                title: {
+                    text: 'Groeigrafiek 0 - 15 maanden',
+                    align: 'left'
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 3
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        opacityFrom: 0.6,
+                        opacityTo: 0.8,
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    show: true
+                },
+                xaxis: {
+                    type: 'numeric',
+                    title: {
+                        text: 'Leeftijd in Maanden'
+                    }
+                },
+                yaxis: {
+                    type: 'numeric',
+                    title: {
+                        text: 'Lengte in cm'
+                    }
+                },
+                annotations: {
+                    yaxis: [],
+                    // yaxis: lineConfigurations.map((config, index) => {
+                    //     const lastDataPoint = getLastDataPoint(processTnoData(tnoData, config.valueKey));
+                    //     return {
+                    //         y: lastDataPoint[1],
+                    //         y2: lastDataPoint[1],
+                    //         x: lastDataPoint[0],
+                    //         borderColor: '#000',
+                    //         label: {
+                    //             style: {
+                    //                 color: '#000',
+                    //                 background: '#a1c2a3'
+                    //             },
+                    //             text: config.name
+                    //         }
+                    //     }
+                    // })
+                },
+            };
+
+            const chart = new ApexCharts(document.querySelector("#growChart"), options);
+            chart.render();
+
+            // After chart is rendered, calculate and add annotations
+            lineConfigurations.forEach(config => {
+                const seriesData = processTnoData(tnoData, config.valueKey);
+                const lastDataPoint = getLastDataPoint(seriesData);
+                chart.addYaxisAnnotation({
+                    y: lastDataPoint[1],
+                    label: {
+                        text: config.name,
+                        style: {
+                            background: '#000'
+                        }
+                    },
+                    // Initially, set the opacity to 0 to hide the annotation
+                    // It will be toggled in the legendClick event
+                    opacity: 0
+                });
+            });
+        }
+    )
     .catch(error => {
         console.error('Error in processing data: ', error);
     });
+//
+// // Later, when you know the positions of the last data points, add the annotations
+// function addAnnotationsForSeries(chart, seriesData, lineConfigurations) {
+//     lineConfigurations.forEach((config, index) => {
+//         const lastDataPoint = getLastDataPoint(seriesData[index]);
+//         chart.addYaxisAnnotation({
+//             id: `annotation-${config.name}`, // Unique ID for the annotation
+//             y: lastDataPoint[1],
+//             label: {
+//                 text: config.name,
+//                 style: {
+//                     background: '#000'
+//                 }
+//             }
+//         });
+//     });
+// }
 
 /** lengte + leeftijd in maanden */
 // function processGrowData(data) {
