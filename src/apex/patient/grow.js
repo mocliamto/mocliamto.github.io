@@ -46,14 +46,10 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     data: processedGrowData,
                     type: 'line'
                 },
-                ...lines.map(line => ({
-                    name: line.name,
-                    data: line.data,
-                    type: 'line'
-                }))
+                ...lines
             ],
             chart: {},
-            colors: ['#ef0606', 'green', '#5ac95a', '#b7ea87', 'rgba(161,243,149,0.59)', 'cyan', 'rgba(157,252,136,0.73)', 'gray', 'rgba(157,252,136,0.73)'], // Different colors for each TNO series
+            colors: ['#ef0606', 'green', '#5ac95a', '#b7ea87', 'rgba(161,243,149,0.59)', 'cyan', 'rgba(157,252,136,0.73)', 'gray', 'rgba(157,252,136,0.73)'], // Different colors for each series
             dataLabels: {
                 enabled: false,
             },
@@ -74,7 +70,8 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
             },
             legend: {
                 position: 'top',
-                horizontalAlign: 'left'
+                horizontalAlign: 'left',
+                show: true
             },
             xaxis: {
                 type: 'numeric',
@@ -90,7 +87,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
             },
         };
 
-        const chart = new ApexCharts(document.querySelector("#chart"), options);
+        const chart = new ApexCharts(document.querySelector("#growChart"), options);
         chart.render();
     })
     .catch(error => {
