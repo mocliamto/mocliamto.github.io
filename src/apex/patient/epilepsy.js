@@ -13,11 +13,6 @@ function generateDayWiseTimeSeries(baseval, count, yrange) {
     return series;
 }
 
-var options = { chart: {} };
-
-var chart = new ApexCharts(document.querySelector("#epi-chart-line"), options);
-chart.render();
-
 var optionsLine2 = {
     series: [{
         data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {

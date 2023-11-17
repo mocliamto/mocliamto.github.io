@@ -1,16 +1,13 @@
-// Function to process grow data
 function processGrowData(data) {
     const sortedData = data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden);
     return sortedData.map(item => [item.LeeftijdInMaanden, item.Lengte]);
 }
 
-// Function to process TNO data
 function processTnoData(data, valueKey) {
     const sortedData = data.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
     return sortedData.map(item => [parseFloat(item.StapNummer), parseFloat(item[valueKey])]);
 }
 
-// Function to fetch data
 function fetchData(url) {
     return fetch(url)
         .then(response => response.json())
@@ -23,13 +20,11 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
             throw new Error('One or more datasets could not be loaded');
         }
 
-        // Process grow data
         const processedGrowData = processGrowData(growData);
 
         // Define TNO series names
         const tnoSeriesNames = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
 
-        // Create chart options
         const options = {
             series: [
                 {
@@ -38,7 +33,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     type: 'line'
                 },
                 ...tnoSeriesNames.map(valueKey => ({
-                    name: `Lengte ${valueKey}`,
+                    name: `${valueKey}`,
                     data: processTnoData(tnoData, valueKey),
                     type: 'line'
                 }))
@@ -81,7 +76,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
             },
         };
 
-        // Initialize chart
         const chart = new ApexCharts(document.querySelector("#chart"), options);
         chart.render();
     })
