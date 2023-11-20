@@ -69,23 +69,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 chart: {
                     type: 'area',
                     stacked: false,
-                        events: {
-                            legendClick: function(chartContext, seriesIndex, config) {
-                                const seriesName = chartContext.w.config.series[seriesIndex].name;
-                                const series = chartContext.w.globals.series[seriesIndex];
-                                const annotations = chartContext.w.config.annotations.yaxis;
-
-                                const annotationIndex = annotations.findIndex(annotation => annotation.label.text === seriesName);
-                                if (annotationIndex !== -1) {
-                                    annotations[annotationIndex].opacity = series.length === 0 ? 0 : 1;
-                                }
-                                chartContext.updateOptions({
-                                    annotations: {
-                                        yaxis: annotations
-                                    }
-                                });
-                            }
-                        }
                     },
                 markers: {
                     size: 0
@@ -126,7 +109,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     }
                 },
                 annotations: {
-                    yaxis: [],
+                    // yaxis: [],
                 },
             };
 
