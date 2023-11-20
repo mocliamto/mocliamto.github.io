@@ -1,68 +1,71 @@
-function generateDayWiseTimeSeries(baseval, count, yrange) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-        var x = baseval;
-        var y =
-            Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+fetch('../../assets/epilepsy.json')
+    .then(response => response.json())
+    .then(data => {
+        const sortedAanvalsregistratie = data.Epilepsie_tijdslijn.Aanvalsregistratie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
+        const sortedMedicatie = data.Medicatie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
 
-        series.push([x, y]);
-        baseval += 86400000; // adding one day in milliseconds
-        i++;
-    }
-    return series;
-}
+        var optionsLine2 = {
+            series: [{
+                name: 'Aanvalsregistratie',
+                data: sortedAanvalsregistratie.map(item => ({
+                    x: new Date(item.datum),
+                    y: item.aantal
+                }))
+            }],
+            chart: {
+                id: 'tw',
+                group: 'social',
+                type: 'line',
+                height: 300
+            },
+            title: {
+                text: 'Aanvalsregistratie',
+                align: 'left'
+            },
+            colors: ['#546E7A'],
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            xaxis: {
+                type: 'datetime'
+            }
+        };
 
-var optionsLine2 = {
-    series: [{
-        data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-            min: 10,
-            max: 30
-        })
-    }],
-    chart: {
-        id: 'tw',
-        group: 'social',
-        type: 'line',
-        height: 300
-    },
-    title: {
-        text: 'Aanvalsregistratie',
-        align: 'left'
-    },
-    colors: ['#546E7A'],
-    stroke: {
-        curve: 'smooth',
-        width: 3
-    }
-};
+        var chartLine2 = new ApexCharts(document.querySelector("#epi-chart-line2"), optionsLine2);
+        chartLine2.render();
 
-var chartLine2 = new ApexCharts(document.querySelector("#epi-chart-line2"), optionsLine2);
-chartLine2.render();
+        var optionsArea = {
+            series: [{
+                name: 'Medicatie',
+                data: sortedMedicatie.map(item => ({
+                    x: new Date(item.datum),
+                    y: item.dosis
+                }))
+            }],
+            chart: {
+                id: 'yt',
+                group: 'social',
+                type: 'line',
+                height: 300
+            },
+            title: {
+                text: 'Medicatie',
+                align: 'left'
+            },
+            colors: ['#00E396'],
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            xaxis: {
+                type: 'datetime'
+            }
+        };
 
-var optionsArea = {
-    series: [{
-        data: generateDayWiseTimeSeries(new Date('11 Feb 2017').getTime(), 20, {
-            min: 10,
-            max: 60
-        })
-    }],
-    chart: {
-        id: 'yt',
-        group: 'social',
-        type: 'area',
-        height: 300
-    },
-    title: {
-        text: 'Medicatie',
-        align: 'left'
-    },
-    colors: ['#00E396'],
-    stroke: {
-        curve: 'smooth',
-        width: 3
-    }
-};
-
-var chartArea = new ApexCharts(document.querySelector("#epi-chart-area"), optionsArea);
-chartArea.render();
+        var chartArea = new ApexCharts(document.querySelector("#epi-chart-area"), optionsArea);
+        chartArea.render();
+    })
+    .catch(error => {
+        console.error("Error fetching the data: ", error);
+    });
