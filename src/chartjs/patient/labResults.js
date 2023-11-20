@@ -5,7 +5,6 @@ function parseGrensvalRange(grensval) {
 fetch('../../assets/lab.json')
     .then(response => response.json())
     .then(data => {
-        // Sort data by DateTime from oldest to newest
         data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
 
         // Process data

@@ -1,7 +1,7 @@
 fetch('../../assets/epilepsy.json')
     .then(response => response.json())
     .then(data => {
-        const sortedAanvalsregistratie = data.Epilepsie_tijdslijn.Aanvalsregistratie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
+        const sortedAanvalsregistratie = data.Aanvalsregistratie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
         const sortedMedicatie = data.Medicatie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
 
         var optionsLine2 = {
@@ -15,7 +15,7 @@ fetch('../../assets/epilepsy.json')
             chart: {
                 id: 'tw',
                 group: 'social',
-                type: 'line',
+                type: 'bar',
                 height: 300
             },
             title: {

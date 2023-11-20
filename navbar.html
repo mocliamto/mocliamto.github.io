@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="src/styles.css">
 
     <!--    bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -26,47 +25,21 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-left" id="navbarNav">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <div class="navbar-nav">
-            <a class="nav-link disabled" href="#">Zorgverlener| </a>
-            <a class=" nav-item active nav-link mb-0 h5" href="../zorgverlener/indexApex.html">ApexChart <span
-                    class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="../../chartjs/zorgverlener/indexChartjs.html">ChartJs</a>
-            <a class="nav-item nav-link" href="../../d3/zorgverlener/indexD3.html">D3</a>
+            <a class=" nav-item nav-link" href="src/apex/zorgverlener/indexApex.html">ApexChart</a>
+            <a class="nav-item nav-link" href="src/chartjs/zorgverlener/indexChartjs.html">ChartJs</a>
+            <a class="nav-item nav-link" href="src/d3/zorgverlener/indexD3.html">D3</a>
         </div>
     </div>
-    <div class="collapse navbar-collapse justify-content-right" id="navbarNav1">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav1">
         <div class="navbar-nav">
             <a class="nav-link disabled" href="#">Patient| </a>
-            <a class=" nav-item nav-link" href="../patient/indexApex.html">ApexChart</a>
-            <a class="nav-item nav-link" href="../../chartjs/patient/indexChartjs.html">ChartJs</a>
-            <a class="nav-item nav-link" href="../../d3/patient/indexD3.html">D3</a>
+            <a class=" nav-item nav-link" href="src/apex/patient/indexApex.html">ApexChart</a>
+            <a class="nav-item nav-link" href="src/chartjs/patient/indexChartjs.html">ChartJs</a>
+            <a class="nav-item nav-link" href="src/d3/patient/indexD3.html">D3</a>
         </div>
     </div>
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <div class="lab-chart">
-                <div id="labChart"></div>
-                <div id="lab-chart-line"></div>
-            </div>
-            <div class="grow-chart">
-                <div id="growChart"></div>
-            </div>
-        </div>
-        <div class="epi-chart col-6">
-            <div id="epi-chart-line2"></div>
-            <div id="epi-chart-area"></div>
-            <div id="epi-chart-small"></div>
-            <div id="epi-chart-small2"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Include external JavaScript file -->
-<script src="labResults.js"></script>
-<script src="grow.js"></script>
-<script src="epilepsy.js"></script>
 </body>
 </html>

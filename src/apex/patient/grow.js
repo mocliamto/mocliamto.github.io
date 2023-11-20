@@ -14,7 +14,6 @@ function fetchData(url) {
         .catch(error => console.error(`Error fetching data from ${url}: `, error));
 }
 
-// This function assumes it will receive a sorted seriesData array
 function getLastDataPoint(seriesData) {
     return seriesData[seriesData.length - 1];
 }
@@ -70,48 +69,16 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 chart: {
                     type: 'area',
                     stacked: false,
-                    events: {
-                        legendClick: function (chartContext, seriesIndex, config) {
-                            // This function is called when a legend item is clicked
-
-                            // Determine if the series is being turned on or off
-                            const series = chartContext.w.globals.series[seriesIndex];
-                            const seriesName = chartContext.w.config.series[seriesIndex].name;
-
-                            // Find the corresponding annotation by the series name
-                            let annotations = chartContext.w.config.annotations.yaxis.filter(annotation => annotation.label.text === seriesName);
-
-                            if (series.length === 0) { // Series turned off
-                                // Remove the annotation
-                                annotations.forEach(annotation => {
-                                    chartContext.removeAnnotation(annotation.id);
-                                });
-                            } else { // Series turned on
-                                // Add the annotation
-                                annotations.forEach(annotation => {
-                                    chartContext.addYaxisAnnotation(annotation);
-                                });
-                            }
-                        }
-                    }
-                },
-
-                    chart: {
-                        // ... existing chart configuration
                         events: {
                             legendClick: function(chartContext, seriesIndex, config) {
-                                // This function is called when a legend item is clicked
                                 const seriesName = chartContext.w.config.series[seriesIndex].name;
                                 const series = chartContext.w.globals.series[seriesIndex];
                                 const annotations = chartContext.w.config.annotations.yaxis;
 
-                                // Toggle the visibility of the annotation
                                 const annotationIndex = annotations.findIndex(annotation => annotation.label.text === seriesName);
                                 if (annotationIndex !== -1) {
                                     annotations[annotationIndex].opacity = series.length === 0 ? 0 : 1;
                                 }
-
-                                // Redraw the chart to reflect changes in annotations
                                 chartContext.updateOptions({
                                     annotations: {
                                         yaxis: annotations
@@ -160,29 +127,12 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 },
                 annotations: {
                     yaxis: [],
-                    // yaxis: lineConfigurations.map((config, index) => {
-                    //     const lastDataPoint = getLastDataPoint(processTnoData(tnoData, config.valueKey));
-                    //     return {
-                    //         y: lastDataPoint[1],
-                    //         y2: lastDataPoint[1],
-                    //         x: lastDataPoint[0],
-                    //         borderColor: '#000',
-                    //         label: {
-                    //             style: {
-                    //                 color: '#000',
-                    //                 background: '#a1c2a3'
-                    //             },
-                    //             text: config.name
-                    //         }
-                    //     }
-                    // })
                 },
             };
 
             const chart = new ApexCharts(document.querySelector("#growChart"), options);
             chart.render();
 
-            // After chart is rendered, calculate and add annotations
             lineConfigurations.forEach(config => {
                 const seriesData = processTnoData(tnoData, config.valueKey);
                 const lastDataPoint = getLastDataPoint(seriesData);
@@ -191,11 +141,9 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     label: {
                         text: config.name,
                         style: {
-                            background: '#000'
+                            background: '#a1c2a3'
                         }
                     },
-                    // Initially, set the opacity to 0 to hide the annotation
-                    // It will be toggled in the legendClick event
                     opacity: 0
                 });
             });
@@ -204,23 +152,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
     .catch(error => {
         console.error('Error in processing data: ', error);
     });
-//
-// // Later, when you know the positions of the last data points, add the annotations
-// function addAnnotationsForSeries(chart, seriesData, lineConfigurations) {
-//     lineConfigurations.forEach((config, index) => {
-//         const lastDataPoint = getLastDataPoint(seriesData[index]);
-//         chart.addYaxisAnnotation({
-//             id: `annotation-${config.name}`, // Unique ID for the annotation
-//             y: lastDataPoint[1],
-//             label: {
-//                 text: config.name,
-//                 style: {
-//                     background: '#000'
-//                 }
-//             }
-//         });
-//     });
-// }
 
 /** lengte + leeftijd in maanden */
 // function processGrowData(data) {
