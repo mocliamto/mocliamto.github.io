@@ -15,7 +15,8 @@ Promise.all([
     tnoData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
 
     const datasets = valueRanges.map((range, index) => ({
-        label: range,
+        label: `${index}: ${range}`,
+        // label: range,
         data: months.map(month => {
             const record = tnoData.find(d => parseFloat(d.StapNummer) === month);
             return record ? parseFloat(record[range]) : null;
@@ -51,6 +52,20 @@ Promise.all([
                 },
                 legend: {
                     display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y;
+                            }
+                            return label;
+                        }
+                    }
                 },
             },
             scales: {
