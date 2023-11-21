@@ -31,7 +31,6 @@ Promise.all([
         fill: false,
     });
 
-
     const ctx = document.getElementById('growChartJs').getContext('2d');
     const config = {
         type: 'line',
@@ -56,9 +55,15 @@ Promise.all([
                         display: true,
                         text: 'Leeftijd (maanden)',
                     },
+                    min: 0,
+                    max: 15,
                     ticks: {
-                        callback: (value) => value.toFixed(1),
                         autoSkip: false,
+                        callback: function (value) {
+                            if (Number.isInteger(value * 0.5)) {
+                                return value * 0.5;
+                            }
+                        }
                     }
                 },
                 y: {
@@ -70,13 +75,11 @@ Promise.all([
                     max: 92,
                     position: 'left',
                     ticks: {
-                        stepSize: 1
+                        autoSkip: false,
+                        stepSize: 2
                     }
                 },
                 yRight: {
-                    title: {
-                        display: true,
-                    },
                     min: 40,
                     max: 92,
                     position: 'right',
@@ -84,7 +87,8 @@ Promise.all([
                         drawOnChartArea: false,
                     },
                     ticks: {
-                        stepSize: 1
+                        autoSkip: false,
+                        stepSize: 2
                     }
                 },
             },
