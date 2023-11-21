@@ -1,270 +1,101 @@
-function processGrowData(data) {
-    return data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden)
-        .map(item => ({x: item.LeeftijdInMaanden, y: item.Lengte}));
-}
+const lineColors = ['#41be8c', '#41be8c', '#66c9a1', '#1bb275', '#0b650b', '#41be8c', '#41be8c', '#5ac95a', 'black'];
 
-function processTnoData(data, valueKey) {
-    return data.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer))
-        .map(item => ({x: parseFloat(item.StapNummer), y: parseFloat(item[valueKey])}));
-}
+Promise.all([
+    fetch('../../assets/grow.json').then(response => response.json()),
+    fetch('../../assets/tno.json').then(response => response.json())
+]).then(([growData, tnoData]) => {
 
-// Fetch data (assuming you have a similar setup)
-async function fetchData(url) {
-    try {
-        const response = await fetch(url);
-        return await response.json();
-    } catch (error) {
-        console.error(`Error fetching data from ${url}: `, error);
-        throw error;
-    }
-}
+    const months = Array.from({length: 31}, (_, i) => i * 0.5);
 
-async function initializeChart() {
-    try {
-        const [growData, tnoData] = await Promise.all([
-            fetchData('../../assets/grow1-15.json'),
-            fetchData('../../assets/tno.json')
-        ]);
+    const userValues = months.map(month => {
+        const record = growData.find(d => parseFloat(d.LeeftijdInMaanden) === month);
+        return record ? parseFloat(record.Lengte) : null;
+    });
 
-        const processedGrowData = processGrowData(growData);
+    tnoData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
 
-        const lineConfigurations = [
-            {name: '-3', valueKey: 'ValueMin30'},
-            {name: '-2,5', valueKey: 'ValueMin25'},
-            {name: '-2', valueKey: 'ValueMin20'},
-            {name: '-1', valueKey: 'ValueMin10'},
-            {name: '0', valueKey: 'Value0'},
-            {name: '+1', valueKey: 'ValuePlus10'},
-            {name: '+2', valueKey: 'ValuePlus20'},
-            {name: '+2,5', valueKey: 'ValuePlus25'},
-        ];
+    const datasets = valueRanges.map((range, index) => ({
+        label: range,
+        data: months.map(month => {
+            const record = tnoData.find(d => parseFloat(d.StapNummer) === month);
+            return record ? parseFloat(record[range]) : null;
+        }),
+        borderColor: lineColors[index % lineColors.length],
+        fill: false,
+    }));
 
-        const lines = lineConfigurations.map(config => ({
-            label: config.name,
-            data: processTnoData(tnoData, config.valueKey),
-            borderColor: ['#83fa62', 'green', '#5ac95a', '#6eee5a', 'rgba(161,243,149,0.59)', 'green', 'rgba(157,252,136,0.73)', '#5ac95a', '#ef0606'],
-            fill: false
-        }));
+    datasets.unshift({
+        label: 'Gebruikerswaarden',
+        data: userValues,
+        borderColor: lineColors[lineColors.length - 1],
+        fill: false,
+    });
 
-        const ctx = document.getElementById('growChartJs').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [
-                    {
-                        label: 'Gemeten waarde',
-                        data: processedGrowData,
-                        borderColor: '#ef0606',
-                        fill: false
-                    },
-                    ...lines
-                ]
+
+    const ctx = document.getElementById('growChartJs').getContext('2d');
+    const config = {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Groeigrafiek 0-15 maanden',
+                },
+                legend: {
+                    display: false
+                },
             },
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        title: {
-                            display: true,
-                            text: 'Leeftijd in Maanden'
-                        }
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Leeftijd (maanden)',
                     },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Lengte in cm'
-                        }
+                    ticks: {
+                        callback: (value) => value.toFixed(1),
+                        autoSkip: false,
                     }
-                }
-            }
-        });
-    } catch (error) {
-        console.error('Error in initializing chart: ', error);
-    }
-}
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Lengte (cm)',
+                    },
+                    min: 40,
+                    max: 92,
+                    position: 'left',
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                yRight: {
+                    title: {
+                        display: true,
+                    },
+                    min: 40,
+                    max: 92,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+            },
+        },
+    };
+    new Chart(ctx, config);
+}).catch(error => {
+    console.error('Error loading data:', error);
+});
 
-initializeChart();
-
-// const months = Array.from({length: 16}, (_, i) => i); // Leeftijden in maanden (0-15)
-//
-// function processTnoData(data, valueKey) {
-//     return data
-//         .sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer))
-//         .map(item => {
-//         return {
-//             x: parseFloat(item.StapNummer),
-//             y: parseFloat(item[valueKey])
-//         };
-//     });
-// }
-// function fetchData(url) {
-//     return fetch(url)
-//         .then(response => response.json())
-//         .catch(error => console.error(`Error fetching data from ${url}: `, error));
-// }
-// function getLastDataPoint(seriesData) {
-//     return seriesData[seriesData.length - 1];
-// }
-// Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tno.json')])
-//     .then(([growData, tnoData]) => {
-//         if (!growData || !tnoData) {
-//             throw new Error('One or more datasets could not be loaded');
-//         }
-//
-//         const userValues = months.map(month => {
-//             const record = growData.find(d => d.LeeftijdInMaanden === month);
-//             return record ? record.Lengte : null;
-//         });
-//
-//         const lineConfigurations = [
-//             {name: '-3', valueKey: 'ValueMin30'},
-//             {name: '-2,5', valueKey: 'ValueMin25'},
-//             {name: '-2', valueKey: 'ValueMin20'},
-//             {name: '-1', valueKey: 'ValueMin10'},
-//             {name: '0', valueKey: 'Value0'},
-//             {name: '+1', valueKey: 'ValuePlus10'},
-//             {name: '+2', valueKey: 'ValuePlus20'},
-//             {name: '+2,5', valueKey: 'ValuePlus25'},
-//         ];
-//
-//         const lineColors = ['#83fa62', 'green', '#5ac95a', '#6eee5a', 'rgba(161,243,149,0.59)', 'green', 'rgba(157,252,136,0.73)', '#5ac95a', '#ef0606']
-//
-//         const ctx = document.getElementById('growChartJs').getContext('2d');
-//
-//         const config = {
-//             type: 'line',
-//             data: {
-//                 labels: months,
-//                 datasets: [
-//                     {
-//                         label: 'Gebruikerswaarden',
-//                         data: userValues,
-//                         borderColor: 'rgba(255, 99, 132, 1)',
-//                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-//                         fill: false,
-//                     },
-//                     ...lineConfigurations.map((config, index) => ({
-//                         label: config.name,
-//                         data: processTnoData(tnoData, config.valueKey),
-//                         borderColor: lineColors[index],
-//                         backgroundColor: 'rgba(0, 0, 0, 0)', // transparent
-//                         fill: false,
-//                     }))
-//                 ],
-//             },
-//             options: {
-//                 responsive: true,
-//                 plugins: {
-//                     title: {
-//                         display: true,
-//                         text: 'Groeigrafiek 0-15 maanden',
-//                     },
-//                 },
-//                 scales: {
-//                     x: {
-//                         title: {
-//                             display: true,
-//                             text: 'Leeftijd (maanden)',
-//                         },
-//                     },
-//                     y: {
-//                         title: {
-//                             display: true,
-//                             text: 'Lengte (cm)',
-//                         },
-//                     },
-//                 },
-//             },
-//         };
-//
-//         new Chart(ctx, config);
-//         lineConfigurations.forEach(config => {
-//             const seriesData = processTnoData(tnoData, config.valueKey);
-//             const lastDataPoint = getLastDataPoint(seriesData);
-//             chart.addYaxisAnnotation({
-//                 y: lastDataPoint[1],
-//                 label: {
-//                     text: config.name,
-//                     style: {
-//                         background: '#a1c2a3'
-//                     }
-//                 },
-//                 opacity: 0
-//             });
-//         });
-//     })
-//     .catch(error => console.error('Error in processing data: ', error));
-
-
-
-// fetch('../../assets/grow1-15.json')
-//     .then(response => response.json())
-//     .then(data => {
-//         const userValues = months.map(month => {
-//             const record = data.find(d => d.LeeftijdInMaanden === month);
-//             return record ? record.Lengte : null;
-//         });
-//
-//         const tnoValues = [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92];
-//         const HighTnoValues = [40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92];
-//
-//         const ctx = document.getElementById('growChartJs').getContext('2d');
-//
-//         const config = {
-//             type: 'line',
-//             data: {
-//                 labels: months,
-//                 datasets: [
-//                     {
-//                         label: 'Gebruikerswaarden',
-//                         data: userValues,
-//                         borderColor: 'rgba(255, 99, 132, 1)',
-//                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-//                         fill: false,
-//                     },
-//                     {
-//                         label: 'Laag Referentiewaarden TNO',
-//                         data: tnoValues,
-//                         borderColor: 'rgba(75, 192, 192, 1)',
-//                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//                         fill: true,
-//                     },
-//                     {
-//                         label: 'Hoog Referentiewaarden TNO',
-//                         data: HighTnoValues,
-//                         borderColor: 'rgba(75, 192, 192, 1)',
-//                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//                         fill: true,
-//                     }
-//                 ],
-//             },
-//             options: {
-//                 responsive: true,
-//                 plugins: {
-//                     title: {
-//                         display: true,
-//                         text: 'Groeigrafiek 0-15 maanden',
-//                     },
-//                 },
-//                 scales: {
-//                     x: {
-//                         title: {
-//                             display: true,
-//                             text: 'Leeftijd (maanden)',
-//                         },
-//                     },
-//                     y: {
-//                         title: {
-//                             display: true,
-//                             text: 'Lengte (cm)',
-//                         },
-//                     },
-//                 },
-//             },
-//         };
-//
-//         new Chart(ctx, config);
-//     })
-//     .catch(error => console.error('Error loading user values:', error));
-
+const valueRanges = [
+    'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
+    'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
+];
