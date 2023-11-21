@@ -21,13 +21,17 @@ Promise.all([
             return record ? parseFloat(record[range]) : null;
         }),
         borderColor: lineColors[index % lineColors.length],
+        backgroundColor: lineColors[index % lineColors.length],
         fill: false,
+        pointRadius: 0,
+        pointHitRadius: 0,
     }));
 
     datasets.unshift({
         label: 'Gebruikerswaarden',
         data: userValues,
         borderColor: lineColors[lineColors.length - 1],
+        backgroundColor: lineColors[lineColors.length - 1],
         fill: false,
     });
 
