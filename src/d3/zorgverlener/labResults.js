@@ -1,9 +1,7 @@
 fetch('../../assets/lab.json')
     .then(response => response.json())
     .then(labData => {
-        // Once the data is loaded, create the chart
 
-// Function to parse date and time
         function parseDateTime(dateTime) {
             return d3.isoParse(dateTime);
         }
@@ -14,7 +12,6 @@ fetch('../../assets/lab.json')
             return (low + high) / 2;  // Taking average for the area
         }
 
-// Create the chart
         function createLabChart(data) {
             const margin = {top: 10, right: 30, bottom: 30, left: 60},
                 width = 460 - margin.left - margin.right,

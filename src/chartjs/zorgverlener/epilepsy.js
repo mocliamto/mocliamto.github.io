@@ -54,19 +54,22 @@ fetch('../../assets/epilepsy.json')
                 x: {
                     type: 'time',
                     time: {
-                        parser: 'YY-MM-DD HH:mm',
-                        tooltipFormat: 'll HH:mm'
+                        parser: 'yyyy-MM-dd\'T\'HH:mm:ss',
+                        unit: 'day',
+                        tooltipFormat: 'PPPp',
+                        displayFormats: {
+                            day: 'MMM dd, yyyy',
+                            hour: 'MMM dd, yyyy, HH:mm',
+                        }
                     },
                     title: {
                         display: true,
-                        text: 'Date and Time'
                     }
                 },
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Value'
                     }
                 }
             }
@@ -97,43 +100,3 @@ fetch('../../assets/epilepsy.json')
     .catch(error => {
         console.error("Error fetching the data: ", error);
     });
-
-
-// const seizureConfig = {
-//     type: 'bar',
-//     data: seizureData,
-//     options: {
-//         responsive: true, plugins: {title: {display: true, text: 'Aanvalsregistratie'}},
-//         scales: {y: {beginAtZero: true}}
-//     }
-// };
-//
-// const medicationConfig = {
-//     type: 'line',
-//     data: medicationData,
-//     options: {
-//         responsive: true, plugins: {title: {display: true, text: 'Medicatie'}},
-//         scales: {y: {beginAtZero: true}}}
-// };
-//
-// const pddConfig = {
-//     type: 'line',
-//     data: pddData,
-//     options: {
-//         responsive: true, plugins: {title: {display: true, text: 'PDD/DDD'}},
-//         scales: {y: {beginAtZero: true}}}
-// };
-//
-// const labResultsConfig = {
-//     type: 'line',
-//     data: labResultsData,
-//     options: {
-//         responsive: true, plugins: {title: {display: true, text: 'Labuitslagen en ketonen'}},
-//         scales: {y: {beginAtZero: true}}}
-// };
-//
-// // Creating the charts
-// new Chart(document.getElementById('seizureChart'), seizureConfig);
-// new Chart(document.getElementById('medicationChart'), medicationConfig);
-// new Chart(document.getElementById('pddChart'), pddConfig);
-// new Chart(document.getElementById('labResultssChart'), labResultsConfig);

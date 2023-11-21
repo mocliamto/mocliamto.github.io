@@ -5,7 +5,6 @@ function parseGrensvalRange(grensval) {
 fetch('../../assets/lab.json')
     .then(response => response.json())
     .then(data => {
-        // Sort data by DateTime from oldest to newest
         data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
 
         // Process data
@@ -20,6 +19,7 @@ fetch('../../assets/lab.json')
         // Create the chart
         const ctx = document.getElementById('labChart').getContext('2d');
         const labChart = new Chart(ctx, {
+
             type: 'line',
             data: {
                 labels: labels,
@@ -27,22 +27,19 @@ fetch('../../assets/lab.json')
                     label: 'UITSLAG',
                     data: uitslagData,
                     borderColor: 'red',
-                    fill: false,
-                    tension: 0.1 // For smooth curves
+                    fill: false
                 }, {
-                    label: 'Normaal waarde laag',
+                    label: 'GRENSVAL Laag',
                     data: grensvalLowData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
-                    fill: '+1', // Fill to next dataset
-                    tension: 0.1 // For smooth curves
+                    fill: '+1'  // Fill to next dataset
                 }, {
-                    label: 'Normaal waarde hoog',
+                    label: 'GRENSVAL Hoog',
                     data: grensvalHighData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
-                    fill: false,
-                    tension: 0.1 // For smooth curves
+                    fill: false
                 }]
             },
             options: {
@@ -50,34 +47,25 @@ fetch('../../assets/lab.json')
                     x: {
                         type: 'time',
                         time: {
-                            parser: 'YYYY-MM-DDTHH:mm:ss',
+                            parser: 'yyyy-MM-dd\'T\'HH:mm:ss',
                             unit: 'day',
-                            tooltipFormat: 'll HH:mm'
+                            tooltipFormat: 'PPPp',
+                            displayFormats: {
+                                day: 'MMM dd, yyyy',
+                                hour: 'MMM dd, yyyy, HH:mm',
+                            }
                         },
                         title: {
                             display: true,
-                            text: 'Date and Time'
                         }
                     },
                     y: {
-                        beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Value'
+                            text: 'Glucose(POCT) mmol/L'
                         }
                     }
-                },
-                plugins: {
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    legend: {
-                        display: true
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false
+                }
             }
         });
     })

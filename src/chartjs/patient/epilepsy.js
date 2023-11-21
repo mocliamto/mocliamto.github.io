@@ -29,19 +29,22 @@ fetch('../../assets/epilepsy.json')
                 x: {
                     type: 'time',
                     time: {
-                        parser: 'YY-MM-DD HH:mm',
-                        tooltipFormat: 'll HH:mm'
+                        parser: 'yyyy-MM-dd\'T\'HH:mm:ss',
+                        unit: 'day',
+                        tooltipFormat: 'PPPp',
+                        displayFormats: {
+                            day: 'MMM dd, yyyy',
+                            hour: 'MMM dd, yyyy, HH:mm',
+                        }
                     },
                     title: {
                         display: true,
-                        text: 'Date and Time'
                     }
                 },
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Value'
                     }
                 }
             }

@@ -47,18 +47,22 @@ fetch('../../assets/lab.json')
                     x: {
                         type: 'time',
                         time: {
-                            parser: 'YYYY-MM-DDTHH:mm:ss',
-                            tooltipFormat: 'll HH:mm'
+                            parser: 'yyyy-MM-dd\'T\'HH:mm:ss',
+                            unit: 'day',
+                            tooltipFormat: 'PPPp',
+                            displayFormats: {
+                                day: 'MMM dd, yyyy',
+                                hour: 'MMM dd, yyyy, HH:mm',
+                            }
                         },
                         title: {
                             display: true,
-                            text: 'Date and Time'
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: 'Value'
+                            text: 'Glucose(POCT) mmol/L'
                         }
                     }
                 }

@@ -1,20 +1,16 @@
 fetch('../../assets/lab.json')
     .then(response => response.json())
     .then(labData => {
-        // Once the data is loaded, create the chart
 
-// Function to parse date and time
         function parseDateTime(dateTime) {
             return d3.isoParse(dateTime);
         }
 
-// Function to parse the GRENSVAL range and return the average
         function parseGrensval(grensval) {
             const [low, high] = grensval.split('-').map(Number);
-            return (low + high) / 2;  // Taking average for the area
+            return (low + high) / 2;
         }
 
-// Create the chart
         function createLabChart(data) {
             const margin = {top: 10, right: 30, bottom: 30, left: 60},
                 width = 460 - margin.left - margin.right,
