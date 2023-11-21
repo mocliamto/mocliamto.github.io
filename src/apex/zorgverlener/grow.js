@@ -111,7 +111,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 legend: {
                     position: 'top',
                     horizontalAlign: 'left',
-                    show: true
+                    show: false
                 },
                 xaxis: {
                     type: 'numeric',
