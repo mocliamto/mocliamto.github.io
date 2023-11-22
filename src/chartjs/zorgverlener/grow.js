@@ -50,7 +50,7 @@ Promise.all([
             plugins: {
                 title: {
                     display: true,
-                    text: 'Groeigrafiek 0-15 maanden',
+                    text: 'Lengte-Leeftijd 0-15 maanden',
                 },
                 legend: {
                     display: false

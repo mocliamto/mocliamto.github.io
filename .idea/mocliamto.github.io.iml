@@ -25,5 +25,7 @@
     <orderEntry type="library" name="chart.js" level="application" />
     <orderEntry type="library" name="chartjs-adapter-date-fns" level="application" />
     <orderEntry type="library" name="apexcharts" level="application" />
+    <orderEntry type="library" name="chartjs-plugin-datalabels" level="application" />
+    <orderEntry type="library" name="chartjs-plugin-annotation" level="application" />
   </component>
 </module>

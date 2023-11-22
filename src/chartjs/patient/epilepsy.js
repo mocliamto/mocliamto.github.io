@@ -25,6 +25,7 @@ fetch('../../assets/epilepsy.json')
         };
 
         const chartOptions = {
+            responsive: true,
             scales: {
                 x: {
                     type: 'time',

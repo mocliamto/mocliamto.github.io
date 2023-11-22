@@ -47,6 +47,7 @@ fetch('../../assets/lab.json')
                 }]
             },
             options: {
+                responsive: true,
                 scales: {
                     x: {
                         type: 'time',
