@@ -1,31 +1,13 @@
-// Define dimensions and margins for the charts
 const margin = {top: 20, right: 30, bottom: 40, left: 50},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-// Mock data
 const seizureData = [3, 2, 5, 1];
 const medicationData = [300, 350, 320, 310];
-const pddData = [{name: 'Drug A', PDD: 300, DDD: 250}, {name: 'Drug B', PDD: 200, DDD: 250}, {
-    name: 'Drug C',
-    PDD: 400,
-    DDD: 500
-}];
-const labResultsData = [1.2, 1.5, 1.3, 1.4];
 
-// Seizure chart
 createBarChart('seizureChart', seizureData, 'Seizures');
-
-// Medication chart
 createBarChart('medicationChart', medicationData, 'Dosage (mg)');
 
-// PDD/DDD chart
-createGroupedBarChart('pddChart', pddData);
-
-// Lab results chart
-createLineChart('labResultsChart', labResultsData, 'Lab Value');
-
-// Function to create a basic bar chart
 function createBarChart(id, data, label) {
     const svg = d3.select('#' + id)
         .append("svg")
