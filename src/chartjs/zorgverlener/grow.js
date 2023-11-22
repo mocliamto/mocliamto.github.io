@@ -1,4 +1,6 @@
-const lineColors = ['#41be8c', '#41be8c', '#66c9a1', '#1bb275', '#0b650b', '#41be8c', '#41be8c', '#5ac95a', 'black'];
+const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
+const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
+const lineWidth = [2, 2, 2, 2, 3];
 
 Promise.all([
     fetch('../../assets/grow.json').then(response => response.json()),
@@ -15,15 +17,15 @@ Promise.all([
     tnoData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
 
     const datasets = valueRanges.map((range, index) => ({
-        label: `${index}: ${range}`,
-        // label: range,
+        label: range,
         data: months.map(month => {
             const record = tnoData.find(d => parseFloat(d.StapNummer) === month);
             return record ? parseFloat(record[range]) : null;
         }),
         borderColor: lineColors[index % lineColors.length],
-        backgroundColor: lineColors[index % lineColors.length],
-        fill: false,
+        borderWidth: lineWidth[index % lineWidth.length],
+        backgroundColor: 'rgba(222,236,220,0.55)',
+        fill: fills[index % fills.length],
         pointRadius: 0,
         pointHitRadius: 0,
     }));
@@ -31,8 +33,8 @@ Promise.all([
     datasets.unshift({
         label: 'Gebruikerswaarden',
         data: userValues,
-        borderColor: lineColors[lineColors.length - 1],
-        backgroundColor: lineColors[lineColors.length - 1],
+        borderColor: 'black',
+        backgroundColor: 'black',
         fill: false,
     });
 
@@ -52,20 +54,6 @@ Promise.all([
                 },
                 legend: {
                     display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed.y !== null) {
-                                label += context.parsed.y;
-                            }
-                            return label;
-                        }
-                    }
                 },
             },
             scales: {

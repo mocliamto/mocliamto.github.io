@@ -33,12 +33,16 @@ fetch('../../assets/lab.json')
                     data: grensvalLowData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
+                    pointRadius: 0,
+                    pointHitRadius: 0,
                     fill: '+1'  // Fill to next dataset
                 }, {
                     label: 'GRENSVAL Hoog',
                     data: grensvalHighData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
+                    pointRadius: 0,
+                    pointHitRadius: 0,
                     fill: false
                 }]
             },
