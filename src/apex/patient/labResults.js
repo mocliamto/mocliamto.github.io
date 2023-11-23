@@ -27,7 +27,7 @@ fetch('../../assets/lab.json')
                 x: dates[index],
                 y: value
             })),
-            fill: false
+            fill: true
         }, {
             name: 'Laag waarde',
             type: 'line',
@@ -36,14 +36,18 @@ fetch('../../assets/lab.json')
                 x: dates[index],
                 y: value
             })),
-            fill: '+1'
+            // fill: '+1'
         }];
 
         const optionsMainChart = {
             chart: {
                 type: 'line',
                 height: '100%',
-                id: 'chart2'
+                id: 'chart2',
+                toolbar: {
+                    autoSelected: 'pan',
+                    show: false
+                }
             },
             series: series,
             xaxis: {
@@ -62,15 +66,8 @@ fetch('../../assets/lab.json')
             dataLabels: {
                 enabled: false
             },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    opacityFrom: 0,
-                    opacityTo: 0.5
-                }
-            },
             stroke: {
-                width: [3, 2, 2]
+                width: [4, 2, 2]
             },
             title: {
                 text: 'Labuitslag Glucose (POCT)'
@@ -92,7 +89,7 @@ fetch('../../assets/lab.json')
                 type: 'area',
                 brush: {
                     target: 'chart2',
-                    enabled: true
+                    enabled: true,
                 },
                 selection: {
                     enabled: true,
@@ -101,6 +98,9 @@ fetch('../../assets/lab.json')
                         max: new Date(dates[dates.length - 1]).getTime()
                     }
                 },
+            },
+            dataLabels: {
+                enabled: false
             },
             colors: ['#008FFB'],
             xaxis: {

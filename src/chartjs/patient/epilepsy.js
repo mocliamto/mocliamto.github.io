@@ -1,6 +1,7 @@
 fetch('../../assets/epilepsy.json')
     .then(response => response.json())
     .then(data => {
+
         const aanvalsregistratieData = {
             labels: data.Aanvalsregistratie
                 .sort((a, b) => new Date(a.datum) - new Date(b.datum))
@@ -26,6 +27,10 @@ fetch('../../assets/epilepsy.json')
 
         const chartOptions = {
             responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
             scales: {
                 x: {
                     type: 'time',
@@ -43,12 +48,22 @@ fetch('../../assets/epilepsy.json')
                     }
                 },
                 y: {
-                    beginAtZero: true,
+                    // display: true,
+                    // beginAtZero: true,
                     title: {
                         display: true,
-                    }
-                }
-            }
+                    },
+                    // position: 'left',
+                },
+                // yRight: {
+                //     display: true,
+                //     beginAtZero: true,
+                //     position: 'right',
+                //     grid: {
+                //         drawOnChartArea: false,
+                //     },
+                // },
+            },
         };
 
         new Chart(document.getElementById('seizureChart'), {

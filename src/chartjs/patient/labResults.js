@@ -24,7 +24,7 @@ fetch('../../assets/lab.json')
                     label: 'UITSLAG',
                     data: uitslagData,
                     borderColor: 'red',
-                    fill: false
+                    backgroundColor: 'red',
                 }, {
                     label: 'GRENSVAL Laag',
                     data: grensvalLowData,
@@ -40,7 +40,6 @@ fetch('../../assets/lab.json')
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
                     pointRadius: 0,
                     pointHitRadius: 0,
-                    fill: false
                 }]
             },
             options: {

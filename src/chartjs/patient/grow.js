@@ -1,3 +1,7 @@
+// import { Chart, registerables } from 'chart.js';
+// import annotationPlugin from 'chartjs-plugin-annotation';
+// Chart.register(...registerables, annotationPlugin);
+
 const valueRanges = [
     'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
     'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
@@ -47,6 +51,7 @@ Promise.all([
             labels: months,
             datasets: datasets
         },
+        // plugins: [annotationPlugin],
         options: {
             responsive: true,
             plugins: {
@@ -59,6 +64,20 @@ Promise.all([
                 },
                 // TODO: labels position x 31 and y 85 etc. in graph with graph line [+2.5, +2, +1, 0, -1, -2, -2.5, -3]
                 autocolors: false,
+                // annotation: {
+                //     annotations: {
+                //         label1: {
+                //             type: 'label',
+                //             xValue: 2.5,
+                //             yValue: 60,
+                //             backgroundColor: 'rgba(245,245,245)',
+                //             content: ['This is my text', 'This is my text, second line'],
+                //             font: {
+                //                 size: 18
+                //             }
+                //         }
+                //     }
+                // }
             },
             scales: {
                 x: {
@@ -105,6 +124,20 @@ Promise.all([
             },
         },
     };
+    // lineConfigurations.forEach(config => {
+    //     const seriesData = processTnoData(tnoData, config.valueKey);
+    //     const lastDataPoint = getLastDataPoint(seriesData);
+    //
+    //     chartConfig.options.plugins.annotation.annotations[config.name] = {
+    //         type: 'label',
+    //         yValue: lastDataPoint.y,
+    //         content: config.name,
+    //         backgroundColor: '#a1c2a3',
+    //         opacity: 0, // Chart.js ondersteunt mogelijk geen directe opacity-instelling voor annotaties
+    //         // Je moet misschien de alpha waarde in de backgroundColor gebruiken
+    //     };
+    // });
+
     new Chart(ctx, config);
 }).catch(error => {
     console.error('Error loading data:', error);

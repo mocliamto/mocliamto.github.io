@@ -89,6 +89,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     },
                     min: 40,
                     max: 92,
+                    stepSize: 2,
                     position: 'left',
                 },
 
@@ -100,6 +101,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
             const chart = new ApexCharts(document.querySelector("#growChart"), options);
             chart.render();
 
+            // this in chart.js
             lineConfigurations.forEach(config => {
                 const seriesData = processTnoData(tnoData, config.valueKey);
                 const lastDataPoint = getLastDataPoint(seriesData);
@@ -108,7 +110,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     label: {
                         text: config.name,
                         style: {
-                            background: '#a1c2a3'
+                            background: '#a1c2a3',
                         }
                     },
                     opacity: 0
