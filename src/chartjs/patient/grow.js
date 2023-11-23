@@ -17,7 +17,6 @@ Promise.all([
         const record = growData.find(d => parseFloat(d.LeeftijdInMaanden) === month);
         return record ? parseFloat(record.Lengte) : null;
     });
-
     tnoData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
 
     const datasets = valueRanges.map((range, index) => ({
@@ -33,6 +32,7 @@ Promise.all([
         pointRadius: 0,
         pointHitRadius: 0,
     }));
+    // TODO: de userValues lijn aan elkaar verbonden
     datasets.unshift({
         label: 'Gebruikerswaarden',
         data: userValues,

@@ -16,7 +16,6 @@ function createBarChart(id, data, label) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // Add X axis
     const x = d3.scaleBand()
         .range([0, width])
         .domain(data.map((d, i) => 'Week ' + (i + 1)))
@@ -28,7 +27,6 @@ function createBarChart(id, data, label) {
         .selectAll("text")
         .style("text-anchor", "end");
 
-    // Add Y axis
     const y = d3.scaleLinear()
         .domain([0, d3.max(data)])
         .range([height, 0]);
@@ -36,7 +34,6 @@ function createBarChart(id, data, label) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Bars
     svg.selectAll("mybar")
         .data(data)
         .join("rect")

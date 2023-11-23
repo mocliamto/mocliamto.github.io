@@ -42,7 +42,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 data: processTnoData(tnoData, config.valueKey),
                 type: 'line',
             }));
-            const lineColors = ['#83fa62', 'green', '#5ac95a', '#6eee5a', 'rgba(161,243,149,0.59)', 'green', 'rgba(157,252,136,0.73)', '#5ac95a', '#ef0606']
+            const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];;
 
             const options = {
                 series: [
@@ -55,44 +55,10 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                         name: line.name,
                         data: line.data,
                         type: 'line',
-                        color: lineColors[index],
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.3,
-                                opacityTo: 0.3,
-                            }
-                        },
+                        color: lineColors[index % lineColors.length],
                     }))
                 ],
-                chart: {
-                    type: 'area',
-                    stacked: false,
-                    events: {
-                        legendClick: function(chartContext, seriesIndex, config) {
-                            const seriesName = chartContext.w.config.series[seriesIndex].name;
-                            const series = chartContext.w.globals.series[seriesIndex];
-                            const annotations = chartContext.w.config.annotations.yaxis;
-
-                            const annotationIndex = annotations.findIndex(annotation => annotation.label.text === seriesName);
-                            if (annotationIndex !== -1) {
-                                annotations[annotationIndex].opacity = series.length === 0 ? 0 : 1;
-                            }
-                            chartContext.updateOptions({
-                                annotations: {
-                                    yaxis: annotations
-                                }
-                            });
-                        }
-                    }
-                },
-                markers: {
-                    size: 0
-                },
-                dataLabels: {
-                    enabled: false,
-                },
+                chart: {},
                 title: {
                     text: 'Groeigrafiek 0 - 15 maanden',
                     align: 'left'
@@ -101,32 +67,37 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     curve: 'smooth',
                     width: 3
                 },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        opacityFrom: 0.6,
-                        opacityTo: 0.8,
-                    }
-                },
                 legend: {
-                    position: 'top',
-                    horizontalAlign: 'left',
                     show: false
                 },
                 xaxis: {
                     type: 'numeric',
                     title: {
-                        text: 'Leeftijd in Maanden'
-                    }
+                        text: 'Leeftijd (maanden)',
+                    },
+                    min: 0,
+                    max: 15,
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 1
+                    },
                 },
                 yaxis: {
                     type: 'numeric',
                     title: {
-                        text: 'Lengte in cm'
-                    }
+                        text: 'Lengte (cm)',
+                    },
+                    min: 40,
+                    max: 92,
+                    position: 'left',
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 2
+                    },
                 },
+
                 annotations: {
-                    yaxis: [],
+                    // yaxis: [],
                 },
             };
 
@@ -152,7 +123,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
     .catch(error => {
         console.error('Error in processing data: ', error);
     });
-
 /** lengte + leeftijd in maanden */
 // function processGrowData(data) {
 //     const sortedData = data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden);

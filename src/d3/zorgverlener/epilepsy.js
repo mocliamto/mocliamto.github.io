@@ -1,9 +1,7 @@
-// Define dimensions and margins for the charts
 const margin = {top: 20, right: 30, bottom: 40, left: 50},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-// Mock data
 const seizureData = [3, 2, 5, 1];
 const medicationData = [300, 350, 320, 310];
 const pddData = [{name: 'Drug A', PDD: 300, DDD: 250}, {name: 'Drug B', PDD: 200, DDD: 250}, {
@@ -13,19 +11,14 @@ const pddData = [{name: 'Drug A', PDD: 300, DDD: 250}, {name: 'Drug B', PDD: 200
 }];
 const labResultsData = [1.2, 1.5, 1.3, 1.4];
 
-// Seizure chart
 createBarChart('seizureChart', seizureData, 'Seizures');
 
-// Medication chart
 createBarChart('medicationChart', medicationData, 'Dosage (mg)');
 
-// PDD/DDD chart
 createGroupedBarChart('pddChart', pddData);
 
-// Lab results chart
 createLineChart('labResultsChart', labResultsData, 'Lab Value');
 
-// Function to create a basic bar chart
 function createBarChart(id, data, label) {
     const svg = d3.select('#' + id)
         .append("svg")
@@ -34,7 +27,6 @@ function createBarChart(id, data, label) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // Add X axis
     const x = d3.scaleBand()
         .range([0, width])
         .domain(data.map((d, i) => 'Week ' + (i + 1)))
@@ -46,7 +38,6 @@ function createBarChart(id, data, label) {
         .selectAll("text")
         .style("text-anchor", "end");
 
-    // Add Y axis
     const y = d3.scaleLinear()
         .domain([0, d3.max(data)])
         .range([height, 0]);
@@ -54,7 +45,6 @@ function createBarChart(id, data, label) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Bars
     svg.selectAll("mybar")
         .data(data)
         .join("rect")
@@ -73,7 +63,6 @@ function createGroupedBarChart(id, data) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // X axis
     const x0 = d3.scaleBand()
         .range([0, width])
         .domain(data.map(d => d.name))
@@ -87,13 +76,11 @@ function createGroupedBarChart(id, data) {
         .range([0, x0.bandwidth()])
         .padding(0.05);
 
-    // Y axis
     const y = d3.scaleLinear()
         .domain([0, d3.max(data, d => Math.max(d.PDD, d.DDD))])
         .range([height, 0]);
     svg.append("g").call(d3.axisLeft(y));
 
-    // Bars
     const group = svg.selectAll("g.layer")
         .data(data)
         .join("g")
@@ -117,7 +104,6 @@ function createLineChart(id, data, label) {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // X axis
     const x = d3.scaleLinear()
         .domain([1, data.length])
         .range([0, width]);
@@ -125,13 +111,11 @@ function createLineChart(id, data, label) {
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(data.length));
 
-    // Y axis
     const y = d3.scaleLinear()
         .domain([d3.min(data), d3.max(data)])
         .range([height, 0]);
     svg.append("g").call(d3.axisLeft(y));
 
-    // Line
     svg.append("path")
         .datum(data)
         .attr("fill", "none")

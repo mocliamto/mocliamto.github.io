@@ -76,8 +76,6 @@
 //     x.range([0, width]);
 //     yRight.range([height, 0]);
 //
-//     // Re-render axes and lines as needed
-//     // ...
 // }
 //
 // d3.select(window).on("resize", updateChart);
@@ -88,6 +86,7 @@ const valueRanges = [
     'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
 ];
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
+const fills = [false, false, '+1', '+1', '+1', '+1'];
 const lineWidth = [2, 2, 2, 2, 3];
 
 const margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -97,7 +96,6 @@ const margin = {top: 20, right: 20, bottom: 30, left: 50},
 const x = d3.scaleLinear().range([0, width]);
 const y = d3.scaleLinear().range([height, 0]);
 
-// line
 const line = d3.line()
     .x(d => x(d.month))
     .y(d => y(d.value))
@@ -117,33 +115,28 @@ Promise.all([
     x.domain([0, 15]);
     y.domain([40, 92]);
 
-// X as
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x).ticks(15));
 
-// Y as
     svg.append("g")
         .call(d3.axisLeft(y).ticks((92 - 40) / 2));
 
-// Scale for the right y-axis
     const yRight = d3.scaleLinear().range([height, 0]);
     yRight.domain([40, 92]);
 
-// Right Y as
     svg.append("g")
         .attr("transform", "translate(" + width + ",0)")
         .call(d3.axisRight(yRight).ticks((92 - 40) / 2));
 
-    // Draw lines for each value range
     valueRanges.forEach((range, index) => {
         const dataset = tnoData.map(d => ({month: d.StapNummer, value: d[range]}));
 
         svg.append("path")
             .data([dataset])
-            .attr("fill", "none")
             .attr("stroke", lineColors[index % lineColors.length])
             .attr("stroke-width", lineWidth[index % lineWidth.length])
+            .attr("fill", "rgba(222,236,220,0.55)")
             .attr("d", line);
     });
 
@@ -154,7 +147,6 @@ Promise.all([
         .attr("stroke", "black")
         .attr("d", line);
 
-    // Additional customizations like titles, gridlines, etc., can be added similarly
 
 }).catch(error => {
     console.error('Error loading data:', error);

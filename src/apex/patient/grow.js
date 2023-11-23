@@ -42,7 +42,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 data: processTnoData(tnoData, config.valueKey),
                 type: 'line',
             }));
-            const lineColors = ['#83fa62', 'green', '#5ac95a', '#6eee5a', 'rgba(161,243,149,0.59)', 'green', 'rgba(157,252,136,0.73)', '#5ac95a', '#ef0606']
+            const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];;
 
             const options = {
                 series: [
@@ -55,27 +55,10 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                         name: line.name,
                         data: line.data,
                         type: 'line',
-                        color: lineColors[index],
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.3,
-                                opacityTo: 0.3,
-                            }
-                        },
+                        color: lineColors[index % lineColors.length],
                     }))
                 ],
-                chart: {
-                    type: 'area',
-                    stacked: false,
-                    },
-                markers: {
-                    size: 0
-                },
-                dataLabels: {
-                    enabled: false,
-                },
+                chart: {},
                 title: {
                     text: 'Groeigrafiek 0 - 15 maanden',
                     align: 'left'
@@ -84,30 +67,35 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     curve: 'smooth',
                     width: 3
                 },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        opacityFrom: 0.6,
-                        opacityTo: 0.8,
-                    }
-                },
                 legend: {
-                    position: 'top',
-                    horizontalAlign: 'left',
                     show: false
                 },
                 xaxis: {
                     type: 'numeric',
                     title: {
-                        text: 'Leeftijd in Maanden'
-                    }
+                        text: 'Leeftijd (maanden)',
+                    },
+                    min: 0,
+                    max: 15,
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 1
+                    },
                 },
                 yaxis: {
                     type: 'numeric',
                     title: {
-                        text: 'Lengte in cm'
-                    }
+                        text: 'Lengte (cm)',
+                    },
+                    min: 40,
+                    max: 92,
+                    position: 'left',
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 2
+                    },
                 },
+
                 annotations: {
                     // yaxis: [],
                 },
@@ -270,7 +258,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     });
 
 
-/** overige later misschien nodig */
+// /** overige later misschien nodig */
 // function calculateAgeInMonths(dateTime, referenceDate) {
 //     const birthDate = new Date(referenceDate);
 //     const date = new Date(dateTime);
@@ -280,7 +268,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     months += date.getMonth();
 //     return months <= 0 ? 0 : months;
 // }
-
+//
 // function processGrowData(data, referenceDate) {
 //     const sortedData = data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
 //     return sortedData.map(item => {
@@ -290,71 +278,3 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //         ];
 //     });
 // }
-
-/** lengte + Datetime */
-// function processGrowData(data) {
-//     const sortedData = data.sort((a, b) => {
-//         return new Date(a.DateTime) - new Date(b.DateTime);
-//     });
-//     return sortedData.map(item => {
-//         return [
-//             new Date(item.DateTime).getTime(), // Zet de datum om in milliseconden
-//             item.Lengte
-//         ];
-//     });
-// }
-// fetch('../../assets/grow.json')
-//     .then(response => response.json())
-//     .then(growData => {
-//
-//         var options = {
-//             series: [
-//                 {
-//                     name: 'Lengte',
-//                     data: processGrowData(growData)
-//                 },
-//             ],
-//             chart: {
-//                 type: 'area',
-//                 height: 350,
-//                 stacked: true,
-//                 events: {
-//                     selection: function (chart, e) {
-//                         console.log(new Date(e.xaxis.min));
-//                     }
-//                 },
-//             },
-//             colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
-//             dataLabels: {
-//                 enabled: false,
-//             },
-//             title: {
-//                 text: 'Groeigrafiek 0 - 15 maanden',
-//                 align: 'left'
-//             },
-//             stroke: {
-//                 curve: 'smooth',
-//                 width: 3
-//             },
-//             fill: {
-//                 type: 'gradient',
-//                 gradient: {
-//                     opacityFrom: 0.6,
-//                     opacityTo: 0.8,
-//                 }
-//             },
-//             legend: {
-//                 position: 'top',
-//                 horizontalAlign: 'left'
-//             },
-//             xaxis: {
-//                 type: 'datetime'
-//             },
-//         };
-//
-//         var chart = new ApexCharts(document.querySelector("#chart"), options);
-//         chart.render();
-//     })
-//     .catch(error => {
-//         console.error('Fout bij het ophalen van de gegevens: ', error);
-//     });
