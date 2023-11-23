@@ -39,6 +39,8 @@ Promise.all([
         borderColor: 'black',
         backgroundColor: 'black',
         fill: false,
+        showLine: true,
+        borderWidth: 3
     });
 
     const ctx = document.getElementById('growChartJs').getContext('2d');
