@@ -32,15 +32,12 @@ Promise.all([
         pointRadius: 0,
         pointHitRadius: 0,
     }));
-    // TODO: de userValues lijn aan elkaar verbonden
     datasets.unshift({
         label: 'Gebruikerswaarden',
         data: userValues,
         borderColor: 'black',
         backgroundColor: 'black',
-        fill: false,
-        showLine: true,
-        borderWidth: 3
+        spanGaps: true,
     });
 
     const ctx = document.getElementById('growChartJs').getContext('2d');

@@ -35,7 +35,7 @@ Promise.all([
         data: userValues,
         borderColor: 'black',
         backgroundColor: 'black',
-        fill: false,
+        spanGaps: true,
     });
 
     const ctx = document.getElementById('growChartJs').getContext('2d');

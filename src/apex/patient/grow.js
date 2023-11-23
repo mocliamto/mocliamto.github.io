@@ -90,10 +90,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                     min: 40,
                     max: 92,
                     position: 'left',
-                    ticks: {
-                        autoSkip: false,
-                        stepSize: 2
-                    },
                 },
 
                 annotations: {
