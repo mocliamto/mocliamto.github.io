@@ -35,6 +35,14 @@ function createBarChart(data, elementId, xValue, yValue) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
+    const yRight = d3.scaleLinear()
+        .domain([0, d3.max(processedData, d => d.value)])
+        .range([height, 0]);
+
+    svg.append("g")
+        .attr("transform", "translate(" + width + ",0)")
+        .call(d3.axisRight(yRight));
+
     svg.selectAll("bars")
         .data(processedData)
         .enter()
@@ -80,6 +88,15 @@ function createLineChart(data, elementId, xValue, yValue) {
 
     svg.append("g")
         .call(d3.axisLeft(y));
+
+    const yRight = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d[yValue])])
+        .range([height, 0]);
+
+    svg.append("g")
+        .attr("transform", "translate(" + width + ",0)")
+        .call(d3.axisRight(yRight));
+
 
     svg.append("path")
         .datum(processedData)
