@@ -14,7 +14,7 @@ function createBarChart(data, elementId, xValue, yValue) {
         .sort((a, b) => new Date(a.datum) - new Date(b.datum))
         .map(d => ({date: new Date(d[xValue]), value: d[yValue]}));
 
-    // X axis
+    // X as
     const x = d3.scaleBand()
         .range([0, width])
         .domain(processedData.map(d => d.date))
@@ -22,12 +22,12 @@ function createBarChart(data, elementId, xValue, yValue) {
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
         .selectAll("text")
         .attr("transform", "rotate(-45)")
         .style("text-anchor", "end");
 
-    // Y axis
+    // Y as
     const y = d3.scaleLinear()
         .domain([0, d3.max(processedData, d => d.value)])
         .range([height, 0]);
@@ -35,7 +35,6 @@ function createBarChart(data, elementId, xValue, yValue) {
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Bars
     svg.selectAll("bars")
         .data(processedData)
         .enter()
@@ -56,32 +55,32 @@ function createLineChart(data, elementId, xValue, yValue) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Process data
     const processedData = data
         .sort((a, b) => new Date(a.datum) - new Date(b.datum))
         .map(d => ({date: new Date(d[xValue]), value: d[yValue]}));
 
-    // Add X axis
+    // X as
     const x = d3.scaleTime()
         // .domain(d3.extent(processedData, d => d.date))
         .domain(d3.extent(data, d => new Date(d[xValue])))
-
         .range([0, width]);
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
 
-    // Add Y axis
+    // Y as
     const y = d3.scaleLinear()
         // .domain([0, d3.max(processedData, d => d.value)])
         .domain([0, d3.max(data, d => d[yValue])])
-
         .range([height, 0]);
+
     svg.append("g")
         .call(d3.axisLeft(y));
 
-    // Add the line
     svg.append("path")
         .datum(processedData)
         .attr("fill", "none")
@@ -91,6 +90,7 @@ function createLineChart(data, elementId, xValue, yValue) {
             .x(d => x(d.date))
             .y(d => y(d.value))
         );
+
     svg.selectAll("dot")
         .data(processedData)
         .enter()
@@ -102,10 +102,8 @@ function createLineChart(data, elementId, xValue, yValue) {
 }
 
 d3.json('../../assets/epilepsy.json').then(function (data) {
-    // Create Seizure Chart
-    createBarChart(data.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal');
 
-    // Create Medication Chart
+    createBarChart(data.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal');
     createLineChart(data.Medicatie, 'medicationChart', 'datum', 'dosis');
 
 }).catch(error => {
