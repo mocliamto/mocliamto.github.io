@@ -1,3 +1,4 @@
+// the following in d3.js
 fetch('../../assets/epilepsy.json')
     .then(response => response.json())
     .then(data => {
