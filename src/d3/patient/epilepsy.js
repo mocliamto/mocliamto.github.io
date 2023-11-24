@@ -1,8 +1,13 @@
-const margin = {top: 20, right: 30, bottom: 50, left: 50},
-    width = 550 - margin.left - margin.right,
-    height = 350 - margin.top - margin.bottom;
+const margin = {top: 20, right: 30, bottom: 50, left: 50};
+let globalData;
 
 function createBarChart(data, elementId, xValue, yValue) {
+    const element = document.getElementById(elementId);
+    const width = element.clientWidth - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
+
+    d3.select("#" + elementId).select("svg").remove();
+
     const svg = d3.select("#" + elementId)
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -55,6 +60,11 @@ function createBarChart(data, elementId, xValue, yValue) {
 }
 
 function createLineChart(data, elementId, xValue, yValue) {
+    const element = document.getElementById(elementId);
+    const width = element.clientWidth - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
+
+    d3.select("#" + elementId).select("svg").remove();
 
     const svg = d3.select("#" + elementId)
         .append("svg")
@@ -117,11 +127,16 @@ function createLineChart(data, elementId, xValue, yValue) {
         .attr("fill", "steelblue");
 }
 
+function redrawCharts() {
+    createBarChart(globalData.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal');
+    createLineChart(globalData.Medicatie, 'medicationChart', 'datum', 'dosis');
+}
+
 d3.json('../../assets/epilepsy.json').then(function (data) {
-
-    createBarChart(data.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal');
-    createLineChart(data.Medicatie, 'medicationChart', 'datum', 'dosis');
-
+    globalData = data;
+    redrawCharts();
 }).catch(error => {
     console.error("Error fetching the data: ", error);
 });
+
+window.addEventListener("resize", redrawCharts);

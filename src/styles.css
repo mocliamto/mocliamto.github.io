@@ -3,3 +3,9 @@
     border-radius: 2%;
     margin: 3em 0;
 }
+
+.epi-chart, #labChart {
+    width: 100%;
+    max-width: 550px;
+    /*margin: auto;*/
+}

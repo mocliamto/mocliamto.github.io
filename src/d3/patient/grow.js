@@ -3,31 +3,32 @@ const valueRanges = [
     'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
 ];
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
-const fills = [false, false, '+1', '+1', '+1', '+1'];
 const lineWidth = [2, 2, 2, 2, 3];
+const margin = {top: 20, right: 35, bottom: 30, left: 35};
 
-const margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+let growData, tnoData;
 
-const x = d3.scaleLinear().range([0, width]);
-const y = d3.scaleLinear().range([height, 0]);
+function createLineChart() {
+    const element = document.getElementById('growthCurveChart');
+    const width = element.clientWidth - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
 
-const line = d3.line()
-    .x(d => x(d.month))
-    .y(d => y(d.value))
-    .curve(d3.curveMonotoneX);
+    d3.select("#growthCurveChart").select("svg").remove();
 
-const svg = d3.select("#growthCurveChart")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-Promise.all([
-    fetch('../../assets/grow.json').then(response => response.json()),
-    fetch('../../assets/tno.json').then(response => response.json())
-]).then(([growData, tnoData]) => {
+    const svg = d3.select("#growthCurveChart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const x = d3.scaleLinear().range([0, width]);
+    const y = d3.scaleLinear().range([height, 0]);
+
+    const line = d3.line()
+        .x(d => x(d.month))
+        .y(d => y(d.value))
+        .curve(d3.curveMonotoneX);
 
     x.domain([0, 15]);
     y.domain([40, 92]);
@@ -56,18 +57,36 @@ Promise.all([
             .attr("fill", "rgba(222,236,220,0.55)")
             .attr("d", line);
     });
-
     const userValues = growData.map(d => ({month: d.LeeftijdInMaanden, value: d.Lengte}));
     svg.append("path")
         .data([userValues])
         .attr("fill", "none")
         .attr("stroke", "black")
+        .attr("stroke-width", 3)
         .attr("d", line);
 
+    svg.selectAll("dot")
+        .data(userValues)
+        .enter()
+        .append("circle")
+        .attr("cx", d => x(d.month))
+        .attr("cy", d => y(d.value))
+        .attr("r", 3.5)
+        .attr("fill", "black");
+}
+
+Promise.all([
+    fetch('../../assets/grow.json').then(response => response.json()),
+    fetch('../../assets/tno.json').then(response => response.json())
+]).then(([dataGrow, dataTno]) => {
+    growData = dataGrow;
+    tnoData = dataTno;
+    createLineChart();
 }).catch(error => {
     console.error('Error loading data:', error);
 });
 
+window.addEventListener("resize", createLineChart);
 
 // // Configuration
 // const valueRanges = [
