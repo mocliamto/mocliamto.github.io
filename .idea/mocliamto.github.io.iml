@@ -27,5 +27,6 @@
     <orderEntry type="library" name="apexcharts" level="application" />
     <orderEntry type="library" name="chartjs-plugin-datalabels" level="application" />
     <orderEntry type="library" name="chartjs-plugin-annotation" level="application" />
+    <orderEntry type="library" name="@popperjs/core" level="application" />
   </component>
 </module>
