@@ -1,3 +1,4 @@
+// this is the lengthData
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
 const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
 const lineWidth = [2, 2, 2, 2, 3];
