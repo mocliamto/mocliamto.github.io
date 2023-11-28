@@ -9,7 +9,14 @@
     max-width: 550px;
     /*margin: auto;*/
 }
+/*.tab-content-container {*/
+/*    visibility: hidden;*/
+/*}*/
 
+/*.tab-content-container > .active {*/
+/*    visibility: visible;*/
+/*    background-color: blue;*/
+/*}*/
 #tabs {
     display: flex;
     justify-content: space-around;

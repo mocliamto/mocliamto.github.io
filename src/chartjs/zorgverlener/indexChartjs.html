@@ -42,7 +42,12 @@
             </div>
             <div class="grow-chart">
                 <h5>Groei Grafiek</h5>
-                <canvas id="growChartJs" width="100%" height="100%"></canvas>
+                <div id="tabs">
+                    <button class="tab" id="Lengte">Lengte</button>
+                    <button class="tab" id="Gewicht">Gewicht</button>
+                </div>
+                <canvas id="lengteChartJs" width="100%" height="100%"></canvas>
+                <canvas id="gewichtChartJs" width="100%" height="100%"></canvas>
             </div>
         </div>
         <div class="epi-chart col-12 col-md-6">
@@ -61,6 +66,7 @@
 <link rel="stylesheet" href="../../styles.css">
 
 <script src="../chart.umd.js"></script>
+<script src="../chartjs-plugin-datalabels.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 
 <!--    bootstrap-->

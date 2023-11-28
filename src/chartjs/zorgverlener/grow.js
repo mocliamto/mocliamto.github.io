@@ -1,113 +1,208 @@
-// this is the lengthData
-const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
-const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
-const lineWidth = [2, 2, 2, 2, 3];
+async function fetchDataIfNeeded(url, key) {
+    if (!window[key]) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        window[key] = await response.json();
+    }
+    return window[key];
+}
 
-Promise.all([
-    fetch('../../assets/grow.json').then(response => response.json()),
-    fetch('../../assets/tno.json').then(response => response.json())
-]).then(([growData, tnoData]) => {
+async function renderChart(chartType) {
+    highlightTab(chartType);
+    try {
+        const growData = await fetchDataIfNeeded('../../assets/grow.json', 'growData');
+        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../../assets/tno.json', 'tnoData') : null;
+        const chartData = processChartData(growData, additionalData, chartType);
+        createOrUpdateChart(chartData, chartType);
+        updateChartDisplay(chartType);
+    } catch (error) {
+        console.error(`Error loading ${chartType.toLowerCase()} data:`, error);
+    }
+}
 
+function updateChartDisplay(chartType) {
+    document.getElementById('lengteChartJs').style.display = chartType === 'Lengte' ? 'block' : 'none';
+    document.getElementById('gewichtChartJs').style.display = chartType === 'Gewicht' ? 'block' : 'none';
+}
+
+function createOrUpdateChart(chartData, chartType) {
+    const chartId = `${chartType.toLowerCase()}ChartJs`;
+    const ctx = document.getElementById(chartId).getContext('2d');
+    if (window[`my${chartType}Chart`]) {
+        window[`my${chartType}Chart`].destroy();
+    }
+    window[`my${chartType}Chart`] = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        plugins: [ChartDataLabels],
+        options: {
+            ...getChartOptions(chartType),
+            plugins: {
+                ...getChartOptions(chartType).plugins,
+                datalabels: {
+                    display: function (context) {
+                        return context.dataIndex === context.dataset.data.length - 1;
+                    },
+                }
+            }
+        }
+    });
+}
+
+function setupChartButtons() {
+    document.getElementById('Lengte').addEventListener('click', () => setChartTypeAndRender('Lengte'));
+    document.getElementById('Gewicht').addEventListener('click', () => setChartTypeAndRender('Gewicht'));
+}
+
+function setChartTypeAndRender(chartType) {
+    renderChart(chartType);
+    localStorage.setItem('lastChartType', chartType);
+}
+
+function getLastChartType() {
+    return localStorage.getItem('lastChartType') || 'Lengte';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupChartButtons();
+    renderChart(getLastChartType());
+});
+
+function highlightTab(tabName) {
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('selected', tab.textContent === tabName));
+}
+
+function processChartData(growData, additionalData, chartType) {
     const months = Array.from({length: 31}, (_, i) => i * 0.5);
-
     const userValues = months.map(month => {
         const record = growData.find(d => parseFloat(d.LeeftijdInMaanden) === month);
-        return record ? parseFloat(record.Lengte) : null;
+        return record ? parseFloat(record[chartType === 'Gewicht' ? 'Gewicht' : 'Lengte']) : null;
     });
 
-    tnoData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
-
-    const datasets = valueRanges.map((range, index) => ({
-        label: range,
-        data: months.map(month => {
-            const record = tnoData.find(d => parseFloat(d.StapNummer) === month);
-            return record ? parseFloat(record[range]) : null;
-        }),
-        borderColor: lineColors[index % lineColors.length],
-        borderWidth: lineWidth[index % lineWidth.length],
-        backgroundColor: 'rgba(222,236,220,0.55)',
-        fill: fills[index % fills.length],
-        pointRadius: 0,
-        pointHitRadius: 0,
-    }));
-
-    datasets.unshift({
-        label: 'Gebruikerswaarden',
+    const datasets = [{
+        label: `Ingevoerde ${chartType.toLowerCase()} waarde`,
         data: userValues,
         borderColor: 'black',
         backgroundColor: 'black',
         spanGaps: true,
-    });
+        fill: false
+    }];
 
-    const ctx = document.getElementById('growChartJs').getContext('2d');
-    const config = {
-        type: 'line',
-        data: {
-            labels: months,
-            datasets: datasets
+    if (chartType === 'Lengte' && additionalData) {
+        const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
+        const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
+        const lineWidth = [2, 2, 2, 2, 3];
+        const labelMapping = {
+            'ValueMin30': '-3',
+            'ValueMin25': '-2,5',
+            'ValueMin20': '-2',
+            'ValueMin10': '-1',
+            'Value0': '0',
+            'ValuePlus10': '+1',
+            'ValuePlus20': '+2',
+            'ValuePlus25': '+2,5'
+        };
+        additionalData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
+        const valueRanges = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
+
+        datasets.push(...valueRanges.map((range, index) => ({
+            label: range,
+            data: months.map(month => {
+                const record = additionalData.find(d => parseFloat(d.StapNummer) === month);
+                return record ? parseFloat(record[range]) : null;
+            }),
+            borderColor: lineColors[index % lineColors.length],
+            borderWidth: lineWidth[index % lineWidth.length],
+            backgroundColor: 'rgba(222,236,220,0.55)',
+            fill: fills[index % fills.length],
+            pointRadius: 0,
+            pointHitRadius: 0,
+        })));
+
+        datasets.forEach(dataset => {
+            const label = labelMapping[dataset.label];
+            if (label) {
+                dataset.datalabels = {
+                    formatter: function () {
+                        return label;
+                    },
+                    color: 'black',
+                    backgroundColor: '#a2c1a3',
+                    align: 'left',
+                    anchor: 'end',
+                    offset: 10,
+                    display: function (context) {
+                        return context.dataIndex === context.dataset.data.length - 1;
+                    },
+                    font: {
+                        size: 10
+                    }
+                };
+            }
+        });
+    }
+    return {
+        labels: months.map(month => month.toString()),
+        datasets: datasets
+    };
+}
+
+function getChartOptions(chartType) {
+    return {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: `${chartType}-Leeftijd 0-15 maanden`,
+            },
+            legend: {
+                display: false
+            },
         },
-        options: {
-            responsive: true,
-            plugins: {
+        scales: {
+            x: {
                 title: {
                     display: true,
-                    text: 'Lengte-Leeftijd 0-15 maanden',
+                    text: 'Leeftijd (maanden)',
                 },
-                legend: {
-                    display: false
-                },
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Leeftijd (maanden)',
-                    },
-                    min: 0,
-                    max: 15,
-                    ticks: {
-                        autoSkip: false,
-                        callback: function (value) {
-                            if (Number.isInteger(value * 0.5)) {
-                                return value * 0.5;
-                            }
+                min: 0,
+                max: 31,
+                ticks: {
+                    autoSkip: false,
+                    callback: function (value) {
+                        if (Number.isInteger(value * 0.5)) {
+                            return value * 0.5;
                         }
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Lengte (cm)',
                     },
-                    min: 40,
-                    max: 92,
-                    position: 'left',
-                    ticks: {
-                        autoSkip: false,
-                        stepSize: 2
-                    }
-                },
-                yRight: {
-                    min: 40,
-                    max: 92,
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false,
-                    },
-                    ticks: {
-                        autoSkip: false,
-                        stepSize: 2
-                    }
-                },
+                }
             },
+            y: {
+                title: {
+                    display: true,
+                    text: chartType === 'Gewicht' ? 'Gewicht (kg)' : 'Lengte (cm)',
+                },
+                min: chartType === 'Gewicht' ? 0 : 40,
+                max: chartType === 'Gewicht' ? 10 : 92,
+                position: 'left',
+                ticks: {
+                    autoSkip: false,
+                    stepSize: chartType === 'Gewicht' ? 0.5 : 2
+                }
+            },
+            yRight: {
+                min: chartType === 'Gewicht' ? 0 : 40,
+                max: chartType === 'Gewicht' ? 10 : 92,
+                position: 'right',
+                ticks: {
+                    autoSkip: false,
+                    stepSize: chartType === 'Gewicht' ? 0.5 : 2
+                }
+            }
+        },
+        layout: {
+            padding: {
+                right: 10
+            }
         },
     };
-    new Chart(ctx, config);
-}).catch(error => {
-    console.error('Error loading data:', error);
-});
-
-const valueRanges = [
-    'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
-    'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
-];
+}
