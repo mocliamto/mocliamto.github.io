@@ -29,7 +29,7 @@ function createBarChart(data, elementId, xValue, yValue) {
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
         .selectAll("text")
-        .attr("transform", "rotate(-45)")
+        .attr("transform", "rotate(-20)")
         .style("text-anchor", "end");
 
     // Y as
@@ -87,7 +87,7 @@ function createLineChart(data, elementId, xValue, yValue) {
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
         .selectAll("text")
-        .attr("transform", "rotate(-45)")
+        .attr("transform", "rotate(-40)")
         .style("text-anchor", "end");
 
     // Y as
