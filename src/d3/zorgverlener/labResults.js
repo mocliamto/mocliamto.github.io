@@ -1,75 +1,140 @@
-const margin = {top: 30, right: 30, bottom: 30, left: 60};
-let labData;
+const margin = {top: 20, right: 50, bottom: 50, left: 50};
+let width, height;
 
-function parseDateTime(dateTime) {
-    return d3.isoParse(dateTime);
-}
+const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
+const parseGrensvalRange = grensval => grensval.split('-').map(Number);
 
-function parseGrensval(grensval) {
-    const [low, high] = grensval.split('-').map(Number);
-    return (low + high) / 2;
-}
+function createOrUpdateChart() {
+    const container = d3.select('#labChart');
+    if (!container.node()) {
+        console.error('Container #labChart does not exist');
+        return;
+    }
 
-function createLabChart(data) {
-    const element = document.getElementById('labChart');
-    const width = element.clientWidth - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    width = parseInt(container.style('width')) - margin.left - margin.right;
+    height = width / 1.5;
+    container.select('svg').remove();
 
-    d3.select("#labChart").select("svg").remove();
-
-    const svg = d3.select("#labChart")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+    const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // X as
-    const x = d3.scaleTime()
-        .domain(d3.extent(data, d => parseDateTime(d.DateTime)))
-        .range([0, width]);
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+    const x = d3.scaleTime().range([0, width]);
+    const y = d3.scaleLinear().range([height, 0]);
 
-    // Y as
-    const y = d3.scaleLinear()
-        .domain([
-            d3.min(data, d => Number(d.UITSLAG)),
-            d3.max(data, d => parseGrensval(d.GRENSVAL))
-        ])
-        .range([height, 0]);
-    svg.append("g").call(d3.axisLeft(y));
-
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "#ffeda0")
-        .attr("stroke", "none")
-        .attr("d", d3.area()
-            .x(d => x(parseDateTime(d.DateTime)))
-            .y0(height)
-            .y1(d => y(parseGrensval(d.GRENSVAL)))
-        );
-
-    svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 1.5)
-        .attr("d", d3.line()
-            .x(d => x(parseDateTime(d.DateTime)))
-            .y(d => y(Number(d.UITSLAG)))
-        );
+    processData(svg, x, y);
 }
 
-d3.json('../../assets/lab.json').then(function (data) {
-    labData = data;
-    createLabChart(labData);
-})
-    .catch(error => {
-        console.error('Error fetching the lab data:', error);
-    });
+function processData(svg, x, y) {
+    fetch('../../assets/lab.json')
+        .then(response => response.json())
+        .then(data => {
+            prepareData(data);
+            setScalesDomain(x, y, data);
+            drawChart(svg, x, y, data);
+        }).catch(handleError);
+}
 
-window.addEventListener("resize", function () {
-    createLabChart(labData);
-});
+function prepareData(data) {
+    data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
+    data.forEach(d => {
+        d.date = parseTime(d.DateTime);
+        d.uitslag = +d.UITSLAG;
+        d.grensval = parseGrensvalRange(d.GRENSVAL);
+    });
+}
+
+function setScalesDomain(x, y, data) {
+    x.domain(d3.extent(data, d => d.date));
+    const yMin = Math.floor(d3.min(data, d => Math.min(d.uitslag, d.grensval[0])));
+    const yMax = Math.ceil(d3.max(data, d => Math.max(d.uitslag, d.grensval[1])));
+    y.domain([yMin, yMax]);
+}
+
+function drawChart(svg, x, y, data) {
+    const valueline = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.uitslag));
+
+    const areaBetweenGrensval = d3.area()
+        .x(d => x(d.date))
+        .y0(d => y(d.grensval[0]))
+        .y1(d => y(d.grensval[1]));
+
+    // Area
+    svg.append("path")
+        .data([data])
+        .attr("class", "area-grensval")
+        .style("fill", "orange")
+        .style("opacity", 0.5)
+        .attr("d", areaBetweenGrensval);
+
+    // Line
+    svg.append("path")
+        .data([data])
+        .attr("class", "line uitslag")
+        .style("fill", "none")
+        .style("stroke", "red")
+        .attr("stroke-width", 2.3)
+        .attr("d", valueline);
+
+    // Dots
+    svg.selectAll("dot")
+        .data(data)
+        .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => x(d.date))
+        .attr("cy", d => y(d.uitslag))
+        .attr("r", 3)
+        .style("fill", "red");
+
+    addAxes(svg, x, y);
+    addGridLines(svg, x, y);
+}
+
+function addAxes(svg, x, y) {
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y"));
+    const yAxis = d3.axisLeft(y);
+    const rightYAxis = d3.axisRight(y);
+
+    // x-axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(xAxis)
+        .selectAll("text")
+        .attr("transform", "rotate(-20)")
+        .style("text-anchor", "end");
+
+    // y-axis (left)
+    svg.append("g")
+        .call(yAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -40)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Glucose(POCT) mmol/L");
+
+    // y-axis (right)
+    svg.append("g")
+        .attr("class", "axis axis--right")
+        .attr("transform", `translate(${width}, 0)`)
+        .call(rightYAxis);
+}
+
+function addGridLines(svg, x, y) {
+    const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
+    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
+
+    svg.append('g').attr('class', 'grid').call(yAxisGrid);
+    svg.append('g').attr('class', 'grid').attr('transform', `translate(0,${height})`).call(xAxisGrid);
+}
+
+function handleError(error) {
+    console.error('Error fetching the lab data:', error);
+}
+
+window.addEventListener('resize', createOrUpdateChart);
+document.addEventListener('DOMContentLoaded', createOrUpdateChart);

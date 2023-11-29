@@ -1,336 +1,140 @@
-// function parseDateTime(dateTime) {
-//     return d3.isoParse(dateTime);
-// }
+const margin = {top: 20, right: 50, bottom: 50, left: 50};
+let width, height;
 
-function parseGrensvalRange(grensval) {
-    if (typeof grensval === 'string') {
-        return grensval.split('-').map(Number);
+const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
+const parseGrensvalRange = grensval => grensval.split('-').map(Number);
+
+function createOrUpdateChart() {
+    const container = d3.select('#labChart');
+    if (!container.node()) {
+        console.error('Container #labChart does not exist');
+        return;
     }
-    return grensval;
-}
 
-const margin = {top: 30, right: 30, bottom: 80, left: 60};
+    width = parseInt(container.style('width')) - margin.left - margin.right;
+    height = width / 1.5;
+    container.select('svg').remove();
 
-function createLabChart(data, xValue, yValue) {
-    const element = document.getElementById('labChart');
-    const width = element.clientWidth - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-
-    d3.select("#labChart").select("svg").remove();
-
-    const svg = d3.select("#labChart")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+    const svg = container.append("svg")
+        .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const processedData = data.map(d => ({
-        date: new Date(d[xValue]),
-        value: d[yValue],
-        grensval: parseGrensvalRange(d.GRENSVAL)
-    })).sort((a, b) => a.date - b.date);
+    const x = d3.scaleTime().range([0, width]);
+    const y = d3.scaleLinear().range([height, 0]);
 
-    const x = d3.scaleTime()
-        .domain(d3.extent(processedData, d => d.date))
-        .range([0, width]);
+    processData(svg, x, y);
+}
 
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(processedData, d => d.value)])
-        .range([height, 0]);
+function processData(svg, x, y) {
+    fetch('../../assets/lab.json')
+        .then(response => response.json())
+        .then(data => {
+            prepareData(data);
+            setScalesDomain(x, y, data);
+            drawChart(svg, x, y, data);
+        }).catch(handleError);
+}
 
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%dT%H:%M:%S")))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
-
-    svg.append("g").call(d3.axisLeft(y));
-
-    const line = d3.line()
-        .x(d => x(d.date))
-        .y(d => y(d.value));
-
-    svg.append("path")
-        .datum(processedData)
-        .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 1.5)
-        .attr("d", line);
-
-    processedData.forEach(d => {
-        svg.append("line")
-            .attr("x1", x(d.date))
-            .attr("x2", x(d.date))
-            // .attr("fill", "+1")
-            .attr("y1", y(d.grensval[0]))
-            .attr("y2", y(d.grensval[1]))
-            .attr("stroke", "orange")
-            .attr("stroke-width", 1);
+function prepareData(data) {
+    data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
+    data.forEach(d => {
+        d.date = parseTime(d.DateTime);
+        d.uitslag = +d.UITSLAG;
+        d.grensval = parseGrensvalRange(d.GRENSVAL);
     });
 }
 
-let labData;
-d3.json('../../assets/lab.json').then(function (data) {
-    labData = data.map(d => ({
-        ...d,
-        UITSLAG: Number(d.UITSLAG),
-        GRENSVAL: parseGrensvalRange(d.GRENSVAL)
-    }));
-    createLabChart(labData, "DateTime", "UITSLAG");
-}).catch(error => {
+function setScalesDomain(x, y, data) {
+    x.domain(d3.extent(data, d => d.date));
+    const yMin = Math.floor(d3.min(data, d => Math.min(d.uitslag, d.grensval[0])));
+    const yMax = Math.ceil(d3.max(data, d => Math.max(d.uitslag, d.grensval[1])));
+    y.domain([yMin, yMax]);
+}
+
+function drawChart(svg, x, y, data) {
+    const valueline = d3.line()
+        .x(d => x(d.date))
+        .y(d => y(d.uitslag));
+
+    const areaBetweenGrensval = d3.area()
+        .x(d => x(d.date))
+        .y0(d => y(d.grensval[0]))
+        .y1(d => y(d.grensval[1]));
+
+    // Area
+    svg.append("path")
+        .data([data])
+        .attr("class", "area-grensval")
+        .style("fill", "orange")
+        .style("opacity", 0.5)
+        .attr("d", areaBetweenGrensval);
+
+    // Line
+    svg.append("path")
+        .data([data])
+        .attr("class", "line uitslag")
+        .style("fill", "none")
+        .style("stroke", "red")
+        .attr("stroke-width", 2.3)
+        .attr("d", valueline);
+
+    // Dots
+    svg.selectAll("dot")
+        .data(data)
+        .enter().append("circle")
+        .attr("class", "dot")
+        .attr("cx", d => x(d.date))
+        .attr("cy", d => y(d.uitslag))
+        .attr("r", 3)
+        .style("fill", "red");
+
+    addAxes(svg, x, y);
+    addGridLines(svg, x, y);
+}
+
+function addAxes(svg, x, y) {
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y"));
+    const yAxis = d3.axisLeft(y);
+    const rightYAxis = d3.axisRight(y);
+
+    // x-axis
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(xAxis)
+        .selectAll("text")
+        .attr("transform", "rotate(-20)")
+        .style("text-anchor", "end");
+
+    // y-axis (left)
+    svg.append("g")
+        .call(yAxis)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -40)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "end")
+        .text("Glucose(POCT) mmol/L");
+
+    // y-axis (right)
+    svg.append("g")
+        .attr("class", "axis axis--right")
+        .attr("transform", `translate(${width}, 0)`)
+        .call(rightYAxis);
+}
+
+function addGridLines(svg, x, y) {
+    const yAxisGrid = d3.axisLeft(y).tickSize(-width).tickFormat('').ticks(10);
+    const xAxisGrid = d3.axisBottom(x).tickSize(-height).tickFormat('').ticks(10);
+
+    svg.append('g').attr('class', 'grid').call(yAxisGrid);
+    svg.append('g').attr('class', 'grid').attr('transform', `translate(0,${height})`).call(xAxisGrid);
+}
+
+function handleError(error) {
     console.error('Error fetching the lab data:', error);
-});
+}
 
-window.addEventListener("resize", () => createLabChart(labData, "DateTime", "UITSLAG"));
-
-// function parseDateTime(dateTime) {
-//     return d3.isoParse(dateTime);
-// }
-//
-// function parseGrensvalRange(grensval) {
-//     return grensval.split('-').map(Number);
-// }
-//
-// let labData;
-// const margin = {top: 30, right: 30, bottom: 80, left: 60};
-//
-//
-// function createLabChart(data) {
-//     const element = document.getElementById('labChart');
-//     const width = element.clientWidth - margin.left - margin.right;
-//     const height = 400 - margin.top - margin.bottom;
-//
-//     d3.select("#labChart").select("svg").remove();
-//
-//     const svg = d3.select("#labChart")
-//         .append("svg")
-//         .attr("width", width + margin.left + margin.right)
-//         .attr("height", height + margin.top + margin.bottom)
-//         .append("g")
-//         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//
-//     // Setting the x-axis domain based on the DateTime range
-//     const x = d3.scaleTime()
-//         .domain(d3.extent(data, d => parseDateTime(d.DateTime)))
-//         .range([0, width]);
-//
-//     const y = d3.scaleLinear()
-//         .domain([
-//             d3.min(data, d => d.GRENSVAL[0]),
-//             d3.max(data, d => d.GRENSVAL[1])
-//
-//             // .domain([
-//             //     d3.min(data, d => Math.min(...parseGrensvalRange(d.GRENSVAL))),
-//             //     d3.max(data, d => Math.max(...parseGrensvalRange(d.GRENSVAL)))
-//             // ])
-//         ])
-//         .range([height, 0]);
-//
-//     // Adding x-axis with short date notation
-//     svg.append("g")
-//         .attr("transform", "translate(0," + height + ")")
-//         .call(d3.axisBottom(x).tickFormat(d3.timeParse("%Y-%m-%dT%H:%M:%S")));
-//
-//     // Adding y-axis
-//     svg.append("g").call(d3.axisLeft(y));
-//
-//     // Line for UITSLAG
-//     const lineUitslag = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(Number(d.UITSLAG)));
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "red")
-//         .attr("stroke-width", 1.5)
-//         .attr("d", lineUitslag);
-//
-//     // Lines for GRENSVAL
-//     const lineGrensvalLow = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(parseGrensvalRange(d.GRENSVAL)[0]));
-//
-//     const lineGrensvalHigh = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(parseGrensvalRange(d.GRENSVAL)[1]));
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "#ef3402")
-//         .attr("stroke-width", 1)
-//         .attr("d", lineGrensvalLow);
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "#fa4515")
-//         .attr("stroke-width", 1)
-//         .attr("d", lineGrensvalHigh);
-// }
-//
-// d3.json('../../assets/lab.json').then(function (data) {
-//     labData = data.map(d => ({
-//         ...d,
-//         DateTime: parseDateTime(d.DateTime),
-//         UITSLAG: Number(d.UITSLAG),
-//         GRENSVAL: parseGrensvalRange(d.GRENSVAL) // Parse here
-//     }));
-//     labData.sort((a, b) => a.DateTime - b.DateTime);
-//     createLabChart(labData);
-// }).catch(error => {
-//     console.error('Error fetching the lab data:', error);
-// });
-//
-// window.addEventListener("resize", function () {
-//     createLabChart(labData);
-// });
-
-// function parseGrensvalRange(grensval) {
-//     if (typeof grensval === 'string') {
-//         return grensval.split('-').map(Number);
-//     }
-//     return grensval;
-// }
-//
-// const margin = {top: 30, right: 30, bottom: 80, left: 60};
-// let labData;
-//
-// function createLabChart(data) {
-//     const element = document.getElementById('labChart');
-//     const width = element.clientWidth - margin.left - margin.right;
-//     const height = 400 - margin.top - margin.bottom;
-//
-//     d3.select("#labChart").select("svg").remove();
-//
-//     const svg = d3.select("#labChart")
-//         .append("svg")
-//         .attr("width", width + margin.left + margin.right)
-//         .attr("height", height + margin.top + margin.bottom)
-//         .append("g")
-//         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-//
-//     // Setting the x-axis domain based on the DateTime range
-//     const x = d3.scaleTime()
-//         .domain(d3.extent(data, d => parseDateTime(d.DateTime)))
-//         .range([0, width]);
-//
-//     // Setting the y-axis domain based on the min and max of GRENSVAL
-//     const y = d3.scaleLinear()
-//         .domain([
-//             d3.min(data, d => d.GRENSVAL[0]),
-//             d3.max(data, d => d.GRENSVAL[1])
-//         ])
-//         .range([height, 0])
-//
-//     // Adding x-axis with short date notation
-//     svg.append("g")
-//         .attr("transform", "translate(0," + height + ")")
-//         .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
-//         .selectAll("text")
-//         .attr("transform", "rotate(-45)")
-//         .style("text-anchor", "end");
-//
-//     // Adding y-axis
-//     svg.append("g").call(d3.axisLeft(y));
-//
-//     // Line for UITSLAG
-//     const lineUitslag = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(Number(d.UITSLAG)));
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "red")
-//         .attr("stroke-width", 1.5)
-//         .attr("d", lineUitslag);
-//
-//     // Lines for GRENSVAL
-//     const lineGrensvalLow = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(parseGrensvalRange(d.GRENSVAL)[0]));
-//
-//     const lineGrensvalHigh = d3.line()
-//         .x(d => x(parseDateTime(d.DateTime)))
-//         .y(d => y(parseGrensvalRange(d.GRENSVAL)[1]));
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "#ef3402")
-//         .attr("stroke-width", 1)
-//         .attr("d", lineGrensvalLow);
-//
-//     svg.append("path")
-//         .datum(data)
-//         .attr("fill", "none")
-//         .attr("stroke", "#fa4515")
-//         .attr("stroke-width", 1)
-//         .attr("d", lineGrensvalHigh);
-// }
-//
-// d3.json('../../assets/lab.json').then(function (data) {
-//     labData = data.map(d => ({
-//         ...d,
-//         DateTime: parseDateTime(d.DateTime),
-//         UITSLAG: Number(d.UITSLAG),
-//         GRENSVAL: parseGrensvalRange(d.GRENSVAL)
-//     }));
-//     labData.sort((a, b) => a.DateTime - b.DateTime);
-//     createLabChart(labData);
-// }).catch(error => {
-//     console.error('Error fetching the lab data:', error);
-// });
-// window.addEventListener("resize", function() {
-//     createLabChart(labData);
-// });
-
-// const svg = d3.select('body').append('svg')
-//     .attr('width', '100%')
-//     .attr('height', '500')
-//     .attr('viewBox', '0 0 960 500');
-//
-// // Parse the date / time
-// const parseTime = d3.timeParse('%Y-%m-%dT%H:%M:%S');
-//
-// // Set the ranges
-// const x = d3.scaleTime().range([0, 960]);
-// const y = d3.scaleLinear().range([500, 0]);
-//
-// // Define the line
-// const valueline = d3.line()
-//     .x(function(d) { return x(d.DateTime); })
-//     .y(function(d) { return y(d.UITSLAG); });
-//
-// // Get the data (here we would use the JSON you provided)
-// d3.json('../../assets/lab.json').then(function(data) {
-//
-//     // Format the data
-//     data.forEach(function(d) {
-//         d.DateTime = parseTime(d.DateTime);
-//         d.UITSLAG = +d.UITSLAG;
-//     });
-//
-//     // Scale the range of the data
-//     x.domain(d3.extent(data, function(d) { return d.DateTime; }));
-//     y.domain([0, d3.max(data, function(d) { return d.UITSLAG; })]);
-//
-//     // Add the valueline path
-//     svg.append('path')
-//         .data([data])
-//         .attr('class', 'line')
-//         .attr('d', valueline);
-//
-//     // Add the X Axis
-//     svg.append('g')
-//         .attr('transform', 'translate(0,' + 500 + ')')
-//         .call(d3.axisBottom(x));
-//
-//     // Add the Y Axis
-//     svg.append('g')
-//         .call(d3.axisLeft(y));
-// });
+window.addEventListener('resize', createOrUpdateChart);
+document.addEventListener('DOMContentLoaded', createOrUpdateChart);

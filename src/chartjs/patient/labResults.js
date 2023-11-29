@@ -1,4 +1,3 @@
-// this in d3.js
 function parseGrensvalRange(grensval) {
     return grensval.split('-').map(Number);
 }

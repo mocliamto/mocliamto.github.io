@@ -7,16 +7,19 @@
 .epi-chart, #labChart {
     width: 100%;
     max-width: 550px;
-    /*margin: auto;*/
 }
-/*.tab-content-container {*/
-/*    visibility: hidden;*/
-/*}*/
 
-/*.tab-content-container > .active {*/
-/*    visibility: visible;*/
-/*    background-color: blue;*/
-/*}*/
+/*d3.js labuitslag rasterlijnen*/
+.grid line {
+    stroke: lightgrey;
+    stroke-opacity: 0.5;
+    shape-rendering: crispEdges;
+}
+.grid path {
+    stroke-width: 0;
+}
+
+/*tabs voor chart.js groei curves*/
 #tabs {
     display: flex;
     justify-content: space-around;

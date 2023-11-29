@@ -107,7 +107,6 @@ function createLineChart(data, elementId, xValue, yValue) {
         .attr("transform", "translate(" + width + ",0)")
         .call(d3.axisRight(yRight));
 
-
     svg.append("path")
         .datum(processedData)
         .attr("fill", "none")
