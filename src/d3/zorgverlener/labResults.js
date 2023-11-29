@@ -138,4 +138,3 @@ function handleError(error) {
 
 window.addEventListener('resize', createOrUpdateChart);
 document.addEventListener('DOMContentLoaded', createOrUpdateChart);
-
