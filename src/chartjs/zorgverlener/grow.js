@@ -11,7 +11,8 @@ async function renderChart(chartType) {
     highlightTab(chartType);
     try {
         const growData = await fetchDataIfNeeded('../../assets/grow.json', 'growData');
-        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../../assets/tno.json', 'tnoData') : null;
+        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../../assets/tno.json', 'tnoData')
+            : await fetchDataIfNeeded('../../assets/tnoWeight.json', 'tnoWeightData');
         const chartData = processChartData(growData, additionalData, chartType);
         createOrUpdateChart(chartData, chartType);
         updateChartDisplay(chartType);
@@ -69,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function highlightTab(tabName) {
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('selected', tab.textContent === tabName));
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('selected',
+        tab.textContent === tabName));
 }
 
 function processChartData(growData, additionalData, chartType) {
@@ -88,59 +90,57 @@ function processChartData(growData, additionalData, chartType) {
         fill: false
     }];
 
-    if (chartType === 'Lengte' && additionalData) {
-        const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
-        const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
-        const lineWidth = [2, 2, 2, 2, 3];
-        const labelMapping = {
-            'ValueMin30': '-3',
-            'ValueMin25': '-2,5',
-            'ValueMin20': '-2',
-            'ValueMin10': '-1',
-            'Value0': '0',
-            'ValuePlus10': '+1',
-            'ValuePlus20': '+2',
-            'ValuePlus25': '+2,5'
-        };
-        additionalData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
-        const valueRanges = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
+    const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
+    const fills = [false, false, '+1', '+1', '+1', '+1', false, false];
+    const lineWidth = [2, 2, 2, 2, 3];
+    const labelMapping = {
+        'ValueMin30': '-3',
+        'ValueMin25': '-2,5',
+        'ValueMin20': '-2',
+        'ValueMin10': '-1',
+        'Value0': '0',
+        'ValuePlus10': '+1',
+        'ValuePlus20': '+2',
+        'ValuePlus25': '+2,5'
+    };
+    additionalData.sort((a, b) => parseFloat(a.StapNummer) - parseFloat(b.StapNummer));
+    const valueRanges = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
 
-        datasets.push(...valueRanges.map((range, index) => ({
-            label: range,
-            data: months.map(month => {
-                const record = additionalData.find(d => parseFloat(d.StapNummer) === month);
-                return record ? parseFloat(record[range]) : null;
-            }),
-            borderColor: lineColors[index % lineColors.length],
-            borderWidth: lineWidth[index % lineWidth.length],
-            backgroundColor: 'rgba(222,236,220,0.55)',
-            fill: fills[index % fills.length],
-            pointRadius: 0,
-            pointHitRadius: 0,
-        })));
+    datasets.push(...valueRanges.map((range, index) => ({
+        label: range,
+        data: months.map(month => {
+            const record = additionalData.find(d => parseFloat(d.StapNummer) === month);
+            return record ? parseFloat(record[range]) : null;
+        }),
+        borderColor: lineColors[index % lineColors.length],
+        borderWidth: lineWidth[index % lineWidth.length],
+        backgroundColor: 'rgba(222,236,220,0.55)',
+        fill: fills[index % fills.length],
+        pointRadius: 0,
+        pointHitRadius: 0,
+    })));
 
-        datasets.forEach(dataset => {
-            const label = labelMapping[dataset.label];
-            if (label) {
-                dataset.datalabels = {
-                    formatter: function () {
-                        return label;
-                    },
-                    color: 'black',
-                    backgroundColor: '#a2c1a3',
-                    align: 'left',
-                    anchor: 'end',
-                    offset: 10,
-                    display: function (context) {
-                        return context.dataIndex === context.dataset.data.length - 1;
-                    },
-                    font: {
-                        size: 10
-                    }
-                };
-            }
-        });
-    }
+    datasets.forEach(dataset => {
+        const label = labelMapping[dataset.label];
+        if (label) {
+            dataset.datalabels = {
+                formatter: function () {
+                    return label;
+                },
+                color: 'black',
+                backgroundColor: '#a2c1a3',
+                align: 'left',
+                anchor: 'end',
+                offset: 10,
+                display: function (context) {
+                    return context.dataIndex === context.dataset.data.length - 1;
+                },
+                font: {
+                    size: 10
+                }
+            };
+        }
+    });
     return {
         labels: months.map(month => month.toString()),
         datasets: datasets
@@ -182,20 +182,20 @@ function getChartOptions(chartType) {
                     text: chartType === 'Gewicht' ? 'Gewicht (kg)' : 'Lengte (cm)',
                 },
                 min: chartType === 'Gewicht' ? 0 : 40,
-                max: chartType === 'Gewicht' ? 10 : 92,
+                max: chartType === 'Gewicht' ? 16 : 92,
                 position: 'left',
                 ticks: {
                     autoSkip: false,
-                    stepSize: chartType === 'Gewicht' ? 0.5 : 2
+                    stepSize: chartType === 'Gewicht' ? 1 : 2
                 }
             },
             yRight: {
                 min: chartType === 'Gewicht' ? 0 : 40,
-                max: chartType === 'Gewicht' ? 10 : 92,
+                max: chartType === 'Gewicht' ? 16 : 92,
                 position: 'right',
                 ticks: {
                     autoSkip: false,
-                    stepSize: chartType === 'Gewicht' ? 0.5 : 2
+                    stepSize: chartType === 'Gewicht' ? 1 : 2
                 }
             }
         },
