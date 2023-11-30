@@ -66,12 +66,44 @@ function getLastChartType() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setupChartButtons();
+    setupPrintChartButton();
     renderChart(getLastChartType());
 });
 
 function highlightTab(tabName) {
     document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('selected',
         tab.textContent === tabName));
+}
+
+function setupPrintChartButton() {
+    document.getElementById('printChartBtn').addEventListener('click', printChart);
+}
+
+function printChart() {
+    const activeTab = document.querySelector('.tab.selected').textContent.toLowerCase();
+    const chartCanvas = document.getElementById(`${activeTab.toLowerCase()}ChartJs`);
+
+    if (chartCanvas) {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>${activeTab} grafiek</title>
+                </head>
+                <body>
+                    <img src="${chartCanvas.toDataURL()}" style="width:100%; height:auto;">
+                    <script type="text/javascript">
+                        window.onload = function() {
+                            window.print();
+                        }
+                    </script>
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+    } else {
+        console.error(`No chart found for the active tab: ${activeTab}`);
+    }
 }
 
 function processChartData(growData, additionalData, chartType) {
