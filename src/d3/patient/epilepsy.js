@@ -21,13 +21,13 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
     const x = (chartType === 'bar') ?
         d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(0.1) :
-        d3.scaleTime().domain(d3.extent(data, d => new Date(d[xValue]))).range([0, width]);
+        d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(1);
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
         .selectAll("text")
-        .attr("transform", elementId === 'seizureChart' ? "rotate(-20)" : "rotate(-40)")
+        .attr("transform", "rotate(-20)")
         .style("text-anchor", "end");
 
     // Y-as
@@ -35,34 +35,71 @@ function createChart(data, elementId, xValue, yValue, chartType) {
     let yMin = d3.min(data, d => d[yValue]);
 
     if (elementId === 'medicationChart') {
-        yMax = Math.ceil(yMax / 500) * 500;
+        yMax = Math.ceil(yMax / 400) * 400;
     } else if (elementId === 'seizureChart') {
         yMin = 0;
+    } else {
+        yMax = Math.ceil(d3.max(data, d => d[yValue]) / 200) * 2;
     }
 
     const y = d3.scaleLinear().domain([yMin, yMax]).range([height, 0]);
 
     if (elementId === 'medicationChart') {
+        const y = d3.scaleLinear()
+            .domain([0, yMax])
+            .range([height, 0]);
 
         function y_medicationGridlines() {
             return d3.axisLeft(y)
-                // .ticks(2)
-                .tickValues(d3.range(0, yMax + 1, 500))
+                .ticks(4)
                 .tickSize(-width)
                 .tickFormat("");
         }
 
-        svg.append("g").attr("class", "grid")
-            .call(y_medicationGridlines().tickSize(-width).tickFormat(""))
+        svg.append("g")
+            .attr("class", "grid")
+            .call(y_medicationGridlines());
 
         function x_medicationGridlines() {
             return d3.axisBottom(x)
+                .ticks(10)
+                .tickSize(-height)
+                .tickFormat("");
         }
 
-        svg.append("g").attr("class", "grid")
+        svg.append("g")
+            .attr("class", "grid")
             .attr("transform", `translate(0,${height})`)
-            .call(x_medicationGridlines().tickSize(-height).tickFormat(""));
+            .call(x_medicationGridlines());
 
+        const yAxisRight = d3.axisRight(y)
+            .tickValues(d3.range(0, yMax + 1, 200))
+            .tickFormat(d3.format('d'));
+
+        svg.append("g").attr("transform", `translate(${width}, 0)`).call(yAxisRight);
+
+        const yAxis = d3.axisLeft(y)
+            .tickValues(d3.range(0, yMax + 1, 200))
+            .tickFormat(d3.format('d'));
+
+        svg.append("g").call(yAxis);
+
+        svg.append("path")
+            .datum(processedData)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 1.5)
+            .attr("d", d3.line()
+                .x(d => x(d.date))
+                .y(d => y(d.value)));
+
+        svg.selectAll("dot")
+            .data(processedData).enter()
+            .append("circle")
+            .attr("cx", d => x(d.date))
+            .attr("cy", d => y(d.value))
+            .attr("r", 3)
+            .attr("fill", "steelblue");
     } else {
         const yMax = d3.max(data, d => d[yValue]);
         let yMin = d3.min(data, d => d[yValue]);
@@ -129,20 +166,20 @@ function createChart(data, elementId, xValue, yValue, chartType) {
                 }
                 return colorMap.get(wholeNumberValue);
             });
+
     } else if (chartType === 'line') {
-        const yMax = Math.ceil(d3.max(data, d => d[yValue]) / 500) * 500;
         const y = d3.scaleLinear()
             .domain([0, yMax])
             .range([height, 0]);
 
         const yAxisRight = d3.axisRight(y)
-            .tickValues(d3.range(0, yMax + 1, 500))
+            .tickValues(d3.range(0, yMax + 1, 200))
             .tickFormat(d3.format('d'));
 
         svg.append("g").attr("transform", `translate(${width}, 0)`).call(yAxisRight);
 
         const yAxis = d3.axisLeft(y)
-            .tickValues(d3.range(0, yMax + 1, 500))
+            .tickValues(d3.range(0, yMax + 1, 200))
             .tickFormat(d3.format('d'));
 
         svg.append("g").call(yAxis);
@@ -152,7 +189,9 @@ function createChart(data, elementId, xValue, yValue, chartType) {
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 1.5)
-            .attr("d", d3.line().x(d => x(d.date)).y(d => y(d.value)));
+            .attr("d", d3.line()
+                .x(d => x(d.date))
+                .y(d => y(d.value)));
 
         svg.selectAll("dot")
             .data(processedData).enter()
@@ -177,9 +216,3 @@ d3.json('../../assets/epilepsy.json').then(function (data) {
 });
 
 window.addEventListener("resize", redrawCharts);
-
-//todo: per 1 getal een ander kleur van seizureChart ("Aanvalsregistratie": "aantal")
-// niet hetzelfde kleur herdisplayen als het op het moment aan het displayen is,
-// de kleuren onthouden wanneer de pagina refreshed
-// display 1 int getal op de y as van seizureChart als het mogelijk is
-//todo: andere aansluitende gridlijnen voor medicationChart
