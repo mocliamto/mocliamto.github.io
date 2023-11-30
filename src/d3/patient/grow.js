@@ -28,7 +28,7 @@ function createLineChart() {
     const line = d3.line()
         .x(d => x(d.month))
         .y(d => y(d.value))
-        .curve(d3.curveMonotoneX);
+    .curve(d3.curveMonotoneX);
 
     x.domain([0, 15]);
     y.domain([40, 92]);
@@ -73,6 +73,21 @@ function createLineChart() {
         .attr("cy", d => y(d.value))
         .attr("r", 3.5)
         .attr("fill", "black");
+
+    // gridline
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(15).tickSize(-height).tickFormat(""));
+
+    svg.append("g")
+        .attr("class", "grid")
+        .call(d3.axisLeft(y).ticks((92 - 40) / 2).tickSize(-width).tickFormat(""));
+
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(" + width + ",0)")
+        .call(d3.axisRight(yRight).ticks((92 - 40) / 2).tickSize(-width).tickFormat(""));
 }
 
 Promise.all([
@@ -87,85 +102,3 @@ Promise.all([
 });
 
 window.addEventListener("resize", createLineChart);
-
-// // Configuration
-// const valueRanges = [
-//     'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
-//     'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
-// ];
-// const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
-// const lineWidth = [2, 2, 2, 2, 3];
-//
-// // Set initial dimensions and margins
-// const margin = {top: 20, right: 20, bottom: 30, left: 50};
-// let container = d3.select("#chart-container"); // The container for the chart
-// let width = container.node().getBoundingClientRect().width - margin.left - margin.right;
-// let height = 500 - margin.top - margin.bottom; // Set a fixed height
-//
-// // Scales
-// const x = d3.scaleLinear().range([0, width]);
-// const y = d3.scaleLinear().range([height, 0]);
-// const yRight = d3.scaleLinear().range([height, 0]);
-//
-// // Line generator
-// const line = d3.line()
-//     .x(d => x(d.month))
-//     .y(d => y(d.value))
-//     .curve(d3.curveMonotoneX);
-//
-// // Append SVG to the container with viewBox
-// const svg = container.append("svg")
-//     .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-//     .append("g")
-//     .attr("transform", `translate(${margin.left}, ${margin.top})`);
-//
-// // Data loading and chart construction
-// Promise.all([
-//     fetch('../../assets/grow.json').then(response => response.json()),
-//     fetch('../../assets/tno.json').then(response => response.json())
-// ]).then(([growData, tnoData]) => {
-//     // Domain settings
-//     x.domain([0, 15]);
-//     y.domain([40, 92]);
-//     yRight.domain([40, 92]);
-//
-//     // Axes
-//     svg.append("g")
-//         .attr("transform", `translate(0, ${height})`)
-//         .call(d3.axisBottom(x).ticks(15));
-//     svg.append("g")
-//         .call(d3.axisLeft(y).ticks((92 - 40) / 2));
-//     svg.append("g")
-//         .attr("transform", `translate(${width}, 0)`)
-//         .call(d3.axisRight(yRight).ticks((92 - 40) / 2));
-//
-//     // Line plots
-//     valueRanges.forEach((range, index) => {
-//         const dataset = tnoData.map(d => ({month: d.StapNummer, value: d[range]}));
-//         svg.append("path")
-//             .data([dataset])
-//             .attr("fill", "none")
-//             .attr("stroke", lineColors[index % lineColors.length])
-//             .attr("stroke-width", lineWidth[index % lineWidth.length])
-//             .attr("d", line);
-//     });
-//     const userValues = growData.map(d => ({month: d.LeeftijdInMaanden, value: d.Lengte}));
-//     svg.append("path")
-//         .data([userValues])
-//         .attr("fill", "none")
-//         .attr("stroke", "black")
-//         .attr("d", line);
-// }).catch(error => {
-//     console.error('Error loading data:', error);
-// });
-//
-// // Resize functionality
-// function updateChart() {
-//     width = container.node().getBoundingClientRect().width - margin.left - margin.right;
-//     svg.attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
-//     x.range([0, width]);
-//     yRight.range([height, 0]);
-//
-// }
-//
-// d3.select(window).on("resize", updateChart);
