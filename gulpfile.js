@@ -35,13 +35,6 @@ gulp.task('scripts', copyScripts);
 
 gulp.task('default', gulp.parallel(copyStyles, copyScripts));
 
-gulp.task('less', function () {
-    gulp.src('src/**.js')
-        .pipe(less())
-        .pipe(gulp.dest('dist'))
-        .pipe(livereload());
-});
-
 gulp.task('watch', function () {
     gulp.watch('src/**.js', () => livereload.listen());
 });
