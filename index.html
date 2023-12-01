@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,36 +10,77 @@
     <script src="src/assets/js/popper.min.js" defer></script>
     <script src="src/assets/js/bootstrap.min.js" defer></script>
 </head>
+
 <body class="h-100">
     <div class="d-flex flex-column h-100">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
-            <a class="navbar-brand mb-0 h1" href="https://github.com/mocliamto/mocliamto.github.io">Chart Libraries</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <div class="navbar-nav">
-                    <a class="nav-link disabled" href="#">Zorgverlener| </a>
-                    <a class="nav-item nav-link" href="src/apex/zorgverlener/indexApex.html" target="content">ApexChart</a>
-                    <a class="nav-item nav-link" href="src/chartjs/zorgverlener/indexChartjs.html" target="content">ChartJs</a>
-                    <a class="nav-item nav-link" href="src/d3/zorgverlener/indexD3.html" target="content">D3</a>
-                </div>
-            </div>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav1"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav1">
-                <div class="navbar-nav">
-                    <a class="nav-link disabled" href="#">Patient| </a>
-                    <a class="nav-item nav-link" href="src/apex/patient/indexApex.html" target="content">ApexChart</a>
-                    <a class="nav-item nav-link" href="src/chartjs/patient/indexChartjs.html" target="content">ChartJs</a>
-                    <a class="nav-item nav-link" href="src/d3/patient/indexD3.html" target="content">D3</a>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+                <a class="navbar-brand" href="#">Chart Libraries</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Zorgverlener
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="src/apex/zorgverlener/indexApex.html"
+                                        target="content">ApexChart</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="src/chartjs/zorgverlener/indexChartjs.html"
+                                        target="content">ChartJs</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="src/chartjs/zorgverlener/indexD3.html"
+                                        target="content">D3</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Patient
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="src/apex/patient/indexApex.html"
+                                        target="content">ApexChart</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="src/chartjs/patient/indexChartjs.html"
+                                        target="content">ChartJs</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="src/chartjs/patient/indexD3.html"
+                                        target="content">D3</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
         <iframe name="content" class="h-100"></iframe>
     </div>
 </body>
+
 </html>
