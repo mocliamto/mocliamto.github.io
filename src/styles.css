@@ -1,15 +1,10 @@
-.grow-chart, .epi-chart, .lab-chart {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 2%;
-    margin: 3em 0;
-}
-
 /*d3.js labuitslag rasterlijnen*/
 .grid line {
     stroke: lightgrey;
     stroke-opacity: 0.5;
     shape-rendering: crispEdges;
 }
+
 .grid path {
     stroke-width: 0;
 }

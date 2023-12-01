@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,31 +17,34 @@
     <script type="module" src="grow.js" defer></script>
     <script type="module" src="epilepsy.js" defer></script>
 </head>
+
 <body>
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-6">
-                <div class="lab-chart">
+                <div class="card">
                     <div id="labChart"></div>
                     <div id="lab-chart-line"></div>
                 </div>
-                <div class="grow-chart">
+                <div class="card mt-3">
                     <div id="growChart"></div>
                 </div>
             </div>
             <div class="epi-chart col-12 col-md-6">
-            <div id="epi-chart-line2"></div>
-                <div id="epi-chart-area"></div>
+                <div class="card">
+                    <div id="epi-chart-line2"></div>
+                    <div id="epi-chart-area"></div>
+                </div>
             </div>
         </div>
     </div>
     <div id="navbar-placeholder"></div>
     <script>
-        $(document).ready(function(){
-            $("#navbar-placeholder").load("../../../navbar.html", function() {
+        $(document).ready(function () {
+            $("#navbar-placeholder").load("../../../navbar.html", function () {
                 // Highlight de actieve tab
                 const currentPath = window.location.pathname;
-                $('.nav-item').each(function() {
+                $('.nav-item').each(function () {
                     if ($(this).find('a').attr('href') === currentPath) {
                         $(this).addClass('active');
                     }
@@ -49,4 +53,5 @@
         });
     </script>
 </body>
+
 </html>
