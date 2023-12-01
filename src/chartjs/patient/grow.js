@@ -160,15 +160,15 @@ function processChartData(growData, additionalData, chartType) {
                     return label;
                 },
                 color: 'black',
-                backgroundColor: '#a2c1a3',
-                align: 'left',
-                anchor: 'end',
-                offset: 10,
+                backgroundColor: 'transparent',
+                align: 'right',
+                anchor: 'start',
+                offset: -33,
                 display: function (context) {
                     return context.dataIndex === context.dataset.data.length - 1;
                 },
                 font: {
-                    size: 10
+                    size: 12,
                 }
             };
         }

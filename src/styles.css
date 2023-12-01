@@ -44,3 +44,12 @@
     opacity: 1;
     font-weight: bold;
 }
+
+/*afdruk button*/
+#printChartBtn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5%;
+    margin: 1rem 1.5rem 0 1.5rem;
+    font-weight: bold;
+    font-size: 13px;
+}
