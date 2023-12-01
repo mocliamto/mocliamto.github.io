@@ -14,9 +14,8 @@
     <div class="collapse navbar-collapse justify-content-left" id="navbarNav">
         <div class="navbar-nav">
             <a class="nav-link disabled" href="#">Zorgverlener| </a>
-            <a class=" nav-item nav-link" href="../../apex/zorgverlener/indexApex.html">ApexChart</a>
-            <a class="nav-item active nav-link mb-0 h5" href="../zorgverlener/indexChartjs.html">ChartJs<span
-                    class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="../../apex/zorgverlener/indexApex.html">ApexChart</a>
+            <a class="nav-item nav-link" href="../zorgverlener/indexChartjs.html">ChartJs</a>
             <a class="nav-item nav-link" href="../../d3/zorgverlener/indexD3.html">D3</a>
         </div>
     </div>
@@ -27,8 +26,9 @@
     <div class="collapse navbar-collapse justify-content-right" id="navbarNav1">
         <div class="navbar-nav">
             <a class="nav-link disabled" href="#">Patient| </a>
-            <a class=" nav-item nav-link" href="../../apex/patient/indexApex.html">ApexChart</a>
-            <a class="nav-item nav-link" href="../patient/indexChartjs.html">ChartJs</a>
+            <a class="nav-item nav-link" href="../../apex/patient/indexApex.html">ApexChart</a>
+            <a class="nav-item active nav-link mb-0 h5" href="../patient/indexChartjs.html">ChartJs<span
+                    class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="../../d3/patient/indexD3.html">D3</a>
         </div>
     </div>
@@ -46,7 +46,7 @@
                     <button class="tab" id="Lengte">Lengte</button>
                     <button class="tab" id="Gewicht">Gewicht</button>
                 </div>
-                <button id="printChartBtn">Print grafiek</button>
+                <button id="printChartBtn" class="btn btn-outline-secondary">Print grafiek</button>
                 <canvas id="lengteChartJs" width="100%" height="100%"></canvas>
                 <canvas id="gewichtChartJs" width="100%" height="100%"></canvas>
             </div>
@@ -55,8 +55,6 @@
             <h5>Epilepsie aanvalsregistratie</h5>
             <canvas id="seizureChart" width="100%" height="50%"></canvas>
             <canvas id="medicationChart" width="100%" height="50%"></canvas>
-            <canvas id="pddChart" width="100%" height="50%"></canvas>
-            <canvas id="labResultssChart" width="100%" height="50%"></canvas>
         </div>
     </div>
 </div>
