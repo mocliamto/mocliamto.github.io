@@ -4,11 +4,6 @@
     margin: 3em 0;
 }
 
-.epi-chart, #labChart {
-    width: 100%;
-    max-width: 550px;
-}
-
 /*d3.js labuitslag rasterlijnen*/
 .grid line {
     stroke: lightgrey;
