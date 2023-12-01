@@ -7,6 +7,8 @@
     "build": "parcel build src/index.html"
   },
   "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-gh-pages": "^0.5.4",
     "parcel": "^2.6.2"
   },
   "dependencies": {
@@ -21,9 +23,11 @@
     "d3": "^7.8.5",
     "date-fns": "^2.30.0",
     "gitignore": "^0.7.0",
-    "gulp": "^4.0.2",
     "jquery": "^3.7.1",
     "luxon": "^3.4.3",
     "npm-git-install": "^0.3.0"
-  }
+  },
+  "main": "npm install gulp --save-dev",
+  "author": "",
+  "description": ""
 }

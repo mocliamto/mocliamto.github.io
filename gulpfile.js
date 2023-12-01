@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+var deploy = require('gulp-gh-pages');
 
 const styles = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
@@ -32,3 +33,11 @@ gulp.task('styles', copyStyles);
 gulp.task('scripts', copyScripts);
 
 gulp.task('all', gulp.parallel(copyStyles, copyScripts));
+
+gulp.task('deploy', function () {
+    return gulp.src("./prod/**/*")
+        .pipe(deploy({
+            remoteUrl: "https://https://github.com/mocliamto/mocliamto.github.io.git",
+            branch: "master"
+        }))
+});
