@@ -9,32 +9,6 @@
     stroke-width: 0;
 }
 
-/*tabs voor chart.js groei curves*/
-#tabs {
-    display: flex;
-    justify-content: space-around;
-    background-color: #fdf1d4;
-}
-
-.tab {
-    background-color: inherit;
-    border: none;
-    color: black;
-    padding: 10px 20px;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: 0.3s;
-}
-
-.tab:hover {
-    opacity: 1;
-}
-
-.selected {
-    opacity: 1;
-    font-weight: bold;
-}
-
 .loader {
     position: absolute;
     top: 0;
