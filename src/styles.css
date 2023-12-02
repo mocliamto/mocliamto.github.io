@@ -35,11 +35,20 @@
     font-weight: bold;
 }
 
-/*afdruk button*/
-#printChartBtn {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5%;
-    margin: 1rem 1.5rem 0 1.5rem;
-    font-weight: bold;
-    font-size: 13px;
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card-body {
+    position: relative;
+    min-height: 300px;
+}
+
+canvas,
+.graph {
+    position: relative;
+    z-index: 1;
+    background-color: #FFF;
 }

@@ -5,6 +5,7 @@ var deploy = require('gulp-gh-pages');
 const styles = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+    'node_modules/@fortawesome/fontawesome-free/css/all.min.css'
 ];
 const scripts = [
     'node_modules/apexcharts/dist/apexcharts.min.js',
@@ -20,7 +21,10 @@ const scripts = [
     'node_modules/@popperjs/core/dist/umd/popper.min.js',
     'node_modules/@popperjs/core/dist/umd/popper.js.map',
 ];
-
+const fonts = [
+    'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf',
+    'node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2'
+];
 function copyStyles() {
     return gulp.src(styles).pipe(gulp.dest('src/assets/css/'));
 }
@@ -29,11 +33,17 @@ function copyScripts() {
     return gulp.src(scripts).pipe(gulp.dest('src/assets/js/'));
 }
 
+function copyFonts() {
+    return gulp.src(fonts).pipe(gulp.dest('src/assets/fonts/'));
+}
+
 gulp.task('styles', copyStyles);
 
 gulp.task('scripts', copyScripts);
 
-gulp.task('default', gulp.parallel(copyStyles, copyScripts));
+gulp.task('scripts', copyFonts);
+
+gulp.task('default', gulp.parallel(copyStyles, copyScripts, copyFonts));
 
 gulp.task('watch', function () {
     gulp.watch('src/**.js', () => livereload.listen());

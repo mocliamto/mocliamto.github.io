@@ -2,7 +2,7 @@ function parseGrensvalRange(grensval) {
     return grensval.split('-').map(Number);
 }
 
-fetch('../../assets/lab.json')
+fetch('../assets/lab.json')
     .then(response => response.json())
     .then(data => {
         const dates = data.map(entry => new Date(entry.DateTime));
@@ -27,7 +27,7 @@ fetch('../../assets/lab.json')
                 x: dates[index],
                 y: value
             })),
-            fill: true
+            fill: false
         }, {
             name: 'Laag waarde',
             type: 'line',
@@ -36,18 +36,14 @@ fetch('../../assets/lab.json')
                 x: dates[index],
                 y: value
             })),
-            // fill: '+1'
+            fill: '+1'
         }];
 
         const optionsMainChart = {
             chart: {
                 type: 'line',
                 height: '100%',
-                id: 'chart2',
-                toolbar: {
-                    autoSelected: 'pan',
-                    show: false
-                }
+                id: 'chart2'
             },
             series: series,
             xaxis: {
@@ -74,7 +70,9 @@ fetch('../../assets/lab.json')
         const chart = new ApexCharts(document.querySelector("#labChart"), optionsMainChart);
         chart.render();
 
-        const seriesLineChart = [{ data: series[0].data }];
+        const seriesLineChart = [{
+            data: series[0].data
+        }];
 
         const optionsLineChart = {
             series: seriesLineChart,

@@ -10,9 +10,9 @@ async function fetchDataIfNeeded(url, key) {
 async function renderChart(chartType) {
     highlightTab(chartType);
     try {
-        const growData = await fetchDataIfNeeded('../../assets/grow.json', 'growData');
-        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../../assets/tno.json', 'tnoData')
-            : await fetchDataIfNeeded('../../assets/tnoWeight.json', 'tnoWeightData');
+        const growData = await fetchDataIfNeeded('../assets/grow.json', 'growData');
+        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../assets/tno.json', 'tnoData')
+            : await fetchDataIfNeeded('../assets/tnoWeight.json', 'tnoWeightData');
         const chartData = processChartData(growData, additionalData, chartType);
         createOrUpdateChart(chartData, chartType);
         updateChartDisplay(chartType);
@@ -107,7 +107,7 @@ function printChart() {
 }
 
 function processChartData(growData, additionalData, chartType) {
-    const months = Array.from({length: 31}, (_, i) => i * 0.5);
+    const months = Array.from({ length: 31 }, (_, i) => i * 0.5);
     const userValues = months.map(month => {
         const record = growData.find(d => parseFloat(d.LeeftijdInMaanden) === month);
         return record ? parseFloat(record[chartType === 'Gewicht' ? 'Gewicht' : 'Lengte']) : null;

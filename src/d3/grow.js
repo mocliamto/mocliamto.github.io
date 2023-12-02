@@ -4,7 +4,7 @@ const valueRanges = [
 ];
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
 const lineWidth = [2, 2, 2, 2, 3];
-const margin = {top: 20, right: 35, bottom: 30, left: 35};
+const margin = { top: 20, right: 35, bottom: 30, left: 35 };
 
 let growData, tnoData;
 
@@ -28,7 +28,7 @@ function createLineChart() {
     const line = d3.line()
         .x(d => x(d.month))
         .y(d => y(d.value))
-    .curve(d3.curveMonotoneX);
+        .curve(d3.curveMonotoneX);
 
     x.domain([0, 15]);
     y.domain([40, 92]);
@@ -48,7 +48,7 @@ function createLineChart() {
         .call(d3.axisRight(yRight).ticks((92 - 40) / 2));
 
     valueRanges.forEach((range, index) => {
-        const dataset = tnoData.map(d => ({month: d.StapNummer, value: d[range]}));
+        const dataset = tnoData.map(d => ({ month: d.StapNummer, value: d[range] }));
 
         svg.append("path")
             .data([dataset])
@@ -57,7 +57,7 @@ function createLineChart() {
             .attr("fill", "rgba(222,236,220,0.55)")
             .attr("d", line);
     });
-    const userValues = growData.map(d => ({month: d.LeeftijdInMaanden, value: d.Lengte}));
+    const userValues = growData.map(d => ({ month: d.LeeftijdInMaanden, value: d.Lengte }));
     svg.append("path")
         .data([userValues])
         .attr("fill", "none")
@@ -91,8 +91,8 @@ function createLineChart() {
 }
 
 Promise.all([
-    fetch('../../assets/grow.json').then(response => response.json()),
-    fetch('../../assets/tno.json').then(response => response.json())
+    fetch('../assets/grow.json').then(response => response.json()),
+    fetch('../assets/tno.json').then(response => response.json())
 ]).then(([dataGrow, dataTno]) => {
     growData = dataGrow;
     tnoData = dataTno;

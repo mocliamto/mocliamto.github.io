@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+
+    <script src="../assets/js/jquery.slim.min.js" defer></script>
+    <script src="../assets/js/popper.min.js" defer></script>
+    <script src="../assets/js/bootstrap.min.js" defer></script>
+    <script src="../assets/js/d3.min.js" defer></script>
+
+    <script type="module" src="labResults.js" defer></script>
+    <script type="module" src="grow.js" defer></script>
+    <script type="module" src="epilepsy.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <h5 class="card-header">Labuitslagen</h5>
+                    <div class="card-body">
+                        <div class="loader w-100 p-5 text-center">
+                            <i class="fa-solid fa-sun fa-spin"></i>
+                        </div>
+                        <div id="labChart" class="graph"></div>
+                    </div>
+                </div>
+                <div class="card mt-3">
+                    <h5 class="card-header">Groei Grafiek 0-15 Maanden</h5>
+                    <div class="card-body">
+                        <div class="loader w-100 p-5 text-center">
+                            <i class="fa-solid fa-sun fa-spin"></i>
+                        </div>
+                        <div id="growthCurveChart" class="graph"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="epi-chart col-12 col-md-6">
+                <div class="card">
+                    <h5 class="card-header">Epilepsie aanvalsregistratie</h5>
+                    <div class="card-body">
+                        <div class="loader w-100 p-5 text-center">
+                            <i class="fa-solid fa-sun fa-spin"></i>
+                        </div>
+                        <div id="seizureChart" class="graph"></div>
+                    </div>
+                    <h5 class="card-header">Medicatie</h5>
+                    <div class="card-body">
+                        <div class="loader w-100 p-5 text-center">
+                            <i class="fa-solid fa-sun fa-spin"></i>
+                        </div>
+                        <div id="medicationChart" class="graph"></div>
+                    </div>
+                    <div class="d-none">
+                        <h5 class="card-header">PDD/DDD</h5>
+                        <div class="card-body">
+                            <div class="loader w-100 p-5 text-center">
+                                <i class="fa-solid fa-sun fa-spin"></i>
+                            </div>
+                            <div id="pddChart" class="graph"></div>
+                        </div>
+                        <h5 class="card-header">Labresultaat</h5>
+                        <div class="card-body">
+                            <div class="loader w-100 p-5 text-center">
+                                <i class="fa-solid fa-sun fa-spin"></i>
+                            </div>
+                            <div id="labResultsChart" class="graph"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

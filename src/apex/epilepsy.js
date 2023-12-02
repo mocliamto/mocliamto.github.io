@@ -1,4 +1,4 @@
-fetch('../../assets/epilepsy.json')
+fetch('../assets/epilepsy.json')
     .then(response => response.json())
     .then(data => {
         const sortedAanvalsregistratie = data.Aanvalsregistratie.sort((a, b) => new Date(a.datum) - new Date(b.datum));
@@ -55,6 +55,7 @@ fetch('../../assets/epilepsy.json')
             }
         };
 
+
         var chartArea = new ApexCharts(document.querySelector("#epi-chart-area"), optionsArea);
         chartArea.render();
 
@@ -81,34 +82,38 @@ fetch('../../assets/epilepsy.json')
             }
         };
 
-        var chartSmall = new ApexCharts(document.querySelector("#epi-chart-small"), optionsSmall);
-        chartSmall.render();
+        const body = window.parent.document.querySelector("body");
+        if (body.classList.contains("Zorgverlener")) {
+            document.querySelector(".d-none").classList.remove("d-none");
+            var chartSmall = new ApexCharts(document.querySelector("#epi-chart-small"), optionsSmall);
+            chartSmall.render();
 
-        var optionsSmall2 = {
-            series: [{
-                name: 'Labuitslagen en ketonen',
-                data: sortedLabuitslagen_en_ketonen.map(item => ({
-                    x: new Date(item.datum),
-                    y: item.ketonen_mmol_l
-                }))
-            }],
-            chart: {
-                id: 'li',
-                group: 'social',
-                type: 'line',
-                height: 300
-            },
-            colors: ['#546E7A'],
-            stroke: {
-                width: 3
-            },
-            xaxis: {
-                type: 'datetime'
-            }
-        };
+            var optionsSmall2 = {
+                series: [{
+                    name: 'Labuitslagen en ketonen',
+                    data: sortedLabuitslagen_en_ketonen.map(item => ({
+                        x: new Date(item.datum),
+                        y: item.ketonen_mmol_l
+                    }))
+                }],
+                chart: {
+                    id: 'li',
+                    group: 'social',
+                    type: 'line',
+                    height: 300
+                },
+                colors: ['#546E7A'],
+                stroke: {
+                    width: 3
+                },
+                xaxis: {
+                    type: 'datetime'
+                }
+            };
 
-        var chartSmall2 = new ApexCharts(document.querySelector("#epi-chart-small2"), optionsSmall2);
-        chartSmall2.render();
+            var chartSmall2 = new ApexCharts(document.querySelector("#epi-chart-small2"), optionsSmall2);
+            chartSmall2.render();
+        }
     })
     .catch(error => {
         console.error("Error fetching the data: ", error);

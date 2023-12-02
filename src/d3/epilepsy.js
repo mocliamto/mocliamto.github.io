@@ -1,4 +1,4 @@
-const margin = {top: 20, right: 55, bottom: 50, left: 55};
+const margin = { top: 20, right: 55, bottom: 50, left: 55 };
 let globalData;
 
 function createChart(data, elementId, xValue, yValue, chartType) {
@@ -17,7 +17,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
     const processedData = data
         .sort((a, b) => new Date(a[xValue]) - new Date(b[xValue]))
-        .map(d => ({date: new Date(d[xValue]), value: d[yValue]}));
+        .map(d => ({ date: new Date(d[xValue]), value: d[yValue] }));
 
     const x = (chartType === 'bar') ?
         d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(0.1) :
@@ -295,11 +295,15 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 function redrawCharts() {
     createChart(globalData.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal', 'bar');
     createChart(globalData.Medicatie, 'medicationChart', 'datum', 'dosis', 'line');
-    createChart(globalData.PDD_DDD, 'pddChart', 'datum', 'PDD_DDD_waarde', 'line');
-    createChart(globalData.Labuitslagen_en_ketonen, 'labResultsChart', 'datum', 'ketonen_mmol_l', 'line');
+    const body = window.parent.document.querySelector("body");
+    if (body.classList.contains("Zorgverlener")) {
+        document.querySelector(".d-none").classList.remove("d-none");
+        createChart(globalData.PDD_DDD, 'pddChart', 'datum', 'PDD_DDD_waarde', 'line');
+        createChart(globalData.Labuitslagen_en_ketonen, 'labResultsChart', 'datum', 'ketonen_mmol_l', 'line');
+    }
 }
 
-d3.json('../../assets/epilepsy.json').then(function (data) {
+d3.json('../assets/epilepsy.json').then(function (data) {
     globalData = data;
     redrawCharts();
 }).catch(error => {
