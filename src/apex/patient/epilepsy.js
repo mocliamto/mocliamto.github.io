@@ -18,10 +18,6 @@ fetch('../../assets/epilepsy.json')
                 type: 'bar',
                 height: 300
             },
-            title: {
-                text: 'Aanvalsregistratie',
-                align: 'left'
-            },
             colors: ['#546E7A'],
             stroke: {
                 curve: 'smooth',
@@ -48,10 +44,6 @@ fetch('../../assets/epilepsy.json')
                 group: 'social',
                 type: 'line',
                 height: 300
-            },
-            title: {
-                text: 'Medicatie',
-                align: 'left'
             },
             colors: ['#00E396'],
             stroke: {

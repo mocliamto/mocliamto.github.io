@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const livereload = require('gulp-livereload');
 var deploy = require('gulp-gh-pages');
 
 const styles = [
@@ -20,11 +21,11 @@ const scripts = [
     'node_modules/@popperjs/core/dist/umd/popper.js.map',
 ];
 
-function copyStyles(){
+function copyStyles() {
     return gulp.src(styles).pipe(gulp.dest('src/assets/css/'));
 }
 
-function copyScripts(){
+function copyScripts() {
     return gulp.src(scripts).pipe(gulp.dest('src/assets/js/'));
 }
 
@@ -32,7 +33,11 @@ gulp.task('styles', copyStyles);
 
 gulp.task('scripts', copyScripts);
 
-gulp.task('all', gulp.parallel(copyStyles, copyScripts));
+gulp.task('default', gulp.parallel(copyStyles, copyScripts));
+
+gulp.task('watch', function () {
+    gulp.watch('src/**.js', () => livereload.listen());
+});
 
 gulp.task('deploy', function () {
     return gulp.src("./prod/**/*")

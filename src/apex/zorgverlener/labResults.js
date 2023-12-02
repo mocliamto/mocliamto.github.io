@@ -64,9 +64,6 @@ fetch('../../assets/lab.json')
             },
             stroke: {
                 width: [4, 2, 2]
-            },
-            title: {
-                text: 'Labuitslag Glucose (POCT)'
             }
         };
 
