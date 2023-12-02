@@ -68,16 +68,13 @@ fetch('../../assets/lab.json')
             },
             stroke: {
                 width: [4, 2, 2]
-            },
-            title: {
-                text: 'Labuitslag Glucose (POCT)'
             }
         };
 
         const chart = new ApexCharts(document.querySelector("#labChart"), optionsMainChart);
         chart.render();
 
-        const seriesLineChart = [{data: series[0].data}];
+        const seriesLineChart = [{ data: series[0].data }];
 
         const optionsLineChart = {
             series: seriesLineChart,

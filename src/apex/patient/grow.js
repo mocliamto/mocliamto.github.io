@@ -20,103 +20,99 @@ function getLastDataPoint(seriesData) {
 
 Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tno.json')])
     .then(([growData, tnoData]) => {
-            if (!growData || !tnoData) {
-                throw new Error('One or more datasets could not be loaded');
-            }
-
-            const processedGrowData = processGrowData(growData);
-
-            const lineConfigurations = [
-                {name: '-3', valueKey: 'ValueMin30'},
-                {name: '-2,5', valueKey: 'ValueMin25'},
-                {name: '-2', valueKey: 'ValueMin20'},
-                {name: '-1', valueKey: 'ValueMin10'},
-                {name: '0', valueKey: 'Value0'},
-                {name: '+1', valueKey: 'ValuePlus10'},
-                {name: '+2', valueKey: 'ValuePlus20'},
-                {name: '+2,5', valueKey: 'ValuePlus25'},
-            ];
-
-            const lines = lineConfigurations.map(config => ({
-                name: config.name,
-                data: processTnoData(tnoData, config.valueKey),
-                type: 'line',
-            }));
-            const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];;
-
-            const options = {
-                series: [
-                    {
-                        name: 'Gemeten waarde',
-                        data: processedGrowData,
-                        type: 'line',
-                    },
-                    ...lines.map((line, index) => ({
-                        name: line.name,
-                        data: line.data,
-                        type: 'line',
-                        color: lineColors[index % lineColors.length],
-                    }))
-                ],
-                chart: {},
-                title: {
-                    text: 'Groeigrafiek 0 - 15 maanden',
-                    align: 'left'
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 3
-                },
-                legend: {
-                    show: false
-                },
-                xaxis: {
-                    type: 'numeric',
-                    title: {
-                        text: 'Leeftijd (maanden)',
-                    },
-                    min: 0,
-                    max: 15,
-                    ticks: {
-                        autoSkip: false,
-                        stepSize: 1
-                    },
-                },
-                yaxis: {
-                    type: 'numeric',
-                    title: {
-                        text: 'Lengte (cm)',
-                    },
-                    min: 40,
-                    max: 92,
-                    stepSize: 2,
-                    position: 'left',
-                },
-
-                annotations: {
-                    // yaxis: [],
-                },
-            };
-
-            const chart = new ApexCharts(document.querySelector("#growChart"), options);
-            chart.render();
-
-            // this in chart.js
-            lineConfigurations.forEach(config => {
-                const seriesData = processTnoData(tnoData, config.valueKey);
-                const lastDataPoint = getLastDataPoint(seriesData);
-                chart.addYaxisAnnotation({
-                    y: lastDataPoint[1],
-                    label: {
-                        text: config.name,
-                        style: {
-                            background: '#a1c2a3',
-                        }
-                    },
-                    opacity: 0
-                });
-            });
+        if (!growData || !tnoData) {
+            throw new Error('One or more datasets could not be loaded');
         }
+
+        const processedGrowData = processGrowData(growData);
+
+        const lineConfigurations = [
+            { name: '-3', valueKey: 'ValueMin30' },
+            { name: '-2,5', valueKey: 'ValueMin25' },
+            { name: '-2', valueKey: 'ValueMin20' },
+            { name: '-1', valueKey: 'ValueMin10' },
+            { name: '0', valueKey: 'Value0' },
+            { name: '+1', valueKey: 'ValuePlus10' },
+            { name: '+2', valueKey: 'ValuePlus20' },
+            { name: '+2,5', valueKey: 'ValuePlus25' },
+        ];
+
+        const lines = lineConfigurations.map(config => ({
+            name: config.name,
+            data: processTnoData(tnoData, config.valueKey),
+            type: 'line',
+        }));
+        const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];;
+
+        const options = {
+            series: [
+                {
+                    name: 'Gemeten waarde',
+                    data: processedGrowData,
+                    type: 'line',
+                },
+                ...lines.map((line, index) => ({
+                    name: line.name,
+                    data: line.data,
+                    type: 'line',
+                    color: lineColors[index % lineColors.length],
+                }))
+            ],
+            chart: {},
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            legend: {
+                show: false
+            },
+            xaxis: {
+                type: 'numeric',
+                title: {
+                    text: 'Leeftijd (maanden)',
+                },
+                min: 0,
+                max: 15,
+                ticks: {
+                    autoSkip: false,
+                    stepSize: 1
+                },
+            },
+            yaxis: {
+                type: 'numeric',
+                title: {
+                    text: 'Lengte (cm)',
+                },
+                min: 40,
+                max: 92,
+                stepSize: 2,
+                position: 'left',
+            },
+
+            annotations: {
+                // yaxis: [],
+            },
+        };
+
+        const chart = new ApexCharts(document.querySelector("#growChart"), options);
+        chart.render();
+
+        // this in chart.js
+        lineConfigurations.forEach(config => {
+            const seriesData = processTnoData(tnoData, config.valueKey);
+            const lastDataPoint = getLastDataPoint(seriesData);
+            chart.addYaxisAnnotation({
+                y: lastDataPoint[1],
+                label: {
+                    text: config.name,
+                    style: {
+                        background: '#a1c2a3',
+                    }
+                },
+                opacity: 0
+            });
+        });
+    }
     )
     .catch(error => {
         console.error('Error in processing data: ', error);
