@@ -2,11 +2,15 @@ document.querySelectorAll(".dropdown-item").forEach(item =>
     item.addEventListener("click", () => {
         resetActive();
         item.classList.add("active");
-        const categoryNode = item.parentElement.parentElement.parentElement;
-        const category = categoryNode.querySelector(".nav-link:first-child").textContent.trim()
+        const activeCategoryNode = item.parentElement.parentElement.parentElement;
+        const activeCategoryNodeLink = activeCategoryNode.querySelector(".nav-link:first-child");
+        const activeCategory = activeCategoryNodeLink.textContent.trim();
         const body = document.querySelector("body");
-        body.classList.add(category == "Zorgverlener" ? "Zorgverlener" : "Patient");
-        body.classList.remove(category == "Zorgverlener" ? "Patient" : "Zorgverlener");
+        activeCategoryNode.parentElement.querySelectorAll(".nav-link").forEach((link) => link.parentElement.classList.remove("active"));
+        activeCategoryNode.classList.add("active");
+        body.classList.add(activeCategory == "Zorgverlener" ? "Zorgverlener" : "Patient");
+        body.classList.remove(activeCategory == "Zorgverlener" ? "Patient" : "Zorgverlener");
+
     })
 );
 

@@ -26,3 +26,7 @@ canvas,
     z-index: 1;
     background-color: #FFF;
 }
+
+.nav-item.active a:first-child {
+    font-weight: bold;
+}
