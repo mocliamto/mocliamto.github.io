@@ -30,3 +30,22 @@ canvas,
 .nav-item.active>a:first-child {
     font-weight: bold;
 }
+
+.container.iframe {
+    margin: 75px auto 60px;
+}
+
+nav,
+footer {
+    backdrop-filter: blur(10px);
+    background-color: rgba(248, 249, 250, 0.6);
+    margin-right: 17px;
+}
+
+nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
+}
