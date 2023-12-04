@@ -1,4 +1,4 @@
-const margin = {top: 20, right: 50, bottom: 50, left: 50};
+const margin = { top: 20, right: 50, bottom: 50, left: 50 };
 let width, height;
 
 const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
@@ -27,7 +27,7 @@ function createOrUpdateChart() {
 }
 
 function processData(svg, x, y) {
-    fetch('../../assets/lab.json')
+    fetch('../assets/lab.json')
         .then(response => response.json())
         .then(data => {
             prepareData(data);

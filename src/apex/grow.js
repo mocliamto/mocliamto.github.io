@@ -18,7 +18,7 @@ function getLastDataPoint(seriesData) {
     return seriesData[seriesData.length - 1];
 }
 
-Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tno.json')])
+Promise.all([fetchData('../assets/grow1-15.json'), fetchData('../assets/tno.json')])
     .then(([growData, tnoData]) => {
         if (!growData || !tnoData) {
             throw new Error('One or more datasets could not be loaded');
@@ -85,8 +85,11 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 },
                 min: 40,
                 max: 92,
-                stepSize: 2,
                 position: 'left',
+                ticks: {
+                    autoSkip: false,
+                    stepSize: 2
+                },
             },
 
             annotations: {
@@ -97,7 +100,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
         const chart = new ApexCharts(document.querySelector("#growChart"), options);
         chart.render();
 
-        // this in chart.js
         lineConfigurations.forEach(config => {
             const seriesData = processTnoData(tnoData, config.valueKey);
             const lastDataPoint = getLastDataPoint(seriesData);
@@ -106,7 +108,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
                 label: {
                     text: config.name,
                     style: {
-                        background: '#a1c2a3',
+                        background: '#a1c2a3'
                     }
                 },
                 opacity: 0
@@ -117,7 +119,6 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
     .catch(error => {
         console.error('Error in processing data: ', error);
     });
-
 /** lengte + leeftijd in maanden */
 // function processGrowData(data) {
 //     const sortedData = data.sort((a, b) => a.LeeftijdInMaanden - b.LeeftijdInMaanden);
@@ -252,7 +253,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     });
 
 
-// /** overige later misschien nodig */
+/** overige later misschien nodig */
 // function calculateAgeInMonths(dateTime, referenceDate) {
 //     const birthDate = new Date(referenceDate);
 //     const date = new Date(dateTime);
@@ -262,7 +263,7 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //     months += date.getMonth();
 //     return months <= 0 ? 0 : months;
 // }
-//
+
 // function processGrowData(data, referenceDate) {
 //     const sortedData = data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
 //     return sortedData.map(item => {
@@ -272,3 +273,71 @@ Promise.all([fetchData('../../assets/grow1-15.json'), fetchData('../../assets/tn
 //         ];
 //     });
 // }
+
+/** lengte + Datetime */
+// function processGrowData(data) {
+//     const sortedData = data.sort((a, b) => {
+//         return new Date(a.DateTime) - new Date(b.DateTime);
+//     });
+//     return sortedData.map(item => {
+//         return [
+//             new Date(item.DateTime).getTime(), // Zet de datum om in milliseconden
+//             item.Lengte
+//         ];
+//     });
+// }
+// fetch('../../assets/grow.json')
+//     .then(response => response.json())
+//     .then(growData => {
+//
+//         var options = {
+//             series: [
+//                 {
+//                     name: 'Lengte',
+//                     data: processGrowData(growData)
+//                 },
+//             ],
+//             chart: {
+//                 type: 'area',
+//                 height: 350,
+//                 stacked: true,
+//                 events: {
+//                     selection: function (chart, e) {
+//                         console.log(new Date(e.xaxis.min));
+//                     }
+//                 },
+//             },
+//             colors: ['#b5e6d1', '#CED4DC', '#b5e6d1'],
+//             dataLabels: {
+//                 enabled: false,
+//             },
+//             title: {
+//                 text: 'Groeigrafiek 0 - 15 maanden',
+//                 align: 'left'
+//             },
+//             stroke: {
+//                 curve: 'smooth',
+//                 width: 3
+//             },
+//             fill: {
+//                 type: 'gradient',
+//                 gradient: {
+//                     opacityFrom: 0.6,
+//                     opacityTo: 0.8,
+//                 }
+//             },
+//             legend: {
+//                 position: 'top',
+//                 horizontalAlign: 'left'
+//             },
+//             xaxis: {
+//                 type: 'datetime'
+//             },
+//         };
+//
+//         var chart = new ApexCharts(document.querySelector("#chart"), options);
+//         chart.render();
+//     })
+//     .catch(error => {
+//         console.error('Fout bij het ophalen van de gegevens: ', error);
+//     });

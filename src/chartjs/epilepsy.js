@@ -1,4 +1,4 @@
-fetch('../../assets/epilepsy.json')
+fetch('../assets/epilepsy.json')
     .then(response => response.json())
     .then(data => {
         const aanvalsregistratieData = {
@@ -87,16 +87,21 @@ fetch('../../assets/epilepsy.json')
             data: medicatieData,
             options: chartOptions
         });
-        new Chart(document.getElementById('pddChart'), {
-            type: 'line',
-            data: pddDddData,
-            options: chartOptions
-        });
-        new Chart(document.getElementById('labResultssChart'), {
-            type: 'line',
-            data: labKetonenData,
-            options: chartOptions
-        });
+        const body = window.parent.document.querySelector("body");
+        if (body.classList.contains("Zorgverlener")) {
+            document.querySelector(".d-none").classList.remove("d-none");
+
+            new Chart(document.getElementById('pddChart'), {
+                type: 'line',
+                data: pddDddData,
+                options: chartOptions
+            });
+            new Chart(document.getElementById('labResultssChart'), {
+                type: 'line',
+                data: labKetonenData,
+                options: chartOptions
+            });
+        }
     })
     .catch(error => {
         console.error("Error fetching the data: ", error);

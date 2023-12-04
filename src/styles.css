@@ -9,37 +9,47 @@
     stroke-width: 0;
 }
 
-/*tabs voor chart.js groei curves*/
-#tabs {
-    display: flex;
-    justify-content: space-around;
-    background-color: #fdf1d4;
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.tab {
-    background-color: inherit;
-    border: none;
-    color: black;
-    padding: 10px 20px;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: 0.3s;
+.card .card-header:not(:first-child){
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
 }
 
-.tab:hover {
-    opacity: 1;
+.card-body {
+    position: relative;
+    min-height: 300px;
 }
 
-.selected {
-    opacity: 1;
+canvas,
+.graph {
+    position: relative;
+    z-index: 1;
+    background-color: #FFF;
+}
+
+.nav-item.active>a:first-child {
     font-weight: bold;
 }
 
-/*afdruk button*/
-#printChartBtn {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5%;
-    margin: 1rem 1.5rem 0 1.5rem;
-    font-weight: bold;
-    font-size: 13px;
+.container.iframe {
+    margin: 75px auto 60px;
+}
+
+nav,
+footer {
+    backdrop-filter: blur(10px);
+    background-color: rgba(248, 249, 250, 0.6);
+    margin-right: 17px;
+}
+
+nav {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.175);
 }
