@@ -135,9 +135,9 @@ gulp.task('generate-favicon', function (done) {
 });
 
 gulp.task('inject-favicon-markups', function () {
-    return gulp.src(['index.html'])
+    return gulp.src(['src/index.html'])
         .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(faviconData)).favicon.html_code))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./src/'));
 });
 
 gulp.task('check-for-favicon-update', function (done) {

@@ -3,3 +3,4 @@ node_modules
 .vscode
 Webserver*
 appsettings*
+faviconData.json
