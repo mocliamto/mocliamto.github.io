@@ -21,12 +21,17 @@ function resetActive() {
 document.querySelectorAll(".code").forEach((btn) => {
     btn.addEventListener("click", () => {
         let modalElement = window.parent.document.querySelector("#code-modal");
-        let codeElement = modalElement.querySelector("pre");
+        let codeElement = document.createElement("pre");
         let titleElement = modalElement.querySelector("h5");
+        let modal = new window.parent.bootstrap.Modal("#code-modal");
+
+        modalElement.querySelector("pre").remove();
+        codeElement.classList.add("line-numbers");
+        codeElement.classList.add("match-braces");
+        codeElement.dataset.src = btn.dataset.src;
+        modalElement.querySelector(".modal-body").appendChild(codeElement);
         titleElement.textContent = btn.parentElement.parentElement.querySelector("span").textContent;
 
-        codeElement.dataset.src = btn.dataset.src;
-        const modal = new window.parent.bootstrap.Modal("#code-modal");
         Prism.highlightElement(codeElement);
         modal.show();
     });
