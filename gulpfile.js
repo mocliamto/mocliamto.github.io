@@ -51,7 +51,7 @@ gulp.task('styles', copyStyles);
 
 gulp.task('scripts', copyScripts);
 
-gulp.task('scripts', copyFonts);
+gulp.task('fonts', copyFonts);
 
 gulp.task('default', gulp.parallel(copyStyles, copyScripts, copyFonts));
 
