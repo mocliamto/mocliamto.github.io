@@ -10,9 +10,9 @@ async function fetchDataIfNeeded(url, key) {
 async function renderChart(chartType) {
     highlightTab(chartType);
     try {
-        const growData = await fetchDataIfNeeded('../assets/grow.json', 'growData');
-        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../assets/tno.json', 'tnoData')
-            : await fetchDataIfNeeded('../assets/tnoWeight.json', 'tnoWeightData');
+        const growData = await fetchDataIfNeeded('../assets/data/grow.json', 'growData');
+        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../assets/data/tno.json', 'tnoData')
+            : await fetchDataIfNeeded('../assets/data/tnoWeight.json', 'tnoWeightData');
         const chartData = processChartData(growData, additionalData, chartType);
         createOrUpdateChart(chartData, chartType);
         updateChartDisplay(chartType);

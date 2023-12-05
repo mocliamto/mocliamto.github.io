@@ -1,4 +1,4 @@
-const gulp = require("gulp");
+const gulp = require('gulp');
 const livereload = require('gulp-livereload');
 const deploy = require('gulp-gh-pages');
 const realFavicon = require('gulp-real-favicon');
@@ -41,7 +41,7 @@ function copyStyles() {
 }
 
 function copyScripts() {
-    return gulp.src(scripts, { "base": "node_modules/" }).pipe(gulp.dest('src/assets/js/'));
+    return gulp.src(scripts, { 'base': 'node_modules/' }).pipe(gulp.dest('src/assets/js/'));
 }
 
 function copyFonts() {
@@ -61,10 +61,10 @@ gulp.task('watch', function () {
 });
 
 gulp.task('deploy', function () {
-    return gulp.src("./prod/**/*")
+    return gulp.src('./prod/**/*')
         .pipe(deploy({
-            remoteUrl: "https://https://github.com/mocliamto/mocliamto.github.io.git",
-            branch: "master"
+            remoteUrl: 'https://github.com/mocliamto/mocliamto.github.io.git',
+            branch: 'master'
         }))
 });
 
@@ -135,19 +135,12 @@ gulp.task('generate-favicon', function (done) {
     });
 });
 
-// Inject the favicon markups in your HTML pages. You should run
-// this task whenever you modify a page. You can keep this task
-// as is or refactor your existing HTML pipeline.
 gulp.task('inject-favicon-markups', function () {
     return gulp.src(['index.html'])
         .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
         .pipe(gulp.dest('./'));
 });
 
-// Check for updates on RealFaviconGenerator (think: Apple has just
-// released a new Touch icon along with the latest version of iOS).
-// Run this task from time to time. Ideally, make it part of your
-// continuous integration system.
 gulp.task('check-for-favicon-update', function (done) {
     var currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
     realFavicon.checkForUpdates(currentVersion, function (err) {

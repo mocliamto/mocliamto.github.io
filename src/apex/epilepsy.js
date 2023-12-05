@@ -1,4 +1,4 @@
-fetch('../assets/epilepsy.json')
+fetch('../assets/data/epilepsy.json')
     .then(response => response.json())
     .then(data => {
         const sortedAanvalsregistratie = data.Aanvalsregistratie.sort((a, b) => new Date(a.datum) - new Date(b.datum));

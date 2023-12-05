@@ -91,8 +91,8 @@ function createLineChart() {
 }
 
 Promise.all([
-    fetch('../assets/grow.json').then(response => response.json()),
-    fetch('../assets/tno.json').then(response => response.json())
+    fetch('../assets/data/grow.json').then(response => response.json()),
+    fetch('../assets/data/tno.json').then(response => response.json())
 ]).then(([dataGrow, dataTno]) => {
     growData = dataGrow;
     tnoData = dataTno;

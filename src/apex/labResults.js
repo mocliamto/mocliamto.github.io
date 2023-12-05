@@ -2,7 +2,7 @@ function parseGrensvalRange(grensval) {
     return grensval.split('-').map(Number);
 }
 
-fetch('../assets/lab.json')
+fetch('../assets/data/lab.json')
     .then(response => response.json())
     .then(data => {
         const dates = data.map(entry => new Date(entry.DateTime));

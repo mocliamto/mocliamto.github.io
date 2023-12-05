@@ -27,7 +27,7 @@ function createOrUpdateChart() {
 }
 
 function processData(svg, x, y) {
-    fetch('../assets/lab.json')
+    fetch('../assets/data/lab.json')
         .then(response => response.json())
         .then(data => {
             prepareData(data);
