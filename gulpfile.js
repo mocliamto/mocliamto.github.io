@@ -36,7 +36,7 @@ const fonts = [
     'node_modules/@fortawesome/fontawesome-free/webfonts/*'
 ];
 function copyStyles() {
-    return gulp.src(styles).pipe(gulp.dest('src/assets/css/'));
+    return gulp.src(styles, { 'base': 'node_modules/' }).pipe(gulp.dest('src/assets/css/'));
 }
 
 function copyScripts() {
@@ -44,7 +44,7 @@ function copyScripts() {
 }
 
 function copyFonts() {
-    return gulp.src(fonts).pipe(gulp.dest('src/assets/webfonts/'));
+    return gulp.src(fonts, { 'base': 'node_modules/' }).pipe(gulp.dest('src/assets/css/'));
 }
 
 gulp.task('styles', copyStyles);
