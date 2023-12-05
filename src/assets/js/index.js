@@ -45,5 +45,10 @@ let home = document.getElementById('home');
 if (home) {
     fetch('/README.md')
         .then(response => response.text())
-        .then(data => home.innerHTML = marked.parse(data));
+        .then(data => {
+            marked.use({
+                gfm: true
+            });
+            home.innerHTML = marked.parse(data);
+        });
 }
