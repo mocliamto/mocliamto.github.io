@@ -80,7 +80,7 @@ function setupPrintChartButton() {
 }
 
 function printChart() {
-    const parent = this.parentElement.parentElement;
+    const parent = this.parentElement.parentElement.parentElement;
     const activeTab = parent.querySelector("input:checked").value.toLowerCase();
     const chartCanvas = document.getElementById(`${activeTab.toLowerCase()}ChartJs`);
 
