@@ -17,3 +17,17 @@ document.querySelectorAll(".dropdown-item").forEach(item =>
 function resetActive() {
     document.querySelectorAll(".dropdown-item").forEach(item => item.classList.remove("active"));
 }
+
+document.querySelectorAll(".code").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        let modalElement = window.parent.document.querySelector("#code-modal");
+        let codeElement = modalElement.querySelector("pre");
+        let titleElement = modalElement.querySelector("h5");
+        titleElement.textContent = btn.parentElement.parentElement.querySelector("span").textContent;
+
+        codeElement.dataset.src = btn.dataset.src;
+        const modal = new window.parent.bootstrap.Modal("#code-modal");
+        Prism.highlightElement(codeElement);
+        modal.show();
+    });
+})

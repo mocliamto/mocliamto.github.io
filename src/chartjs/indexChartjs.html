@@ -6,14 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/prism.min.css">
+    <link rel="stylesheet" href="../assets/css/prism-line-numbers.min.css">
+    <link rel="stylesheet" href="../assets/css/prism-match-braces.min.css">
     <link rel="stylesheet" href="../styles.css">
 
-    <script src="../assets/js/jquery.slim.min.js" defer></script>
-    <script src="../assets/js/popper.min.js" defer></script>
-    <script src="../assets/js/bootstrap.min.js" defer></script>
-    <script src="../assets/js/chart.umd.js" defer></script>
-    <script src="../assets/js/chartjs-plugin-datalabels.min.js" defer></script>
-    <script src="../assets/js/chartjs-adapter-date-fns.bundle.min.js" defer></script>
+    <script src="../assets/js/jquery/dist/jquery.slim.min.js" defer></script>
+    <script src="../assets/js/@popperjs/core/dist/umd/popper.min.js" defer></script>
+    <script src="../assets/js/bootstrap/dist/js/bootstrap.min.js" defer></script>
+    <script src="../assets/js/chart.js/dist/chart.umd.js" defer></script>
+    <script src="../assets/js/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js" defer></script>
+    <script src="../assets/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js" defer></script>
+    <script src="../assets/js/prismjs/components/prism-core.min.js" defer></script>
+    <script src="../assets/js/prismjs/plugins/file-highlight/prism-file-highlight.min.js" defer></script>
+    <script src="../assets/js/prismjs/plugins/line-numbers/prism-line-numbers.min.js" defer></script>
+    <script src="../assets/js/prismjs/plugins/match-braces/prism-match-braces.min.js" defer></script>
+    <script src="../assets/js/prismjs/plugins/autoloader/prism-autoloader.min.js" defer></script>
+    <script src="../assets/js/index.js" defer></script>
 
     <script type="module" src="labResults.js" defer></script>
     <script type="module" src="grow.js" defer></script>
@@ -25,9 +34,13 @@
         <div class="row">
             <div class="col-12 col-md-6">
                 <div class="card">
-                    <h5 class="card-header">Labuitslagen</h5>
+                    <h5 class="card-header d-flex align-items-center justify-content-between">
+                        <span>Labuitslagen</span>
+                        <button class="btn btn-outline-secondary code" title="Code" data-src="labResults.js">
+                            <i class="fa-solid fa-code"></i>
+                        </button>
+                    </h5>
                     <div class="card-body">
-
                         <div>&nbsp;</div>
                         <canvas id="labChart" width="100%" height="100%"></canvas>
                     </div>
@@ -35,9 +48,14 @@
                 <div class="card mt-3">
                     <h5 class="card-header d-flex align-items-center justify-content-between">
                         <span>Groei Grafiek</span>
-                        <button id="printChartBtn" class="btn btn-outline-secondary" title="Print grafiek">
-                            <i class="fa-solid fa-print"></i>
-                        </button>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-outline-secondary code" title="Code" data-src="grow.js">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button id="printChartBtn" class="btn btn-outline-secondary" title="Print grafiek">
+                                <i class="fa-solid fa-print"></i>
+                            </button>
+                        </div>
                     </h5>
                     <div class="card-body">
                         <div class="text-center">
@@ -65,7 +83,12 @@
             </div>
             <div class="epi-chart col-12 col-md-6">
                 <div class="card">
-                    <h5 class="card-header">Aanvalsregistratie</h5>
+                    <h5 class="card-header d-flex align-items-center justify-content-between">
+                        <span>Aanvalsregistratie</span>
+                        <button class="btn btn-outline-secondary code" title="Code" data-src="epilepsy.js">
+                            <i class="fa-solid fa-code"></i>
+                        </button>
+                    </h5>
                     <div class="card-body">
                         <div>&nbsp;</div>
                         <div class="loader w-100 p-5 text-center">

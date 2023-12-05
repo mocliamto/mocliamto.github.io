@@ -15,8 +15,16 @@
     left: 0;
 }
 
-.card .card-header:not(:first-child){
+.epi-chart .card-header {
     border-top: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+.epi-chart .card>.card-header:first-of-type {
+    border-top: 0
+}
+
+.epi-chart .card>div .card-header:first-of-type {
+    border-radius: 0
 }
 
 .card-body {
