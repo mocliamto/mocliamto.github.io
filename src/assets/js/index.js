@@ -39,4 +39,11 @@ document.querySelectorAll('.code').forEach((btn) => {
         window.parent.Prism.highlightElement(codeWrapperElement);
         modal.show();
     });
-})
+});
+
+let home = document.getElementById('home');
+if (home) {
+    fetch('/README.md')
+        .then(response => response.text())
+        .then(data => home.innerHTML = marked.parse(data));
+}

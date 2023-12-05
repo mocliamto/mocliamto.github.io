@@ -7,130 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/prismjs/themes/prism.min.css">
-    <link rel="stylesheet" href="assets/css/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
-    <link rel="stylesheet" href="assets/css/prismjs/plugins/match-braces/prism-match-braces.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="assets/js/@popperjs/core/dist/umd/popper.min.js" defer="defer"></script>
     <script src="assets/js/bootstrap/dist/js/bootstrap.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/components/prism-core.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/components/prism-clike.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/components/prism-javascript.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/plugins/file-highlight/prism-file-highlight.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/plugins/line-numbers/prism-line-numbers.min.js" defer="defer"></script>
-    <script src="assets/js/prismjs/plugins/match-braces/prism-match-braces.min.js" defer="defer"></script>
+    <script src="assets/js/marked/lib/marked.umd.js"></script>
     <script src="assets/js/index.js" defer="defer"></script>
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
-    <link rel="manifest" href="assets/favicons/site.webmanifest">
-    <link rel="mask-icon" href="assets/favicons/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="shortcut icon" href="assets/favicons/favicon.ico">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-config" content="assets/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body class="h-100">
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fa-solid fa-chart-line me-2"></i>
-                Chart Libraries
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Zorgverlener
-                        </a>
-                        <ul class="dropdown-menu pt-0 pb-0">
-                            <li>
-                                <a class="dropdown-item rounded-top" href="apex/" target="content">ApexChart</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider mt-0 mb-0">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="chartjs/" target="content">ChartJs</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider mt-0 mb-0">
-                            </li>
-                            <li>
-                                <a class="dropdown-item rounded-bottom" href="d3/" target="content">D3</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Patient
-                        </a>
-                        <ul class="dropdown-menu pt-0 pb-0">
-                            <li>
-                                <a class="dropdown-item rounded-top" href="apex/" target="content">ApexChart</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider mt-0 mb-0">
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="chartjs/" target="content">ChartJs</a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider mt-0 mb-0">
-                            </li>
-                            <li>
-                                <a class="dropdown-item rounded-bottom" href="d3/" target="content">D3</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <iframe name="content" class="h-100 w-100 position-absolute" title="Content"></iframe>
-    <footer class="p-2 fixed-bottom">
-        <div class="container text-center justify-content-between d-flex">
-            <div>
-                <i class="fa-brands fa-github"></i>
-                <a href="https://github.com/mocliamto/mocliamto.github.io" title="Github repository"
-                    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    target="_blank">
-                    Github
-                </a>
-            </div>
-            <div>
-                <i class="fa-regular fa-copyright"></i>
-                <a href="https://chipsoft.nl" title="ChipSoft"
-                    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-                    target="_blank">
-                    ChipSoft 2024
-                </a>
-            </div>
-        </div>
-    </footer>
-    <div class="modal" tabindex="-1" id="code-modal">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <div class="container" id="home">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <h5 class="card-header">
+
+                    </h5>
+                    <div class="card-body" id="home">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+
+    </script>
 </body>
 
 </html>

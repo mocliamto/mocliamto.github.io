@@ -31,6 +31,8 @@ const scripts = [
     'node_modules/prismjs/plugins/file-highlight/prism-file-highlight.min.js',
     'node_modules/prismjs/plugins/line-numbers/prism-line-numbers.min.js',
     'node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js',
+    'node_modules/marked/lib/marked.umd.js',
+    'node_modules/marked/lib/marked.umd.js.map'
 ];
 const fonts = [
     'node_modules/@fortawesome/fontawesome-free/webfonts/*'
