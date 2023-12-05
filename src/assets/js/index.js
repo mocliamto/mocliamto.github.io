@@ -21,18 +21,22 @@ function resetActive() {
 document.querySelectorAll('.code').forEach((btn) => {
     btn.addEventListener('click', () => {
         let modalElement = window.parent.document.querySelector('#code-modal');
-        let codeElement = document.createElement('pre');
+        let codeWrapperElement = document.createElement('pre');
+        let codeElement = document.createElement('code');
         let titleElement = modalElement.querySelector('h5');
         let modal = new window.parent.bootstrap.Modal('#code-modal');
 
-        modalElement.querySelector('pre').remove();
-        codeElement.classList.add('line-numbers');
-        codeElement.classList.add('match-braces');
-        codeElement.dataset.src = btn.dataset.src;
-        modalElement.querySelector('.modal-body').appendChild(codeElement);
+        modalElement.querySelector('pre')?.remove();
+        codeWrapperElement.appendChild(codeElement);
+        codeWrapperElement.classList.add('language-javascript');
+        codeWrapperElement.dataset.src = btn.dataset.src;
+        codeWrapperElement.classList.add('line-numbers');
+        codeWrapperElement.classList.add('match-braces');
+        codeWrapperElement.dataset.src = btn.dataset.src;
+        modalElement.querySelector('.modal-body').appendChild(codeWrapperElement);
         titleElement.textContent = btn.parentElement.parentElement.querySelector('span').textContent;
 
-        Prism.highlightElement(codeElement);
+        window.parent.Prism.highlightElement(codeWrapperElement);
         modal.show();
     });
 })

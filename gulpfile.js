@@ -4,7 +4,7 @@ const deploy = require('gulp-gh-pages');
 const realFavicon = require('gulp-real-favicon');
 const fs = require('fs');
 
-const FAVICON_DATA_FILE = 'faviconData.json';
+const faviconData = 'faviconData.json';
 
 const styles = [
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
@@ -23,15 +23,14 @@ const scripts = [
     'node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js',
     'node_modules/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js',
     'node_modules/d3/dist/d3.min.js',
-    'node_modules/jquery/dist/jquery.slim.min.js',
-    'node_modules/jquery/dist/jquery.slim.min.map',
     'node_modules/@popperjs/core/dist/umd/popper.min.js',
     'node_modules/@popperjs/core/dist/umd/popper.js.map',
-    'node_modules/prismjs/components/*.js',
+    'node_modules/prismjs/components/prism-core.min.js',
+    'node_modules/prismjs/components/prism-clike.min.js',
+    'node_modules/prismjs/components/prism-javascript.min.js',
     'node_modules/prismjs/plugins/file-highlight/prism-file-highlight.min.js',
     'node_modules/prismjs/plugins/line-numbers/prism-line-numbers.min.js',
     'node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js',
-    'node_modules/prismjs/plugins/autoloader/prism-autoloader.min.js'
 ];
 const fonts = [
     'node_modules/@fortawesome/fontawesome-free/webfonts/*'
@@ -129,7 +128,7 @@ gulp.task('generate-favicon', function (done) {
             htmlCodeFile: false,
             usePathAsIs: false
         },
-        markupFile: FAVICON_DATA_FILE
+        markupFile: faviconData
     }, function () {
         done();
     });
@@ -137,12 +136,12 @@ gulp.task('generate-favicon', function (done) {
 
 gulp.task('inject-favicon-markups', function () {
     return gulp.src(['index.html'])
-        .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+        .pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(faviconData)).favicon.html_code))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('check-for-favicon-update', function (done) {
-    var currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
+    var currentVersion = JSON.parse(fs.readFileSync(faviconData)).version;
     realFavicon.checkForUpdates(currentVersion, function (err) {
         if (err) {
             throw err;
