@@ -71,8 +71,8 @@ gulp.task('deploy', function () {
 gulp.task('generate-favicon', function (done) {
     realFavicon.generateFavicon({
         masterPicture: 'node_modules/@fortawesome/fontawesome-free/svgs/solid/chart-line.svg',
-        dest: './',
-        iconsPath: '/',
+        dest: './src/assets/favicons/',
+        iconsPath: '/src/assets/favicons/',
         design: {
             ios: {
                 pictureAspect: 'backgroundAndMargin',
