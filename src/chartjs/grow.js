@@ -87,12 +87,12 @@ function printChart() {
     if (chartCanvas) {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
-            <html>
+            <html style="height:100%">
                 <head>
                     <title>${activeTab} grafiek</title>
                 </head>
-                <body>
-                    <img src="${chartCanvas.toDataURL()}" style="width:100%; height:auto;">
+                <body style="height:100%; text-align:center">
+                    <img src="${chartCanvas.toDataURL()}" style="height:100%; display:inline-block">
                     <script type="text/javascript">
                         window.onload = function() {
                             window.print();
