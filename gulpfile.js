@@ -35,7 +35,8 @@ const scripts = [
     'node_modules/marked/lib/marked.umd.js.map'
 ];
 const fonts = [
-    'node_modules/@fortawesome/fontawesome-free/webfonts/*'
+    'node_modules/@fortawesome/fontawesome-free/webfonts/*',
+    'node_modules/@fontsource/roboto/files/roboto-latin-300-normal.*'
 ];
 function copyStyles() {
     return gulp.src(styles, { 'base': 'node_modules/' }).pipe(gulp.dest('src/assets/css/'));
