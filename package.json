@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "chart-libraries",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -34,5 +34,5 @@
   },
   "main": "npm install gulp --save-dev",
   "author": "Jie Li Zengh",
-  "description": ""
+  "description": "Thesis"
 }
