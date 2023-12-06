@@ -303,7 +303,7 @@ function redrawCharts() {
     }
 }
 
-d3.json('../assets/epilepsy.json').then(function (data) {
+d3.json('../assets/data/epilepsy.json').then(function (data) {
     globalData = data;
     redrawCharts();
 }).catch(error => {

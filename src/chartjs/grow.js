@@ -10,9 +10,9 @@ async function fetchDataIfNeeded(url, key) {
 async function renderChart(chartType) {
     highlightTab(chartType);
     try {
-        const growData = await fetchDataIfNeeded('../assets/grow.json', 'growData');
-        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../assets/tno.json', 'tnoData')
-            : await fetchDataIfNeeded('../assets/tnoWeight.json', 'tnoWeightData');
+        const growData = await fetchDataIfNeeded('../assets/data/grow.json', 'growData');
+        const additionalData = chartType === 'Lengte' ? await fetchDataIfNeeded('../assets/data/tno.json', 'tnoData')
+            : await fetchDataIfNeeded('../assets/data/tnoWeight.json', 'tnoWeightData');
         const chartData = processChartData(growData, additionalData, chartType);
         createOrUpdateChart(chartData, chartType);
         updateChartDisplay(chartType);
@@ -80,19 +80,19 @@ function setupPrintChartButton() {
 }
 
 function printChart() {
-    const parent = this.parentElement.parentElement;
+    const parent = this.parentElement.parentElement.parentElement;
     const activeTab = parent.querySelector("input:checked").value.toLowerCase();
     const chartCanvas = document.getElementById(`${activeTab.toLowerCase()}ChartJs`);
 
     if (chartCanvas) {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
-            <html>
+            <html style="height:100%">
                 <head>
                     <title>${activeTab} grafiek</title>
                 </head>
-                <body>
-                    <img src="${chartCanvas.toDataURL()}" style="width:100%; height:auto;">
+                <body style="height:100%; text-align:center">
+                    <img src="${chartCanvas.toDataURL()}" style="height:100%; display:inline-block">
                     <script type="text/javascript">
                         window.onload = function() {
                             window.print();

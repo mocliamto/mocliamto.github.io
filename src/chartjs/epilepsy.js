@@ -1,4 +1,4 @@
-fetch('../assets/epilepsy.json')
+fetch('../assets/data/epilepsy.json')
     .then(response => response.json())
     .then(data => {
         const aanvalsregistratieData = {

@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "chart-libraries",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,10 +9,12 @@
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-gh-pages": "^0.5.4",
+    "gulp-real-favicon": "^0.3.2",
     "parcel": "^2.6.2"
   },
   "dependencies": {
     "@cubejs-client/core": "^0.31.0",
+    "@fontsource/roboto": "^5.0.8",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@kurkle/color": "^0.3.2",
     "apexcharts": "^3.44.0",
@@ -25,11 +27,12 @@
     "date-fns": "^2.30.0",
     "gitignore": "^0.7.0",
     "gulp-livereload": "^4.0.2",
-    "jquery": "^3.7.1",
     "luxon": "^3.4.3",
-    "npm-git-install": "^0.3.0"
+    "marked": "^11.0.0",
+    "npm-git-install": "^0.3.0",
+    "prismjs": "^1.29.0"
   },
   "main": "npm install gulp --save-dev",
-  "author": "",
-  "description": ""
+  "author": "Jie Li Zengh",
+  "description": "Thesis"
 }
