@@ -1,21 +1,18 @@
-document.querySelectorAll('.dropdown-item').forEach(item =>
-    item.addEventListener('click', () => {
-        resetActive();
-        item.classList.add('active');
-        const activeCategoryNode = item.parentElement.parentElement.parentElement;
-        const activeCategoryNodeLink = activeCategoryNode.querySelector('.nav-link:first-child');
-        const activeCategory = activeCategoryNodeLink.textContent.trim();
-        const body = document.querySelector('body');
-        activeCategoryNode.parentElement.querySelectorAll('.nav-link').forEach((link) => link.parentElement.classList.remove('active'));
-        activeCategoryNode.classList.add('active');
-        body.classList.add(activeCategory == 'Zorgverlener' ? 'Zorgverlener' : 'Patient');
-        body.classList.remove(activeCategory == 'Zorgverlener' ? 'Patient' : 'Zorgverlener');
+let home = document.getElementById('home');
+let iframe = window.parent.document.getElementById('content');
+let typeSelector = window.parent.document.getElementById('type-selector');
+let hash = window.top.location.hash;
 
-    })
-);
-
-function resetActive() {
-    document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
+if (typeSelector) {
+    typeSelector.querySelectorAll('input').forEach((input) => {
+        input.addEventListener('click', () => {
+            const activeCategory = input.parentElement.querySelector('label').textContent.trim();
+            console.log(activeCategory);
+            document.body.classList.add(activeCategory == 'Zorgverlener' ? 'Zorgverlener' : 'Patient');
+            document.body.classList.remove(activeCategory == 'Zorgverlener' ? 'Patient' : 'Zorgverlener');
+            iframe.contentWindow.location.reload();
+        });
+    });
 }
 
 document.querySelectorAll('.code').forEach((btn) => {
@@ -41,7 +38,14 @@ document.querySelectorAll('.code').forEach((btn) => {
     });
 });
 
-let home = document.getElementById('home');
+if (hash) {
+    let currentSource = new URL(iframe.contentWindow.location.href).pathname;
+    let newSource = hash.substring(1);
+    if (newSource !== currentSource) {
+        iframe.src = newSource;
+    }
+}
+
 if (home) {
     fetch('/README.md')
         .then(response => response.text())
@@ -51,4 +55,7 @@ if (home) {
             });
             home.innerHTML = marked.parse(data);
         });
+}
+else if (new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
+    typeSelector.classList.remove('d-none');
 }

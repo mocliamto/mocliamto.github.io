@@ -56,15 +56,17 @@ canvas,
     font-weight: bold;
 }
 
-.container.iframe {
-    margin: 75px auto 60px;
+#wrapper {
+    margin-bottom: 41px;
+}
+
+.iframe {
+    margin: 1rem auto;
 }
 
 nav,
 footer {
-    backdrop-filter: blur(10px);
-    background-color: rgba(248, 249, 250, 0.6);
-    margin-right: 17px;
+    background-color: rgba(248, 249, 250);
 }
 
 nav {
