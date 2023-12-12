@@ -53,8 +53,8 @@ fetch('../assets/data/lab.json')
                             unit: 'day',
                             tooltipFormat: 'PPPp',
                             displayFormats: {
-                                day: 'MMM dd, yyyy',
-                                hour: 'MMM dd, yyyy, HH:mm',
+                                day: 'dd-MM-yyyy',
+                                hour: 'dd-MM-yyyy HH:mm',
                             }
                         },
                         title: {
