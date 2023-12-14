@@ -78,7 +78,7 @@ fetch('../assets/data/lab.json')
             }],
             chart: {
                 id: 'chart1',
-                height: 130,
+                height: 112,
                 type: 'area',
                 brush: {
                     target: 'chart2',

@@ -1,4 +1,4 @@
-const margin = { top: 20, right: 50, bottom: 50, left: 50 };
+const margin = {top: 20, right: 50, bottom: 50, left: 50};
 let width, height;
 
 const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
@@ -11,8 +11,8 @@ function createOrUpdateChart() {
         return;
     }
 
-    width = parseInt(container.style('width')) - margin.left - margin.right;
-    height = width / 1.5;
+    width = parseInt(container.style('width')) - ((margin.left - margin.right)-75);
+    height = width;
     container.select('svg').remove();
 
     const svg = container.append("svg")
@@ -91,6 +91,42 @@ function drawChart(svg, x, y, data) {
 
     addAxes(svg, x, y);
     addGridLines(svg, x, y);
+
+    // Legend
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width + 10}, 10)`);
+
+    legend.append("rect")
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", "orange");
+
+    legend.append("text")
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text("Grensval Range");
+
+    legend.append("path")
+        .datum(data)
+        .attr("class", "line uitslag-legend")
+        .style("fill", "none")
+        .style("stroke", "red")
+        .attr("stroke-width", 2.3)
+        .attr("d", d3.line()
+            .x(d => x(d.date))
+            .y(d => y(d.uitslag))
+        );
+
+    legend.append("text")
+        .attr("x", 24)
+        .attr("y", 30)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .style("fill", "red")
+        .text("Uitslag Line");
 }
 
 function addAxes(svg, x, y) {
@@ -121,7 +157,7 @@ function addAxes(svg, x, y) {
     svg.append("g")
         .attr("class", "axis axis--right")
         .attr("transform", `translate(${width}, 0)`)
-        .call(rightYAxis);
+        .call(rightYAxis)
 }
 
 function addGridLines(svg, x, y) {
