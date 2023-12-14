@@ -6,7 +6,7 @@ fetch('../assets/data/epilepsy.json')
                 .sort((a, b) => new Date(a.datum) - new Date(b.datum))
                 .map(entry => entry.datum),
             datasets: [{
-                label: 'Aanvalsregistratie',
+                label: 'Aantal aanval',
                 data: data.Aanvalsregistratie.map(item => item.aantal),
                 backgroundColor: 'rgb(246,187,200)',
             }]
@@ -69,9 +69,22 @@ fetch('../assets/data/epilepsy.json')
                 },
                 y: {
                     beginAtZero: true,
+                    position: 'left',
                     title: {
                         display: true,
-                    }
+                    },
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 1,
+                    },
+                },
+                yRight: {
+                    beginAtZero: true,
+                    position: 'right',
+                    ticks: {
+                        autoSkip: false,
+                        stepSize: 1,
+                    },
                 }
             }
         };
@@ -79,14 +92,53 @@ fetch('../assets/data/epilepsy.json')
         new Chart(document.getElementById('seizureChart'), {
             type: 'bar',
             data: aanvalsregistratieData,
-            options: chartOptions
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        ticks: {
+                            stepSize: 1,
+                        },
+                        max: 3
+                    },
+                    yRight: {
+                        ...chartOptions.scales.yRight,
+                        ticks: {
+                            stepSize: 1,
+                        },
+                        max: 3
+                    }
+                },
+            },
         });
 
         new Chart(document.getElementById('medicationChart'), {
             type: 'line',
             data: medicatieData,
-            options: chartOptions
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        ticks: {
+                            stepSize: 200,
+                        },
+                        max: 1000
+                    },
+                    yRight: {
+                        ...chartOptions.scales.yRight,
+                        ticks: {
+                            stepSize: 200,
+                        },
+                        max: 1000
+                    }
+                },
+            },
         });
+
         const body = window.parent.document.querySelector("body");
         if (body.classList.contains("Zorgverlener")) {
             document.querySelector(".d-none").classList.remove("d-none");
@@ -94,12 +146,51 @@ fetch('../assets/data/epilepsy.json')
             new Chart(document.getElementById('pddChart'), {
                 type: 'line',
                 data: pddDddData,
-                options: chartOptions
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        ...chartOptions.scales,
+                        y: {
+                            ...chartOptions.scales.y,
+                            ticks: {
+                                stepSize: 0.2,
+                            },
+                            max: 1
+                        },
+                        yRight: {
+                            ...chartOptions.scales.yRight,
+                            ticks: {
+                                stepSize: 0.2,
+                            },
+                            max: 1
+                        }
+                    },
+                },
             });
+
             new Chart(document.getElementById('labResultssChart'), {
                 type: 'line',
                 data: labKetonenData,
-                options: chartOptions
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        ...chartOptions.scales,
+                        y: {
+                            ...chartOptions.scales.y,
+                            ticks: {
+                                stepSize: 1,
+                            },
+                            max: 20
+                        },
+                        yRight: {
+                            ...chartOptions.scales.yRight,
+                            ticks: {
+                                stepSize: 1,
+                            },
+                            max: 20
+                        }
+                    },
+                },
             });
         }
     })
