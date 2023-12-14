@@ -58,7 +58,9 @@ Promise.all([fetchData('../assets/data/grow1-15.json'), fetchData('../assets/dat
                     color: lineColors[index % lineColors.length],
                 }))
             ],
-            chart: {},
+            chart: {
+                height: '150%',
+            },
             stroke: {
                 curve: 'smooth',
                 width: 3
@@ -88,7 +90,7 @@ Promise.all([fetchData('../assets/data/grow1-15.json'), fetchData('../assets/dat
                 position: 'left',
                 ticks: {
                     autoSkip: false,
-                    stepSize: 2
+                    // stepSize: 2
                 },
             },
 
