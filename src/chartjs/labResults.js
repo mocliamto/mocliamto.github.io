@@ -14,7 +14,7 @@ fetch('../assets/data/lab.json')
         const grensvalLowData = grensvalData.map(range => range[0]);
         const grensvalHighData = grensvalData.map(range => range[1]);
 
-        const ctx = document.getElementById('labChart').getContext('2d');
+        const ctx = document.getElementById('labChartJs').getContext('2d');
         const labChart = new Chart(ctx, {
 
             type: 'line',
@@ -26,7 +26,7 @@ fetch('../assets/data/lab.json')
                     borderColor: 'red',
                     fill: false
                 }, {
-                    label: 'GRENSVAL Laag',
+                    label: 'Referentiewaarde Laag',
                     data: grensvalLowData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',
@@ -34,7 +34,7 @@ fetch('../assets/data/lab.json')
                     pointHitRadius: 0,
                     fill: '+1'
                 }, {
-                    label: 'GRENSVAL Hoog',
+                    label: 'Referentiewaarde Hoog',
                     data: grensvalHighData,
                     borderColor: 'orange',
                     backgroundColor: 'rgba(255, 235, 160, 0.5)',

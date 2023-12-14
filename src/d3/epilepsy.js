@@ -34,11 +34,11 @@ function createChart(data, elementId, xValue, yValue, chartType) {
     let yMax = d3.max(data, d => d[yValue]);
     let yMin = d3.min(data, d => d[yValue]);
 
-    if (elementId === 'medicationChart') {
+    if (elementId === 'medicationChartD3') {
         yMax = Math.ceil(yMax / 400) * 400;
-    } else if (elementId === 'seizureChart') {
+    } else if (elementId === 'seizureChartD3') {
         yMin = 0;
-    } else if (elementId === 'pddChart') {
+    } else if (elementId === 'pddChartD3') {
         yMax = 1;
     } else {
         yMax = Math.ceil(d3.max(data, d => d[yValue]) / 200) * 2;
@@ -46,7 +46,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
     const y = d3.scaleLinear().domain([yMin, yMax]).range([height, 0]);
 
-    if (elementId === 'medicationChart') {
+    if (elementId === 'medicationChartD3') {
         const y = d3.scaleLinear()
             .domain([0, yMax])
             .range([height, 0]);
@@ -103,7 +103,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
             .attr("r", 3)
             .attr("fill", "steelblue");
 
-    } else if (elementId === 'pddChart') {
+    } else if (elementId === 'pddChartD3') {
         yMax = 1;
         const yStep = 0.2;
 
@@ -193,7 +193,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
         const yMax = d3.max(data, d => d[yValue]);
         let yMin = d3.min(data, d => d[yValue]);
 
-        if (elementId === 'seizureChart') {
+        if (elementId === 'seizureChartD3') {
             yMin = 0;
         }
         const y = d3.scaleLinear()
@@ -203,10 +203,11 @@ function createChart(data, elementId, xValue, yValue, chartType) {
         let yAxisLeft = d3.axisLeft(y);
         let yAxisRight = d3.axisRight(y);
 
-        if (elementId === 'seizureChart') {
-            const yAxisValues = d3.range(Math.floor(yMin), Math.ceil(yMax) + 0.5, 0.5);
+        if (elementId === 'seizureChartD3') {
+            const yAxisValues = d3.range(Math.floor(yMin), Math.ceil(yMax) + 1, 1);
             yAxisLeft = yAxisLeft.tickValues(yAxisValues);
             yAxisRight = yAxisRight.tickValues(yAxisValues);
+
             // y-as links
             svg.append("g").call(yAxisLeft);
 
@@ -293,12 +294,12 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 }
 
 function redrawCharts() {
-    createChart(globalData.Aanvalsregistratie, 'seizureChart', 'datum', 'aantal', 'bar');
-    createChart(globalData.Medicatie, 'medicationChart', 'datum', 'dosis', 'line');
+    createChart(globalData.Aanvalsregistratie, 'seizureChartD3', 'datum', 'aantal', 'bar');
+    createChart(globalData.Medicatie, 'medicationChartD3', 'datum', 'dosis', 'line');
     const body = window.parent.document.querySelector("body");
     if (body.classList.contains("Zorgverlener")) {
         document.querySelector(".d-none").classList.remove("d-none");
-        createChart(globalData.PDD_DDD, 'pddChart', 'datum', 'PDD_DDD_waarde', 'line');
+        createChart(globalData.PDD_DDD, 'pddChartD3', 'datum', 'PDD_DDD_waarde', 'line');
         createChart(globalData.Labuitslagen_en_ketonen, 'labResultsChart', 'datum', 'ketonen_mmol_l', 'line');
     }
 }

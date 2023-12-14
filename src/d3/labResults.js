@@ -5,7 +5,7 @@ const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
 const parseGrensvalRange = grensval => grensval.split('-').map(Number);
 
 function createOrUpdateChart() {
-    const container = d3.select('#labChart');
+    const container = d3.select('#labChartD3');
     if (!container.node()) {
         console.error('Container #labChart does not exist');
         return;
