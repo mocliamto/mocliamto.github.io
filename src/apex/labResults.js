@@ -20,39 +20,41 @@ fetch('../assets/data/lab.json')
                 y: value
             }))
         }, {
-            name: 'Hoog waarde',
+            name: 'Referentiewaarde Hoog',
             type: 'line',
-            borderColor: 'orange',
             data: grensvalHighData.map((value, index) => ({
                 x: dates[index],
                 y: value
             })),
-            fill: false
+            fill: true
         }, {
-            name: 'Laag waarde',
+            name: 'Referentiewaarde Laag',
             type: 'line',
-            borderColor: 'orange',
             data: grensvalLowData.map((value, index) => ({
                 x: dates[index],
                 y: value
             })),
-            fill: '+1'
+            fill: true
         }];
 
         const optionsMainChart = {
             chart: {
                 type: 'line',
                 height: '100%',
-                id: 'chart2'
+                id: 'chart2',
             },
             series: series,
+            // colors: ['#030303', '#45c0f5', '#5ac95a'],
             xaxis: {
-                type: 'datetime'
+                type: 'datetime',
             },
             yaxis: {
                 title: {
-                    text: 'mmol/L'
+                    text: 'Glucose(POCT) mmol/L'
                 }
+            },
+            y: {
+
             },
             tooltip: {
                 x: {
@@ -70,12 +72,10 @@ fetch('../assets/data/lab.json')
         const chart = new ApexCharts(document.querySelector("#labChart"), optionsMainChart);
         chart.render();
 
-        const seriesLineChart = [{
-            data: series[0].data
-        }];
-
         const optionsLineChart = {
-            series: seriesLineChart,
+            series: [{
+                data: series[0].data
+            }],
             chart: {
                 id: 'chart1',
                 height: 130,
@@ -87,19 +87,21 @@ fetch('../assets/data/lab.json')
                 selection: {
                     enabled: true,
                     xaxis: {
-                        min: new Date(dates[0]).getTime(),
-                        max: new Date(dates[dates.length - 1]).getTime()
+                        // min: new Date(dates[0]).getTime(),
+                        // max: new Date(dates[dates.length - 1]).getTime()
+                        min: new Date('19 Jun 2017').getTime(),
+                        max: new Date('26 Feb 2023').getTime()
                     }
                 },
             },
             dataLabels: {
                 enabled: false
             },
-            colors: ['#008FFB'],
+            colors: ['#0998f1'],
             xaxis: {
                 type: 'datetime',
                 tooltip: {
-                    enabled: false
+                    enabled: true
                 }
             },
             yaxis: {
