@@ -1,3 +1,4 @@
+// learn from the time formate here
 const margin = { top: 20, right: 55, bottom: 50, left: 55 };
 let globalData;
 

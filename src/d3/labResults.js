@@ -130,7 +130,7 @@ function drawChart(svg, x, y, data) {
 }
 
 function addAxes(svg, x, y) {
-    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y"));
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%dT%H:%M:%S"));
 
     const yAxis = d3.axisLeft(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1));
 
@@ -153,6 +153,7 @@ function addAxes(svg, x, y) {
         .attr("y", -40)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
+        .style("font-size", "15px")
         .text("Glucose(POCT) mmol/L");
 
     // y-axis (right)
