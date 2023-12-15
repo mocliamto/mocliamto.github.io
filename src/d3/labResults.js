@@ -131,8 +131,10 @@ function drawChart(svg, x, y, data) {
 
 function addAxes(svg, x, y) {
     const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y"));
-    const yAxis = d3.axisLeft(y);
-    const rightYAxis = d3.axisRight(y);
+
+    const yAxis = d3.axisLeft(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1));
+
+    const rightYAxis = d3.axisRight(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1));
 
     // x-axis
     svg.append("g")
@@ -157,7 +159,7 @@ function addAxes(svg, x, y) {
     svg.append("g")
         .attr("class", "axis axis--right")
         .attr("transform", `translate(${width}, 0)`)
-        .call(rightYAxis)
+        .call(rightYAxis);
 }
 
 function addGridLines(svg, x, y) {

@@ -40,7 +40,7 @@ fetch('../assets/data/lab.json')
         const optionsMainChart = {
             chart: {
                 type: 'line',
-                height: '100%',
+                height: '130%',
                 id: 'chart2',
             },
             series: series,
@@ -51,10 +51,8 @@ fetch('../assets/data/lab.json')
             yaxis: {
                 title: {
                     text: 'Glucose(POCT) mmol/L'
-                }
-            },
-            y: {
-
+                },
+                tickAmount: 6,
             },
             tooltip: {
                 x: {
@@ -78,7 +76,7 @@ fetch('../assets/data/lab.json')
             }],
             chart: {
                 id: 'chart1',
-                height: 112,
+                height:'30%',
                 type: 'area',
                 brush: {
                     target: 'chart2',
@@ -105,7 +103,7 @@ fetch('../assets/data/lab.json')
                 }
             },
             yaxis: {
-                tickAmount: 2
+                tickAmount: 4,
             }
         };
 

@@ -8,8 +8,8 @@ if (typeSelector) {
         input.addEventListener('click', () => {
             const activeCategory = input.parentElement.querySelector('label').textContent.trim();
             console.log(activeCategory);
-            document.body.classList.add(activeCategory == 'Zorgverlener' ? 'Zorgverlener' : 'Patient');
-            document.body.classList.remove(activeCategory == 'Zorgverlener' ? 'Patient' : 'Zorgverlener');
+            document.body.classList.add(activeCategory === 'Zorgverlener' ? 'Zorgverlener' : 'Patient');
+            document.body.classList.remove(activeCategory === 'Zorgverlener' ? 'Patient' : 'Zorgverlener');
             iframe.contentWindow.location.reload();
         });
     });
