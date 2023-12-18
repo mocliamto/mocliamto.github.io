@@ -1,7 +1,7 @@
 let home = document.getElementById('home');
 let iframe = window.parent.document.getElementById('content');
 let typeSelector = window.parent.document.getElementById('type-selector');
-let hash = window.top.location.hash;
+let hash = window.top.location.hash.typeSelector;
 
 if (typeSelector) {
     typeSelector.querySelectorAll('input').forEach((input) => {
@@ -55,7 +55,6 @@ if (home) {
             });
             home.innerHTML = marked.parse(data);
         });
-}
-else if (new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
+} else if (new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
     typeSelector.classList.remove('d-none');
 }

@@ -11,7 +11,7 @@ fetch('../assets/data/epilepsy.json')
                 name: 'Aanvalsregistratie',
                 data: sortedAanvalsregistratie.map(item => ({
                     x: new Date(item.datum),
-                    y: item.aantal
+                    y: item.aantal,
                 }))
             }],
             chart: {
@@ -26,7 +26,12 @@ fetch('../assets/data/epilepsy.json')
             },
             xaxis: {
                 type: 'datetime'
-            }
+            },
+            yaxis: {
+                title: {
+                    text: 'Aantal aanval'
+                },
+            },
         };
 
         var chartLine2 = new ApexCharts(document.querySelector("#epi-chart-line2"), optionsLine2);

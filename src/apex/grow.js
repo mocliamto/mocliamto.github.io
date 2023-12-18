@@ -92,6 +92,8 @@ Promise.all([fetchData('../assets/data/grow1-15.json'), fetchData('../assets/dat
                     autoSkip: false,
                     // stepSize: 2
                 },
+                forceNiceScale: true,
+                decimalsInFloat: 0,
             },
 
             annotations: {
