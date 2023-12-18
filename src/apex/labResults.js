@@ -53,6 +53,8 @@ fetch('../assets/data/lab.json')
                     text: 'Glucose(POCT) mmol/L'
                 },
                 tickAmount: 6,
+                forceNiceScale: true,
+                decimalsInFloat: 0,
             },
             tooltip: {
                 x: {
@@ -104,6 +106,8 @@ fetch('../assets/data/lab.json')
             },
             yaxis: {
                 tickAmount: 4,
+                forceNiceScale: true,
+                decimalsInFloat: 0,
             }
         };
 
@@ -113,6 +117,7 @@ fetch('../assets/data/lab.json')
     .catch(error => {
         console.error('Error fetching the lab data:', error);
     });
+
 
 //
 // let currentStartDate = new Date();
