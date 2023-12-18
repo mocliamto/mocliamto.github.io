@@ -1,4 +1,4 @@
-const margin = {top: 50, right: 50, bottom: 50, left: 55};
+const margin = {top: 20, right: 55, bottom: 50, left: 55};
 let width, height;
 
 const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
@@ -11,11 +11,12 @@ function createOrUpdateChart() {
         return;
     }
 
-    width = parseInt(container.style('width')) - ((margin.left - margin.right)-75);
+    width = parseInt(container.style('width')) - (margin.left - margin.right) - 75;
     height = width;
     container.select('svg').remove();
 
-    const svg = container.append("svg")
+    const svg = container
+        .append("svg")
         .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -23,26 +24,29 @@ function createOrUpdateChart() {
     const x = d3.scaleTime().range([0, width]);
     const y = d3.scaleLinear().range([height, 0]);
 
-    processData(svg, x, y);
+    fetchDataAndProcess(svg, x, y);
 }
 
-function processData(svg, x, y) {
+function fetchDataAndProcess(svg, x, y) {
     fetch('../assets/data/lab.json')
         .then(response => response.json())
         .then(data => {
-            prepareData(data);
-            setScalesDomain(x, y, data);
-            drawChart(svg, x, y, data);
-        }).catch(handleError);
+            const processedData = prepareData(data);
+            setScalesDomain(x, y, processedData);
+            drawChart(svg, x, y, processedData);
+        })
+        .catch(handleError);
 }
 
 function prepareData(data) {
-    data.sort((a, b) => new Date(a.DateTime) - new Date(b.DateTime));
-    data.forEach(d => {
-        d.date = parseTime(d.DateTime);
-        d.uitslag = +d.UITSLAG;
-        d.grensval = parseGrensvalRange(d.GRENSVAL);
-    });
+    const processedData = data.map(d => ({
+        date: parseTime(d.DateTime),
+        uitslag: +d.UITSLAG,
+        grensval: parseGrensvalRange(d.GRENSVAL),
+    }));
+
+    processedData.sort((a, b) => a.date - b.date);
+    return processedData;
 }
 
 function setScalesDomain(x, y, data) {
@@ -62,15 +66,14 @@ function drawChart(svg, x, y, data) {
         .y0(d => y(d.grensval[0]))
         .y1(d => y(d.grensval[1]));
 
-    // Area
     svg.append("path")
         .data([data])
         .attr("class", "area-grensval")
         .style("fill", "lightgray")
         .style("opacity", 0.5)
+        .style("stroke", "black")
         .attr("d", areaBetweenGrensval);
 
-    // Line
     svg.append("path")
         .data([data])
         .attr("class", "line uitslag")
@@ -79,66 +82,30 @@ function drawChart(svg, x, y, data) {
         .attr("stroke-width", 3.5)
         .attr("d", valueline);
 
-    // Dots
-    svg.selectAll("dot")
+    svg.selectAll(".dot")
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
         .attr("cx", d => x(d.date))
         .attr("cy", d => y(d.uitslag))
-        .attr("r", 3.5)
+        .attr("r", 3)
         .style("fill", "red");
 
     addAxes(svg, x, y);
     addGridLines(svg, x, y);
-
-    // Legend
-    const legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", `translate(${width + 10}, 10)`);
-
-    legend.append("rect")
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", "orange");
-
-    legend.append("text")
-        .attr("x", 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
-        .text("Grensval Range");
-
-    legend.append("path")
-        .datum(data)
-        .attr("class", "line uitslag-legend")
-        .style("fill", "none")
-        .style("stroke", "red")
-        .attr("stroke-width", 2.3)
-        .attr("d", d3.line()
-            .x(d => x(d.date))
-            .y(d => y(d.uitslag))
-        );
-
-    legend.append("text")
-        .attr("x", 24)
-        .attr("y", 30)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
-        .style("fill", "red")
-        .text("Uitslag Line");
 }
 
 function addAxes(svg, x, y) {
-    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d"));
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y"));
 
     const yAxis = d3.axisLeft(y)
         .tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1))
         .tickFormat(d3.format(".0f"));
 
-    const rightYAxis = d3.axisRight(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1)).tickFormat(d3.format(".0f"));
+    const rightYAxis = d3.axisRight(y)
+        .tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1))
+        .tickFormat(d3.format(".0f"));
 
-    // x-axis
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(xAxis)
@@ -147,25 +114,23 @@ function addAxes(svg, x, y) {
         .attr("transform", "rotate(-20)")
         .style("text-anchor", "end");
 
-    // y-axis (left)
     svg.append("g")
         .call(yAxis)
-        .style("font-size", "17px")
+        .style("font-size", "14px")
         .append("text")
         .attr("fill", "#000")
         .attr("transform", "rotate(-90)")
-        .attr("y", -50)
+        .attr("y", -52)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .style("font-size", "17px")
+        .style("font-size", "14px")
         .text("Glucose(POCT) mmol/L");
 
-    // y-axis (right)
     svg.append("g")
         .attr("class", "axis axis--right")
         .attr("transform", `translate(${width}, 0)`)
         .call(rightYAxis)
-        .style("font-size", "17px");
+        .style("font-size", "14px");
 }
 
 function addGridLines(svg, x, y) {
