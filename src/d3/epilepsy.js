@@ -1,4 +1,3 @@
-// learn from the time formate here
 const margin = { top: 20, right: 55, bottom: 50, left: 55 };
 let globalData;
 
@@ -206,8 +205,8 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
         if (elementId === 'seizureChartD3') {
             const yAxisValues = d3.range(Math.floor(yMin), Math.ceil(yMax) + 1, 1);
-            yAxisLeft = yAxisLeft.tickValues(yAxisValues);
-            yAxisRight = yAxisRight.tickValues(yAxisValues);
+            yAxisLeft = yAxisLeft.tickValues(yAxisValues).tickFormat(d3.format(".0f"));
+            yAxisRight = yAxisRight.tickValues(yAxisValues).tickFormat(d3.format(".0f"));
 
             // y-as links
             svg.append("g").call(yAxisLeft);
