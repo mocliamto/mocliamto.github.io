@@ -221,11 +221,10 @@ function createLabChart(data) {
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d-%m-%Y")))
-        .style("font-size", "10px")
+        .style("font-size", "13px")
         .selectAll("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", "-0.7em")
-        .attr("dx", "-0.7em")
+        .attr("dy", "1em")
+        .attr("dx", "3em")
         .style("text-anchor", "end");
 
     const yMax = 12;
