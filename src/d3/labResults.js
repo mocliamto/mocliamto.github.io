@@ -1,4 +1,4 @@
-const margin = {top: 20, right: 50, bottom: 50, left: 50};
+const margin = {top: 50, right: 50, bottom: 50, left: 55};
 let width, height;
 
 const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
@@ -66,7 +66,7 @@ function drawChart(svg, x, y, data) {
     svg.append("path")
         .data([data])
         .attr("class", "area-grensval")
-        .style("fill", "orange")
+        .style("fill", "lightgray")
         .style("opacity", 0.5)
         .attr("d", areaBetweenGrensval);
 
@@ -75,8 +75,8 @@ function drawChart(svg, x, y, data) {
         .data([data])
         .attr("class", "line uitslag")
         .style("fill", "none")
-        .style("stroke", "red")
-        .attr("stroke-width", 2.3)
+        .style("stroke", "black")
+        .attr("stroke-width", 3.5)
         .attr("d", valueline);
 
     // Dots
@@ -86,7 +86,7 @@ function drawChart(svg, x, y, data) {
         .attr("class", "dot")
         .attr("cx", d => x(d.date))
         .attr("cy", d => y(d.uitslag))
-        .attr("r", 3)
+        .attr("r", 3.5)
         .style("fill", "red");
 
     addAxes(svg, x, y);
@@ -130,16 +130,19 @@ function drawChart(svg, x, y, data) {
 }
 
 function addAxes(svg, x, y) {
-    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%dT%H:%M:%S"));
+    const xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d"));
 
-    const yAxis = d3.axisLeft(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1));
+    const yAxis = d3.axisLeft(y)
+        .tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1))
+        .tickFormat(d3.format(".0f"));
 
-    const rightYAxis = d3.axisRight(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1));
+    const rightYAxis = d3.axisRight(y).tickValues(d3.range(Math.floor(y.domain()[0]), Math.ceil(y.domain()[1]) + 1)).tickFormat(d3.format(".0f"));
 
     // x-axis
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
         .call(xAxis)
+        .style("font-size", "14px")
         .selectAll("text")
         .attr("transform", "rotate(-20)")
         .style("text-anchor", "end");
@@ -147,20 +150,22 @@ function addAxes(svg, x, y) {
     // y-axis (left)
     svg.append("g")
         .call(yAxis)
+        .style("font-size", "17px")
         .append("text")
         .attr("fill", "#000")
         .attr("transform", "rotate(-90)")
-        .attr("y", -40)
+        .attr("y", -50)
         .attr("dy", "0.71em")
         .attr("text-anchor", "end")
-        .style("font-size", "15px")
+        .style("font-size", "17px")
         .text("Glucose(POCT) mmol/L");
 
     // y-axis (right)
     svg.append("g")
         .attr("class", "axis axis--right")
         .attr("transform", `translate(${width}, 0)`)
-        .call(rightYAxis);
+        .call(rightYAxis)
+        .style("font-size", "17px");
 }
 
 function addGridLines(svg, x, y) {
