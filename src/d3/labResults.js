@@ -95,7 +95,7 @@ function createLabChart(data) {
         .append("rect")
         .attr("x", (d, i) => i * 130)
         .attr("y", 0)
-        .attr("width", 12)
+        .attr("width", 30)
         .attr("height", 12)
         .attr("fill", d => d.color);
 
@@ -103,7 +103,7 @@ function createLabChart(data) {
         .data(legendData)
         .enter()
         .append("text")
-        .attr("x", (d, i) => i * 130 + 15)
+        .attr("x", (d, i) => i * 130 + 35)
         .attr("y", 5)
         .attr("dy", "0.5em")
         .style("font-size", "12px")
