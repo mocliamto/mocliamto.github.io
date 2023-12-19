@@ -82,7 +82,7 @@ function createLabChart(data) {
     const legendData = [
         {label: "Uitslag", color: "red"},
         {label: "Trend verloop", color: "black"},
-        {label: "Referentiewaarde", color: "lightgray"}
+        {label: "Referentiewaarde", color: "#ffde5c"}
     ];
 
     const legend = svg.append("g")
@@ -184,8 +184,8 @@ function createLabChart(data) {
     svg.append("path")
         .data([processedData])
         .attr("class", "area-grensval")
-        .style("fill", "lightgray")
-        .style("opacity", 0.3)
+        .style("fill", "#ffde5c")
+        .style("opacity", 0.35)
         .style("stroke", "black")
         .attr("d", areaBetweenGrensval)
 }
