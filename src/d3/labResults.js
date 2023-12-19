@@ -87,13 +87,13 @@ function createLabChart(data) {
 
     const legend = svg.append("g")
         .attr("class", "legend")
-        .attr("transform", `translate(${width-470},${-30})`);
+        .attr("transform", `translate(${width - 470},${-30})`);
 
     legend.selectAll("rect")
         .data(legendData)
         .enter()
         .append("rect")
-        .attr("x", (d, i) => i * 120)
+        .attr("x", (d, i) => i * 130)
         .attr("y", 0)
         .attr("width", 12)
         .attr("height", 12)
@@ -103,7 +103,7 @@ function createLabChart(data) {
         .data(legendData)
         .enter()
         .append("text")
-        .attr("x", (d, i) => i * 120 + 15)
+        .attr("x", (d, i) => i * 130 + 15)
         .attr("y", 5)
         .attr("dy", "0.5em")
         .style("font-size", "12px")
@@ -184,9 +184,10 @@ function createLabChart(data) {
     svg.append("path")
         .data([processedData])
         .attr("class", "area-grensval")
+        .style("stroke", "#f8a403")
+        .attr("stroke-width", 3.5)
         .style("fill", "#ffde5c")
-        .style("opacity", 0.35)
-        .style("stroke", "black")
+        .style("opacity", 0.30)
         .attr("d", areaBetweenGrensval)
 }
 
