@@ -86,14 +86,17 @@ function createLabChart(data) {
     ];
 
     const legend = svg.append("g")
-        .attr("class", "legend")
-        .attr("transform", `translate(${width - 470},${-30})`);
+        .attr("class", "legend");
+
+    const legendWidth = 160 * legendData.length;
+    const legendX = Math.max(0, width - legendWidth);
+    legend.attr("transform", `translate(${legendX},${-30})`);
 
     legend.selectAll("rect")
         .data(legendData)
         .enter()
         .append("rect")
-        .attr("x", (d, i) => i * 130)
+        .attr("x", (d, i) => i * 120)
         .attr("y", 0)
         .attr("width", 30)
         .attr("height", 12)
@@ -103,13 +106,16 @@ function createLabChart(data) {
         .data(legendData)
         .enter()
         .append("text")
-        .attr("x", (d, i) => i * 130 + 35)
+        .attr("x", (d, i) => i * 120 + 35)
         .attr("y", 5)
         .attr("dy", "0.5em")
         .style("font-size", "12px")
         .text(d => d.label);
 
-    const x = d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).paddingInner(1).paddingOuter(0);
+    const x = d3.scaleBand()
+        .range([0, width])
+        .domain(processedData.map(d => d.date))
+        .paddingInner(1).paddingOuter(0);
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -125,7 +131,9 @@ function createLabChart(data) {
     const yMin = Math.floor(d3.min(processedData, d => Math.min(d.valueUitslag, d.valueGrensval)));
     const yStep = 1;
 
-    const y = d3.scaleLinear().domain([yMin - 1, yMax + 1]).range([height, 0]);
+    const y = d3.scaleLinear()
+        .domain([yMin - 1, yMax + 1])
+        .range([height, 0]);
 
     addGridLines(svg, x, y, width, height, datasetsPerPage);
 
@@ -204,14 +212,12 @@ function addGridLines(svg, x, y, width, height, datasetsPerPage) {
 
 d3.select("#labChartD3")
     .style("text-align", "right")
-    .append("button")
-    .html("<i class='fas fa-angles-left'></i>")
+    .append("button").html("<i class='fas fa-angles-left'></i>")
     .on("click", goToNextPage);
 
 d3.select("#labChartD3")
     .style("text-align", "right")
-    .append("button")
-    .html("<i class='fas fa-angles-right'></i>")
+    .append("button").html("<i class='fas fa-angles-right'></i>")
     .on("click", goToPreviousPage);
 
 function redrawLabChart() {
