@@ -1,4 +1,4 @@
-const margin = {top: 30, right: 30, bottom: 50, left: 50};
+const margin = {top: 30, right: 30, bottom: 50, left: 60};
 const {top, right, bottom, left} = margin;
 let globalData;
 let currentPage = 0;
@@ -109,7 +109,7 @@ function createLabChart(data) {
         .style("font-size", "12px")
         .text(d => d.label);
 
-    const x = d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(1);
+    const x = d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).paddingInner(1).paddingOuter(0);
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
