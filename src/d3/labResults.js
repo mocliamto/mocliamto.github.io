@@ -79,6 +79,36 @@ function createLabChart(data) {
             valueGrensval: parseFloat(d.GRENSVAL)
         }));
 
+    const legendData = [
+        {label: "Uitslag", color: "red"},
+        {label: "Trend verloop", color: "black"},
+        {label: "Referentiewaarde", color: "lightgray"}
+    ];
+
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .attr("transform", `translate(${width-470},${-30})`);
+
+    legend.selectAll("rect")
+        .data(legendData)
+        .enter()
+        .append("rect")
+        .attr("x", (d, i) => i * 120)
+        .attr("y", 0)
+        .attr("width", 12)
+        .attr("height", 12)
+        .attr("fill", d => d.color);
+
+    legend.selectAll("text")
+        .data(legendData)
+        .enter()
+        .append("text")
+        .attr("x", (d, i) => i * 120 + 15)
+        .attr("y", 5)
+        .attr("dy", "0.5em")
+        .style("font-size", "12px")
+        .text(d => d.label);
+
     const x = d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(1);
 
     svg.append("g")
@@ -91,8 +121,8 @@ function createLabChart(data) {
         .attr("transform", "rotate(-30)")
         .style("text-anchor", "end");
 
-    const yMax = Math.ceil(d3.max(processedData, d => d.valueUitslag));
-    const yMin = Math.floor(d3.min(processedData, d => d.valueUitslag));
+    const yMax = Math.ceil(d3.max(processedData, d => Math.max(d.valueUitslag, d.valueGrensval)));
+    const yMin = Math.floor(d3.min(processedData, d => Math.min(d.valueUitslag, d.valueGrensval)));
     const yStep = 1;
 
     const y = d3.scaleLinear().domain([yMin - 1, yMax + 1]).range([height, 0]);
@@ -115,8 +145,10 @@ function createLabChart(data) {
         .tickValues(d3.range(yMin, yMax + yStep, yStep))
         .tickFormat(d3.format(".0f"));
 
+    svg.select(".y-axis").remove();
     svg.append("g")
         .call(yAxis)
+        .attr("class", "y-axis")
         .style("font-size", "14px")
         .append("text")
         .attr("fill", "#000")
@@ -155,7 +187,7 @@ function createLabChart(data) {
         .style("fill", "lightgray")
         .style("opacity", 0.3)
         .style("stroke", "black")
-        .attr("d", areaBetweenGrensval);
+        .attr("d", areaBetweenGrensval)
 }
 
 function addGridLines(svg, x, y, width, height, datasetsPerPage) {
