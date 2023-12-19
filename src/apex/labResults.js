@@ -53,8 +53,8 @@ fetch('../assets/data/lab.json')
                     text: 'Glucose(POCT) mmol/L'
                 },
                 tickAmount: 6,
-                forceNiceScale: true,
-                decimalsInFloat: 0,
+                // forceNiceScale: true,
+                // decimalsInFloat: 0,
             },
             tooltip: {
                 x: {
