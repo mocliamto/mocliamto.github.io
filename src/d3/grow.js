@@ -1,7 +1,19 @@
+const labelMapping = {
+    'ValueMin30': '-3',
+    'ValueMin25': '-2,5',
+    'ValueMin20': '-2',
+    'ValueMin10': '-1',
+    'Value0': '0',
+    'ValuePlus10': '+1',
+    'ValuePlus20': '+2',
+    'ValuePlus25': '+2,5'
+};
+
 const valueRanges = [
     'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
     'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
 ];
+
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
 const lineWidth = [2, 2, 2, 2, 3];
 const margin = {top: 30, right: 45, bottom: 60, left: 45};
@@ -59,6 +71,17 @@ function createLineChart() {
             .attr("stroke-width", lineWidth[index % lineWidth.length])
             .attr("fill", "rgba(222,236,220,0.55)")
             .attr("d", line);
+
+        svg.selectAll(`.label-${range}`)
+            .data(dataset)
+            .enter().append("text")
+            .attr("class", `label-${range}`)
+            .attr("x", x(dataset[dataset.length - 1].month))
+            .attr("y", y(dataset[dataset.length - 1].value))
+            .attr("dx", width * 0.2)
+            .attr("dy", -height * 0.08)
+            .style("font-size", "13px")
+            .text(d => labelMapping[range]);
     });
 
     svg.append("text")
@@ -90,7 +113,7 @@ function createLineChart() {
         .style("font-size", "14px")
         .text("Lengte-Leeftijd 0-15 maanden");
 
-    const userValues = growData.map(d => ({ month: d.LeeftijdInMaanden, value: d.Lengte }));
+    const userValues = growData.map(d => ({month: d.LeeftijdInMaanden, value: d.Lengte}));
     svg.append("path")
         .data([userValues])
         .attr("fill", "none")
