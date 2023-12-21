@@ -21,7 +21,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
     const x = (chartType === 'bar') ?
         d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(0.1):
-        d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).padding(1);
+        d3.scaleBand().range([0, width]).domain(processedData.map(d => d.date)).paddingInner(1).paddingOuter(0);
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
