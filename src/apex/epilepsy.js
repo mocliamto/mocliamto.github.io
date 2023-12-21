@@ -18,7 +18,7 @@ fetch('../assets/data/epilepsy.json')
                 id: 'tw',
                 group: 'social',
                 type: 'bar',
-                height: 300
+                height: 335
             },
             colors: ['#546E7A'],
             stroke: {
@@ -49,7 +49,7 @@ fetch('../assets/data/epilepsy.json')
                 id: 'yt',
                 group: 'social',
                 type: 'line',
-                height: 300
+                height: 335
             },
             colors: ['#00E396'],
             stroke: {
@@ -76,7 +76,7 @@ fetch('../assets/data/epilepsy.json')
                 id: 'yt',
                 group: 'social',
                 type: 'line',
-                height: 300
+                height: 335
             },
             colors: ['#008FFB'],
             stroke: {
@@ -105,7 +105,7 @@ fetch('../assets/data/epilepsy.json')
                     id: 'li',
                     group: 'social',
                     type: 'line',
-                    height: 300
+                    height: 335
                 },
                 colors: ['#546E7A'],
                 stroke: {
