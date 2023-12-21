@@ -4,20 +4,20 @@ const valueRanges = [
 ];
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
 const lineWidth = [2, 2, 2, 2, 3];
-const margin = { top: 20, right: 35, bottom: 30, left: 35 };
+const margin = {top: 30, right: 45, bottom: 60, left: 45};
 
 let growData, tnoData;
 
 function createLineChart() {
     const element = document.getElementById('growthCurveChart');
     const width = element.clientWidth - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const height = element.clientWidth - margin.top - margin.bottom;
 
     d3.select("#growthCurveChart").select("svg").remove();
 
     const svg = d3.select("#growthCurveChart")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", "100%")
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
@@ -57,6 +57,36 @@ function createLineChart() {
             .attr("fill", "rgba(222,236,220,0.55)")
             .attr("d", line);
     });
+
+    svg.append("text")
+        .attr("class", "x-axis-label")
+        .attr("fill", "#000")
+        .attr("x", width / 2)
+        .attr("y", height + margin.top + 10)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Leeftijd (maanden)");
+
+    svg.append("text")
+        .attr("class", "y-axis-label")
+        .attr("fill", "#000")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -margin.left + 3)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Lengte (cm)");
+
+    svg.append("text")
+        .attr("class", "chart-title")
+        .attr("fill", "#000")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .text("Lengte-Leeftijd 0-15 maanden");
+
     const userValues = growData.map(d => ({ month: d.LeeftijdInMaanden, value: d.Lengte }));
     svg.append("path")
         .data([userValues])
@@ -88,17 +118,24 @@ function createLineChart() {
         .attr("class", "grid")
         .attr("transform", "translate(" + width + ",0)")
         .call(d3.axisRight(yRight).ticks((92 - 40) / 2).tickSize(-width).tickFormat(""));
+
 }
 
-Promise.all([
-    fetch('../assets/data/grow.json').then(response => response.json()),
-    fetch('../assets/data/tno.json').then(response => response.json())
-]).then(([dataGrow, dataTno]) => {
-    growData = dataGrow;
-    tnoData = dataTno;
-    createLineChart();
-}).catch(error => {
-    console.error('Error loading data:', error);
-});
+async function loadData() {
+    try {
+        const [dataGrow, dataTno] = await Promise.all([
+            fetch('../assets/data/grow.json').then(response => response.json()),
+            fetch('../assets/data/tno.json').then(response => response.json())
+        ]);
+
+        growData = dataGrow;
+        tnoData = dataTno;
+        createLineChart();
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
+}
+
+loadData();
 
 window.addEventListener("resize", createLineChart);
