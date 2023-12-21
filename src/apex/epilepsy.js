@@ -57,9 +57,18 @@ fetch('../assets/data/epilepsy.json')
             },
             xaxis: {
                 type: 'datetime'
+            },
+            yaxis: {
+                min: 0,
+                max: 1000,
+                tickAmount: 5,
+                labels: {
+                    formatter: function (value) {
+                        return value.toFixed(0);
+                    }
+                }
             }
         };
-
 
         var chartArea = new ApexCharts(document.querySelector("#epi-chart-area"), optionsArea);
         chartArea.render();
@@ -84,7 +93,7 @@ fetch('../assets/data/epilepsy.json')
             },
             xaxis: {
                 type: 'datetime'
-            }
+            },
         };
 
         const body = window.parent.document.querySelector("body");

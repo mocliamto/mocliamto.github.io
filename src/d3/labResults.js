@@ -2,7 +2,7 @@ const margin = {top: 30, right: 30, bottom: 50, left: 60};
 const {top, right, bottom, left} = margin;
 let globalData;
 let currentPage = 0;
-const datasetsPerPage = 10;
+const datasetsPerPage = 6;
 let valueGrensval;
 let lowerValue;
 let upperValue;
@@ -132,7 +132,7 @@ function createLabChart(data) {
     const yStep = 1;
 
     const y = d3.scaleLinear()
-        .domain([yMin - 1, yMax + 1])
+        .domain([yMin - 1, yMax + 3])
         .range([height, 0]);
 
     addGridLines(svg, x, y, width, height, datasetsPerPage);
