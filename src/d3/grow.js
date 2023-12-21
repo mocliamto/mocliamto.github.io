@@ -1,3 +1,8 @@
+const margin = {top: 40, right: 45, bottom: 60, left: 45};
+let growData, tnoData;
+const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
+const fills = [false, false, '+1', '+1', '+1', '+1', '+1'];
+const lineWidth = [2, 2, 2, 2, 3];
 const labelMapping = {
     'ValueMin30': '-3',
     'ValueMin25': '-2,5',
@@ -8,17 +13,7 @@ const labelMapping = {
     'ValuePlus20': '+2',
     'ValuePlus25': '+2,5'
 };
-
-const valueRanges = [
-    'ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10',
-    'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'
-];
-
-const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
-const lineWidth = [2, 2, 2, 2, 3];
-const margin = {top: 30, right: 45, bottom: 60, left: 45};
-
-let growData, tnoData;
+const valueRanges = ['ValueMin30', 'ValueMin25', 'ValueMin20', 'ValueMin10', 'Value0', 'ValuePlus10', 'ValuePlus20', 'ValuePlus25'];
 
 function createLineChart() {
     const element = document.getElementById('growthCurveChart');
@@ -40,7 +35,6 @@ function createLineChart() {
     const line = d3.line()
         .x(d => x(d.month))
         .y(d => y(d.value))
-        .curve(d3.curveMonotoneX);
 
     x.domain([0, 15]);
     y.domain([40, 92]);
@@ -63,25 +57,43 @@ function createLineChart() {
         .style("font-size", "12px");
 
     valueRanges.forEach((range, index) => {
-        const dataset = tnoData.map(d => ({ month: d.StapNummer, value: d[range] }));
+        const dataset = tnoData.map(d => ({month: d.StapNummer, value: d[range]}));
+        const curve = range.includes("grow") ? d3.curveLinear : d3.curveMonotoneX;
+        const area = d3.area()
+            .x(d => x(d.month))
+            .y0(height)
+            .y1(d => y(d.value))
+            .curve(curve);
 
         svg.append("path")
             .data([dataset])
+            .attr("class", `area-${range}`)
+            .attr("fill", fills[index % fills.length] === '+1' ? "rgba(222,236,220,0.55)" : "none")
+            .attr("d", area.y0(d => y(d.value.ValuePlus20)));
+
+        svg.append("path")
+            .data([dataset])
+            .attr("class", `line-${range}`)
             .attr("stroke", lineColors[index % lineColors.length])
             .attr("stroke-width", lineWidth[index % lineWidth.length])
-            .attr("fill", "rgba(222,236,220,0.55)")
-            .attr("d", line);
+            .attr("fill", "none")
+            .attr("d", d3.line()
+                .x(d => x(d.month))
+                .y(d => y(d.value))
+                .curve(curve)
+            );
 
-        svg.selectAll(`.label-${range}`)
-            .data(dataset)
-            .enter().append("text")
-            .attr("class", `label-${range}`)
-            .attr("x", x(dataset[dataset.length - 1].month))
-            .attr("y", y(dataset[dataset.length - 1].value))
-            .attr("dx", width * 0.2)
-            .attr("dy", -height * 0.08)
-            .style("font-size", "13px")
-            .text(d => labelMapping[range]);
+        const lastDataPoint = dataset[dataset.length - 1];
+        if (lastDataPoint) {
+            svg.append("text")
+                .attr("class", `label-${range}`)
+                .attr("x", x(lastDataPoint.month))
+                .attr("y", y(lastDataPoint.value))
+                .attr("dx", width * 0.17)
+                .attr("dy", -height * 0.07)
+                .style("font-size", "13px")
+                .text(labelMapping[range]);
+        }
     });
 
     svg.append("text")
@@ -144,7 +156,6 @@ function createLineChart() {
         .attr("class", "grid")
         .attr("transform", "translate(" + width + ",0)")
         .call(d3.axisRight(yRight).ticks((92 - 40) / 2).tickSize(-width).tickFormat(""));
-
 }
 
 async function loadData() {
