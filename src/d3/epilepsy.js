@@ -1,4 +1,4 @@
-const margin = { top: 20, right: 55, bottom: 40, left: 55 };
+const margin = {top: 40, right: 40, bottom: 60, left: 60};
 let globalData;
 
 function createChart(data, elementId, xValue, yValue, chartType) {
