@@ -18,7 +18,7 @@ function getLastDataPoint(seriesData) {
     return seriesData[seriesData.length - 1];
 }
 
-Promise.all([fetchData('../assets/data/grow1-15.json'), fetchData('../assets/data/tno.json')])
+Promise.all([fetchData('../assets/data/grow.json'), fetchData('../assets/data/tno.json')])
     .then(([growData, tnoData]) => {
             if (!growData || !tnoData) {
                 throw new Error('One or more datasets could not be loaded');

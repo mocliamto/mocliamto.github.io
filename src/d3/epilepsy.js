@@ -35,7 +35,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
     let yMin = d3.min(data, d => d[yValue]);
 
     if (elementId === 'medicationChartD3') {
-        yMax = Math.ceil(yMax / 400) * 400;
+        yMax = Math.ceil(yMax / 500) * 500;
     } else if (elementId === 'seizureChartD3') {
         yMin = 0;
     } else if (elementId === 'pddChartD3') {
@@ -217,7 +217,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
         // rasterlijn Y-as
         function y_gridlines() {
-            return d3.axisLeft(y).ticks(5)
+            return d3.axisLeft(y).ticks(3)
         }
 
         svg.append("g").attr("class", "grid").call(y_gridlines().tickSize(-width).tickFormat(""))

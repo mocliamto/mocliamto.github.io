@@ -40,7 +40,7 @@ fetch('../assets/data/lab.json')
         const optionsMainChart = {
             chart: {
                 type: 'line',
-                height: 350,
+                // height: 350,
                 id: 'chart2',
             },
             series: series,
@@ -78,7 +78,7 @@ fetch('../assets/data/lab.json')
             }],
             chart: {
                 id: 'chart1',
-                height: 150,
+                height: '20%',
                 type: 'area',
                 brush: {
                     target: 'chart2',

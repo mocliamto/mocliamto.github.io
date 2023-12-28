@@ -1,4 +1,4 @@
-const margin = {top: 40, right: 45, bottom: 60, left: 45};
+const margin = {top: 40, right: 40, bottom: 60, left: 60};
 let growData, tnoData;
 const lineColors = ['#c3dec1', '#c3dec1', '#c3dec1', '#c3dec1', '#a1c2a3'];
 const fills = [false, false, '+1', '+1', '+1', '+1', '+1'];
