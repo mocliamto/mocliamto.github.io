@@ -14,6 +14,8 @@
     <script src="../assets/js/chart.js/dist/chart.umd.js" defer></script>
     <script src="../assets/js/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js" defer></script>
     <script src="../assets/js/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js" defer></script>
+    <script src="../assets/js/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.min.js" defer></script>
+
     <script src="../assets/js/d3/dist/d3.min.js" defer></script>
     <script src="../assets/js/index.js" defer></script>
 
@@ -36,7 +38,7 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>1. Laboratorium Uitslagen</span>
+                    <span>1. Laboratoriumuitslag</span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/apex/labResults.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -54,11 +56,20 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>2. Laboratorium Uitslagen</span>
+                    <span>2. Laboratoriumuitslag </span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/chartjs/labResults.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
                 </h5>
+
+<!--                <label for="startDate">Start Date:</label>-->
+<!--                <input type="date" id="startDate" name="startDate">-->
+
+<!--                <label for="endDate">End Date:</label>-->
+<!--                <input type="date" id="endDate" name="endDate">-->
+
+<!--                <button onclick="fetchAndProcessLabData()">Gereed</button>-->
+
                 <div class="card-body d-flex flex-column">
                     <div class="loader w-100 p-5 text-center">
                         <i class="fa-solid fa-sun fa-spin"></i>
@@ -71,7 +82,7 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>3. Laboratorium Uitslagen</span>
+                    <span>3. Laboratoriumuitslag </span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/d3/labResults.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -90,7 +101,7 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>4. Groei Curve</span>
+                    <span>4. Groeigrafiek</span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/apex/grow.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -106,7 +117,7 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>5. Groei Curve</span>
+                    <span>5. Groeigrafiek</span>
                     <div class="btn-group" role="group">
                         <button class="btn btn-outline-secondary code" title="Code" data-src="src/chartjs/grow.js">
                             <i class="fa-solid fa-code"></i>
@@ -142,7 +153,7 @@
         <div class="col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>6. Groei Curve</span>
+                    <span>6. Groeigrafiek </span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/d3/grow.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -160,7 +171,7 @@
         <div class="epi-chart col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>7. Epilepsie aanvalsregistratie</span>
+                    <span>7. Epilepsieaanvalsregistratie</span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/apex/epilepsy.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -199,7 +210,7 @@
         <div class="epi-chart col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>8. Epilepsie aanvalsregistratie</span>
+                    <span>8. Epilepsieaanvalsregistratie</span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/chartjs/epilepsy.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
@@ -238,7 +249,7 @@
         <div class="epi-chart col-sm mb-4">
             <div class="card h-100">
                 <h5 class="card-header d-flex align-items-center justify-content-between">
-                    <span>9. Epilepsie aanvalsregistratie</span>
+                    <span>9. Epilepsieaanvalsregistratie</span>
                     <button class="btn btn-outline-secondary code" title="Code" data-src="src/d3/epilepsy.js">
                         <i class="fa-solid fa-code"></i>
                     </button>
