@@ -1,4 +1,4 @@
-const margin = {top: 30, right: 30, bottom: 50, left: 60};
+const margin = {top: 30, right: 40, bottom: 70, left: 60};
 const {top, right, bottom, left} = margin;
 let globalData;
 let currentPage = 0;
@@ -80,7 +80,7 @@ function createLabChart(data) {
         }));
 
     const legendData = [
-        {label: "Uitslag", color: "red"},
+        {label: "Uitslag", color: "blue"},
         {label: "Trend verloop", color: "black"},
         {label: "Referentiewaarde", color: "#ffde5c"}
     ];
@@ -182,7 +182,7 @@ function createLabChart(data) {
         .attr("cx", d => x(d.date))
         .attr("cy", d => y(d.valueUitslag))
         .attr("r", 3.5)
-        .attr("fill", "red");
+        .attr("fill", "blue");
 
     const areaBetweenGrensval = d3.area()
         .x(d => x(d.date))
