@@ -66,7 +66,10 @@ fetch('../assets/data/epilepsy.json')
                     formatter: function (value) {
                         return value.toFixed(0);
                     }
-                }
+                },
+                title: {
+                    text: 'Medicatie (mg)'
+                },
             }
         };
 
@@ -93,6 +96,11 @@ fetch('../assets/data/epilepsy.json')
             },
             xaxis: {
                 type: 'datetime'
+            },
+            yaxis: {
+                title: {
+                    text: 'PDD/DDD (mg)'
+                },
             },
         };
 
@@ -122,7 +130,12 @@ fetch('../assets/data/epilepsy.json')
                 },
                 xaxis: {
                     type: 'datetime'
-                }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Labuitslagen en ketonen'
+                    },
+                },
             };
 
             var chartSmall2 = new ApexCharts(document.querySelector("#epi-chart-small2"), optionsSmall2);
