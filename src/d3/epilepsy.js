@@ -36,12 +36,53 @@ function createChart(data, elementId, xValue, yValue, chartType) {
 
     if (elementId === 'medicationChartD3') {
         yMax = Math.ceil(yMax / 500) * 500;
+
+        svg.append("text")
+            .attr("class", "y-axis-label")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 3)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Medicatie (mg)");
     } else if (elementId === 'seizureChartD3') {
         yMin = 0;
+        svg.append("text")
+            .attr("class", "y-axis-label")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 3)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Aantal aanvallen");
     } else if (elementId === 'pddChartD3') {
         yMax = 1;
+        svg.append("text")
+            .attr("class", "y-axis-label")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 3)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("PDD/DDD (mg)");
     } else {
         yMax = Math.ceil(d3.max(data, d => d[yValue]) / 200) * 2;
+        svg.append("text")
+            .attr("class", "y-axis-label")
+            .attr("fill", "#000")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -margin.left + 3)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "middle")
+            .style("font-size", "12px")
+            .text("Labuitslagen en ketonen");
     }
 
     const y = d3.scaleLinear().domain([yMin, yMax]).range([height, 0]);
