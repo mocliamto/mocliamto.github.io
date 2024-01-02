@@ -272,17 +272,6 @@ function createChart(data, elementId, xValue, yValue, chartType) {
             .call(x_gridlines().tickSize(-height).tickFormat(""));
     }
 
-    // function getRandomColor() {
-    //     const letters = '0123456789ABCDEF';
-    //     let color = '#';
-    //     for (let i = 0; i < 6; i++) {
-    //         color += letters[Math.floor(Math.random() * 16)];
-    //     }
-    //     return color;
-    // }
-    //
-    // let colorMap = new Map();
-
     if (chartType === 'bar') {
         svg.selectAll("bars")
             .data(processedData).enter().append("rect")
@@ -290,31 +279,7 @@ function createChart(data, elementId, xValue, yValue, chartType) {
             .attr("y", d => y(d.value))
             .attr("width", x.bandwidth())
             .attr("height", d => height - y(d.value))
-            .attr("fill", function (d, i) {
-                if (i === 0) {
-                    return "#22ce82";
-                } else if (i === 1) {
-                    return "#275bec";
-                } else if (i === 2) {
-                    return "#fcc542";
-                } else if (i === 3) {
-                    return "#81bdb1";
-                } else if (i === 4) {
-                    return "#0e78dc";
-                } else {
-                    return "#22ce82";
-                }
-            });
-
-        // "#22ce82","#275bec","#fcc542", "#81bdb1", "#0e78dc")
-        // function (d) {
-        // const wholeNumberValue = d.value;
-        // if (!colorMap.has(parseInt())) {
-        //     colorMap.set(wholeNumberValue, getRandomColor());
-        // }
-        // return colorMap.get(wholeNumberValue);
-        // });
-
+            .attr("fill", "#81bdb1")
     } else if (chartType === 'line') {
         const y = d3.scaleLinear()
             .domain([0, yMax])
