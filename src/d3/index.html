@@ -25,9 +25,17 @@
                 <div class="card">
                     <h5 class="card-header d-flex align-items-center justify-content-between">
                         <span>Laboratoriumuitslag</span>
-                        <button class="btn btn-outline-secondary code" title="Code" data-src="src/d3/labResults.js">
-                            <i class="fa-solid fa-code"></i>
-                        </button>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-outline-secondary code" title="Code" data-src="src/d3/labResults.js">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" id="go-to-next-page" title="Go to next page">
+                                <i class="fas fa-angles-left"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" id="go-to-prev-page" title="Go to previous page">
+                                <i class="fas fa-angles-right"></i>
+                            </button>
+                        </div>
                     </h5>
                     <div class="card-body">
                         <div class="loader w-100 p-5 text-center">
