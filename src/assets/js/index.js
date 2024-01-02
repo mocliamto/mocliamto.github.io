@@ -39,7 +39,7 @@ document.querySelectorAll('.code').forEach((btn) => {
 });
 
 if (hash) {
-    let currentSource = new URL(iframe.contentWindow.location.href).pathname;
+    let currentSource = new URL(iframe?.contentWindow.location.href)?.pathname;
     let newSource = hash.substring(1);
     if (newSource !== currentSource) {
         iframe.src = newSource;
@@ -55,6 +55,6 @@ if (home) {
             });
             home.innerHTML = marked.parse(data);
         });
-} else if (new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
+} else if (iframe && new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
     typeSelector.classList.remove('d-none');
 }

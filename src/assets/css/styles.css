@@ -80,3 +80,7 @@ footer {
 .modal-body {
     background-color: #f5f2f0;
 }
+
+#growChart {
+    height: 790px;
+}

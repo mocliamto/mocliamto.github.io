@@ -1,5 +1,5 @@
-const margin = {top: 30, right: 40, bottom: 70, left: 60};
-const {top, right, bottom, left} = margin;
+const margin = { top: 30, right: 40, bottom: 70, left: 60 };
+const { top, right, bottom, left } = margin;
 let globalData;
 let currentPage = 0;
 const datasetsPerPage = 6;
@@ -80,9 +80,9 @@ function createLabChart(data) {
         }));
 
     const legendData = [
-        {label: "Uitslag", color: "blue"},
-        {label: "Trend verloop", color: "black"},
-        {label: "Referentiewaarde", color: "#ffde5c"}
+        { label: "Uitslag", color: "blue" },
+        { label: "Trend verloop", color: "black" },
+        { label: "Referentiewaarde", color: "#ffde5c" }
     ];
 
     const legend = svg.append("g")
@@ -116,6 +116,8 @@ function createLabChart(data) {
         .range([0, width])
         .domain(processedData.map(d => d.date))
         .paddingInner(1).paddingOuter(0);
+
+
 
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
@@ -210,15 +212,8 @@ function addGridLines(svg, x, y, width, height, datasetsPerPage) {
     svg.append('g').attr('class', 'grid').call(yAxisGrid);
 }
 
-d3.select("#labChartD3")
-    .style("text-align", "right")
-    .append("button").html("<i class='fas fa-angles-left'></i>")
-    .on("click", goToNextPage);
-
-d3.select("#labChartD3")
-    .style("text-align", "right")
-    .append("button").html("<i class='fas fa-angles-right'></i>")
-    .on("click", goToPreviousPage);
+document.getElementById("go-to-next-page").addEventListener("click", goToNextPage);
+document.getElementById("go-to-prev-page").addEventListener("click", goToPreviousPage);
 
 function redrawLabChart() {
     createLabChart(globalData);
@@ -226,4 +221,4 @@ function redrawLabChart() {
 
 fetchData();
 
-window.addEventListener("resize", redrawLabChart);
+window.addEventListener("resize", updateChart);
