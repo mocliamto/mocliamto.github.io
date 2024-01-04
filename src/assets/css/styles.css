@@ -84,3 +84,7 @@ footer {
 #growChart {
     height: 600px;
 }
+
+#home img {
+    max-width: 100%;
+}
