@@ -1,7 +1,7 @@
 let home = document.getElementById('home');
 let iframe = window.parent.document.getElementById('content');
 let typeSelector = window.parent.document.getElementById('type-selector');
-let hash = window.top.location.hash.typeSelector;
+let hash = window.top.location.hash;
 
 if (typeSelector) {
     typeSelector.querySelectorAll('input').forEach((input) => {
@@ -47,7 +47,7 @@ if (hash) {
 }
 
 if (home) {
-    fetch('/README.md')
+    fetch('../README.md')
         .then(response => response.text())
         .then(data => {
             marked.use({
