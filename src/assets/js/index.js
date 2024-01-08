@@ -58,3 +58,13 @@ if (home) {
 } else if (iframe && new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
     typeSelector.classList.remove('d-none');
 }
+
+if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("../worker.js").then(function (_registration) {
+                // Registration was successful
+            }, function (_err) {
+                // registration failed :(
+            });
+        });
+}
