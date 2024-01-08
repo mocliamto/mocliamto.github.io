@@ -15,6 +15,28 @@
             "type": "image/png"
         }
     ],
+    "screenshots": [
+        {
+            "src": "../img/screenshot_home.png",
+            "sizes": "360x640",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Github",
+            "Description": "The Github repository",
+            "url": "https://github.com/mocliamto/mocliamto.github.io",
+            "icons": [
+                {
+                    "type": "image/png",
+                    "sizes": "96x96",
+                    "src": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+                    "purpose": "any"
+                }
+            ]
+        }
+    ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
     "display": "standalone"
