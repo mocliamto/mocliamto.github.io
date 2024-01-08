@@ -20,6 +20,7 @@
     <script src="src/assets/js/prismjs/plugins/line-numbers/prism-line-numbers.min.js" defer="defer"></script>
     <script src="src/assets/js/prismjs/plugins/match-braces/prism-match-braces.min.js" defer="defer"></script>
     <script src="src/assets/js/index.js" defer="defer"></script>
+    <script src="src/assets/js/worker.js" defer="defer"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="src/assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="src/assets/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="src/assets/favicons/favicon-16x16.png">
@@ -32,98 +33,98 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="fa-solid fa-chart-line me-2"></i>
-            Chart Libraries
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fa-solid fa-chart-line me-2"></i>
+                Chart Libraries
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        Libraries
-                    </a>
-                    <ul class="dropdown-menu pt-0 pb-0">
-                        <li>
-                            <a class="dropdown-item rounded-top" href="src/apex/" target="content">ApexChart</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider mt-0 mb-0">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="src/chartjs/" target="content">ChartJs</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider mt-0 mb-0">
-                        </li>
-                        <li>
-                            <a class="dropdown-item rounded-bottom" href="src/d3/" target="content">D3</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="src/types/" target="content">Charts</a>
-                </li>
-            </ul>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Libraries
+                        </a>
+                        <ul class="dropdown-menu pt-0 pb-0">
+                            <li>
+                                <a class="dropdown-item rounded-top" href="src/apex/" target="content">ApexChart</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider mt-0 mb-0">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="src/chartjs/" target="content">ChartJs</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider mt-0 mb-0">
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded-bottom" href="src/d3/" target="content">D3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="src/types/" target="content">Charts</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="flex-grow-1 d-flex flex-column" id="wrapper">
-    <div id="type-selector" class="text-center d-none mt-3">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="type" id="type-caregiver">
-            <label class="form-check-label" for="type-caregiver">Zorgverlener</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="type" id="type-patient" checked>
-            <label class="form-check-label" for="type-patient">Patient</label>
-        </div>
-    </div>
-    <iframe src="src/index.html" name="content" class="h-100 w-100" title="Content" id="content"></iframe>
-</div>
-<footer class="p-2 fixed-bottom">
-    <div class="container text-center justify-content-between d-flex">
-        <div>
-            <i class="fa-brands fa-github"></i>
-            <a href="https://github.com/mocliamto/mocliamto.github.io" title="Github repository"
-               class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-               target="_blank">
-                Github
-            </a>
-        </div>
-        <div>
-            <i class="fa-regular fa-copyright"></i>
-            <a href="https://chipsoft.nl" title="ChipSoft"
-               class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-               target="_blank">
-                ChipSoft 2024
-            </a>
-        </div>
-    </div>
-</footer>
-<div class="modal" tabindex="-1" id="code-modal">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="flex-grow-1 d-flex flex-column" id="wrapper">
+        <div id="type-selector" class="text-center d-none mt-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="type" id="type-caregiver">
+                <label class="form-check-label" for="type-caregiver">Zorgverlener</label>
             </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="type" id="type-patient" checked>
+                <label class="form-check-label" for="type-patient">Patient</label>
             </div>
         </div>
+        <iframe src="src/index.html" name="content" class="h-100 w-100" title="Content" id="content"></iframe>
     </div>
-</div>
+    <footer class="p-2 fixed-bottom">
+        <div class="container text-center justify-content-between d-flex">
+            <div>
+                <i class="fa-brands fa-github"></i>
+                <a href="https://github.com/mocliamto/mocliamto.github.io" title="Github repository"
+                    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                    target="_blank">
+                    Github
+                </a>
+            </div>
+            <div>
+                <i class="fa-regular fa-copyright"></i>
+                <a href="https://chipsoft.nl" title="ChipSoft"
+                    class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                    target="_blank">
+                    ChipSoft 2024
+                </a>
+            </div>
+        </div>
+    </footer>
+    <div class="modal" tabindex="-1" id="code-modal">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
