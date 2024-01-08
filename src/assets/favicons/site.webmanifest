@@ -1,6 +1,8 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Chart Libraries",
+    "short_name": "Chart Libraries",
+    "description": "Scriptie",
+    "start_url": "https://mocliamto.github.io/",
     "icons": [
         {
             "src": "/src/assets/favicons/android-chrome-192x192.png",
