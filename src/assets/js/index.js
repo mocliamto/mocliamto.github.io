@@ -17,11 +17,11 @@ if (typeSelector) {
 
 document.querySelectorAll('.code').forEach((btn) => {
     btn.addEventListener('click', () => {
-        let modalElement = window.parent.document.querySelector('#code-modal');
+        let modalElement = window.parent.document.querySelector('#modal');
         let codeWrapperElement = document.createElement('pre');
         let codeElement = document.createElement('code');
         let titleElement = modalElement.querySelector('h5');
-        let modal = new window.parent.bootstrap.Modal('#code-modal');
+        let modal = new window.parent.bootstrap.Modal(modalElement);
 
         modalElement.querySelector('pre')?.remove();
         codeWrapperElement.appendChild(codeElement);
@@ -54,17 +54,32 @@ if (home) {
                 gfm: true
             });
             home.innerHTML = marked.parse(data);
+        })
+        .then(() => {
+            let image = home.querySelector('img[alt="diagram"]');
+            image.addEventListener('click', () => {
+                let clone = image.cloneNode();
+                let modalElement = window.parent.document.querySelector('#modal');
+                let titleElement = modalElement.querySelector('h5');
+                let modal = new window.parent.bootstrap.Modal(modalElement);
+
+                clone.classList.add('w-100');
+                modalElement.querySelector(".modal-body").appendChild(clone);
+                titleElement.textContent = 'Module dependencies';
+
+                modal.show();
+            });
         });
 } else if (iframe && new URL(iframe.contentWindow.location.href).pathname !== '/src/index.html') {
     typeSelector.classList.remove('d-none');
 }
 
 if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-            navigator.serviceWorker.register("../worker.js").then(function (_registration) {
-                // Registration was successful
-            }, function (_err) {
-                // registration failed :(
-            });
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("../worker.js").then(function (_registration) {
+            // Registration was successful
+        }, function (_err) {
+            // registration failed :(
         });
+    });
 }
